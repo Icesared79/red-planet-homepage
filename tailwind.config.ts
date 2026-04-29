@@ -7,7 +7,6 @@ const config: Config = {
       colors: {
         bg: {
           base: "#0E0C0A",
-          "base-alt": "#0F0E0C",
           elevated: "#161310",
           light: "#F5F2EC",
         },
@@ -64,6 +63,15 @@ const config: Config = {
       },
       maxWidth: {
         container: "1280px",
+      },
+      keyframes: {
+        "pulse-dot": {
+          "0%, 100%": { opacity: "0.5" },
+          "50%": { opacity: "1" },
+        },
+      },
+      animation: {
+        "pulse-dot": "pulse-dot 2s ease-in-out infinite",
       },
     },
   },
