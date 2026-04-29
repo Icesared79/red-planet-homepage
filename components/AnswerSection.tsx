@@ -79,7 +79,13 @@ export function AnswerSection() {
         </div>
 
         <p className="mt-12 text-center text-body-sm text-fg-muted">
-          Three of thousands of questions Atlas can answer. Tell us yours.
+          Three of thousands of questions Atlas can answer.{" "}
+          <a
+            href="#apply"
+            className="text-fg-primary no-underline transition-all duration-200 hover:underline"
+          >
+            Tell us yours.
+          </a>
         </p>
       </Container>
     </section>
