@@ -20,10 +20,18 @@
   --rule: #2A2520;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   background-color: var(--bg-base);
   color: var(--fg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[id] {
+  scroll-margin-top: 80px;
 }

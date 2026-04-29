@@ -1,5 +1,6 @@
 import { AnswerSection } from "@/components/AnswerSection";
 import { ApiArtifactSection } from "@/components/ApiArtifactSection";
+import { ApplySection } from "@/components/ApplySection";
 import { EngineSection } from "@/components/EngineSection";
 import { Hero } from "@/components/Hero";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -14,6 +15,7 @@ export default function HomePage() {
         <AnswerSection />
         <ApiArtifactSection />
         <EngineSection />
+        <ApplySection />
       </main>
       <SiteFooter />
     </>
