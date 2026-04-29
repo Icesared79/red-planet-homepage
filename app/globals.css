@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #0E0C0A;
+  --bg-base-alt: #0F0E0C;
+  --bg-elevated: #161310;
+  --bg-light: #F5F2EC;
+
+  --fg-primary: #F2EEE6;
+  --fg-secondary: #9C958A;
+  --fg-muted: #6B655C;
+  --fg-on-light: #1A1714;
+
+  --accent: #C8553D;
+  --accent-alt1: #B84A33;
+  --accent-alt2: #D26146;
+  --accent-dim: #A86150;
+
+  --rule: #2A2520;
+}
+
+html,
+body {
+  background-color: var(--bg-base);
+  color: var(--fg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
