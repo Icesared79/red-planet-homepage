@@ -22,9 +22,9 @@ export function ApplySection() {
               <span className="block text-accent">trying to figure out.</span>
             </h2>
             <p className="mt-8 max-w-[460px] text-body text-fg-secondary">
-              Atlas access is gated. We review every application. If the data
-              is in Atlas, we&apos;ll get you wired up within 24 hours. If it
-              isn&apos;t yet, we&apos;ll tell you when it will be.
+              We&apos;re opening Atlas access carefully. Every application
+              gets reviewed. If we have what you need, you&apos;ll have a key
+              within a day.
             </p>
             <ul className="mt-12 flex flex-col gap-3">
               {features.map((feature) => (

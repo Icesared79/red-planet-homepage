@@ -13,29 +13,20 @@ function RequestBlock() {
         <span className="text-fg-muted">{"\\"}</span>
         {"\n  "}
         <span className="text-fg-secondary">-H</span>{" "}
-        <span className="text-fg-primary">{"\"Authorization: Bearer rp_live_...\""}</span>{" "}
-        <span className="text-fg-muted">{"\\"}</span>
-        {"\n  "}
-        <span className="text-fg-secondary">-d</span>{" "}
-        <span className="text-fg-primary">{"\"county=manhattan&type=cmbs_distress\""}</span>
+        <span className="text-fg-primary">{"\"Authorization: Bearer rp_live_...\""}</span>
       </code>
     </pre>
   );
 }
 
-const sources = [
+const inlineSources = [
   "cmbs_remit",
-  "ny_acris_master",
-  "ny_acris_parties",
-  "ny_acris_legals",
+  "ny_acris",
   "nyc_pluto",
-  "nyc_dob_violations",
-  "ny_sos_corp",
-  "ny_sos_llc",
+  "ny_sos",
   "fdic_call_reports",
-  "treasury_yield_curve",
-  "nyc_property_tax",
-  "nyc_evictions",
+  "treasury_curve",
+  "+6 more",
 ];
 
 function Brace({ children }: { children: string }) {
@@ -52,11 +43,19 @@ function Key({ name }: { name: string }) {
   );
 }
 
-function StringVal({ value, status = false }: { value: string; status?: boolean }) {
+function StringVal({
+  value,
+  status = false,
+}: {
+  value: string;
+  status?: boolean;
+}) {
   return (
     <>
       <span className="text-fg-muted">{"\""}</span>
-      <span className={status ? "text-accent" : "text-fg-primary"}>{value}</span>
+      <span className={status ? "text-accent" : "text-fg-primary"}>
+        {value}
+      </span>
       <span className="text-fg-muted">{"\""}</span>
     </>
   );
@@ -90,21 +89,6 @@ function ResponseBlock() {
         <StringVal value="$47,200,000" />
         <Brace>{","}</Brace>
         {"\n    "}
-        <Key name="dscr" />
-        <Brace>{":         "}</Brace>
-        <NumVal value="0.81" />
-        <Brace>{","}</Brace>
-        {"\n    "}
-        <Key name="matures" />
-        <Brace>{":      "}</Brace>
-        <StringVal value="2026-09-01" />
-        <Brace>{","}</Brace>
-        {"\n    "}
-        <Key name="status" />
-        <Brace>{":       "}</Brace>
-        <StringVal value="WATCHLIST_ACTIVE" status />
-        <Brace>{","}</Brace>
-        {"\n    "}
         <Key name="signal" />
         <Brace>{":       "}</Brace>
         <StringVal value="CRITICAL" status />
@@ -119,26 +103,19 @@ function ResponseBlock() {
         <NumVal value="847" />
         <Brace>{","}</Brace>
         {"\n    "}
-        <Key name="updated" />
-        <Brace>{":      "}</Brace>
-        <StringVal value="4 hours ago" />
-        <Brace>{","}</Brace>
-        {"\n    "}
         <Key name="sources_used" />
         <Brace>{": "}</Brace>
         <NumVal value="12" />
         <Brace>{","}</Brace>
         {"\n    "}
         <Key name="sources" />
-        <Brace>{": ["}</Brace>
-        {sources.map((src, i) => (
+        <Brace>{":      ["}</Brace>
+        {inlineSources.map((src, i) => (
           <span key={src}>
-            {"\n      "}
             <StringVal value={src} />
-            {i < sources.length - 1 ? <Brace>{","}</Brace> : null}
+            {i < inlineSources.length - 1 ? <Brace>{", "}</Brace> : null}
           </span>
         ))}
-        {"\n    "}
         <Brace>{"]"}</Brace>
         {"\n  "}
         <Brace>{"}"}</Brace>
@@ -151,22 +128,22 @@ function ResponseBlock() {
 
 export function ApiArtifactSection() {
   return (
-    <section id="api-artifact" className="bg-bg-base">
+    <section id="api-artifact" className="bg-bg-elevated">
       <RuleDivider />
       <Container className="py-16 md:py-24">
         <div className="max-w-[720px]">
           <Eyebrow>One call &middot; Multiple sources</Eyebrow>
           <h2 className="mt-3 text-display-sm-mobile md:text-display-sm text-fg-primary">
-            Most questions need data from more than one place.
+            One question. Twelve sources. One answer.
           </h2>
           <p className="mt-6 text-body text-fg-secondary">
-            Atlas picks the sources, reconciles conflicts between them, and
-            returns the answer in a single API call. The example below pulls
-            from twelve sources at once.
+            You ask Atlas a question. It figures out which sources have the
+            answer, reconciles them, and returns one clean result. The example
+            below pulled from twelve sources to answer one query.
           </p>
         </div>
 
-        <div className="mt-12 rounded-[4px] border border-rule bg-bg-elevated p-5 md:p-8">
+        <div className="mt-12 rounded-[4px] border border-rule bg-bg-base p-5 md:p-8">
           <div className="mb-6 flex items-center justify-between border-b border-rule pb-4">
             <span className="font-mono text-eyebrow uppercase text-fg-secondary">
               atlas-query.sh
@@ -188,7 +165,8 @@ export function ApiArtifactSection() {
         </div>
 
         <p className="mt-12 max-w-[720px] text-body-sm text-fg-muted">
-          Without Atlas, assembling this answer takes an analyst about a week.
+          An analyst could put this together in about a week. Atlas does it in
+          under a second.
         </p>
       </Container>
     </section>

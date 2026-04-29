@@ -7,58 +7,58 @@ const steps = [
     number: "01",
     title: "It finds the source.",
     description:
-      "Atlas scans for new datasets continuously — government portals, regulatory filings, court records, infrastructure registries. When something new is published, Atlas knows about it before most analysts do.",
+      "Atlas watches for new datasets across government portals, regulatory filings, court records, and infrastructure registries. When something new shows up, Atlas finds it.",
     verb: "Discovers",
   },
   {
     number: "02",
     title: "It writes the code.",
     description:
-      "For each new source, Atlas generates the ingestion logic — parsing schemas, handling pagination, normalizing fields. No engineer assigned, no ticket queued. The pipeline grows itself.",
+      "Atlas writes the code to pull each new source in — handling the schema, the pagination, the field mapping. No engineer queues up the work.",
     verb: "Ingests",
   },
   {
     number: "03",
     title: "It checks the output.",
     description:
-      "Every ingested record is validated against schema, range, and consistency rules. Anomalies are flagged. Duplicates are reconciled. Data that doesn't pass doesn't land.",
+      "Every record gets checked. Anomalies get flagged. Duplicates get reconciled. If it doesn't pass, it doesn't land in the dataset.",
     verb: "Validates",
   },
   {
     number: "04",
     title: "It heals itself.",
     description:
-      "When a source changes its format or goes down, Atlas detects the failure, diagnoses the cause, and patches the ingestion logic — usually before anyone notices. Three checks a day, every day.",
+      "When a source breaks or changes format, Atlas notices, figures out what broke, and fixes it — usually before anyone needs to look.",
     verb: "Heals",
   },
 ];
 
 export function EngineSection() {
   return (
-    <section id="engine" className="bg-bg-base">
-      <RuleDivider />
+    <section id="engine" className="bg-bg-light">
+      <RuleDivider tone="on-light" />
       <Container className="py-16 md:py-24">
         <div className="max-w-[720px]">
-          <Eyebrow>How Atlas stays alive</Eyebrow>
-          <h2 className="mt-3 text-display-sm-mobile md:text-display-sm text-fg-primary">
-            The data is never the same twice.
+          <Eyebrow tone="on-light">How Atlas stays alive</Eyebrow>
+          <h2 className="mt-3 text-display-sm-mobile md:text-display-sm text-fg-on-light">
+            The data changes. Atlas changes with it.
           </h2>
-          <p className="mt-6 text-body text-fg-secondary">
-            Most data vendors sell you a snapshot. Atlas runs an autonomous
-            pipeline that finds new sources, writes its own ingestion code,
-            validates output, and heals itself when something breaks. Every
-            night. Without being told to.
+          <p className="mt-6 text-body text-fg-secondary-on-light">
+            Most data vendors sell you a snapshot. The minute they hand it to
+            you, it starts going stale. Atlas works differently &mdash; it
+            watches for new sources, ingests them on its own, checks its own
+            work, and fixes itself when something breaks.
           </p>
         </div>
 
         <ol className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-6">
           {steps.map((step) => (
             <li key={step.number} className="lg:col-span-3">
-              <span className="block font-mono text-[32px] font-medium leading-none text-fg-muted tabular-nums mb-4">
+              <span className="block font-mono text-[32px] font-medium leading-none text-fg-secondary-on-light tabular-nums mb-4">
                 {step.number}
               </span>
-              <h3 className="mb-3 text-h3 text-fg-primary">{step.title}</h3>
-              <p className="text-body-sm leading-[1.6] text-fg-secondary">
+              <h3 className="mb-3 text-h3 text-fg-on-light">{step.title}</h3>
+              <p className="text-body-sm leading-[1.6] text-fg-secondary-on-light">
                 {step.description}
               </p>
               <p className="mt-4 font-mono text-eyebrow uppercase text-accent">
@@ -69,12 +69,11 @@ export function EngineSection() {
         </ol>
 
         <div className="mt-20 max-w-[720px]">
-          <p className="text-h3 text-fg-primary">
-            This isn&apos;t a feature. It&apos;s the architecture.
+          <p className="text-h3 text-fg-on-light">
+            This is how Atlas was built from day one.
           </p>
-          <p className="mt-4 text-body-sm text-fg-secondary">
-            Atlas was built from the start to run without human bottlenecks.
-            The team directs strategy. The engine handles execution.
+          <p className="mt-3 text-body text-fg-secondary-on-light">
+            Strategy is human. Execution is the engine.
           </p>
         </div>
       </Container>

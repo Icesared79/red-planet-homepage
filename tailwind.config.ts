@@ -15,6 +15,7 @@ const config: Config = {
           secondary: "#9C958A",
           muted: "#6B655C",
           "on-light": "#1A1714",
+          "secondary-on-light": "#5A554C",
         },
         accent: {
           DEFAULT: "#C8553D",

@@ -17,11 +17,11 @@ export function Hero() {
             </h1>
 
             <p className="mt-8 max-w-[540px] text-body-sm text-fg-secondary">
-              <span className="text-fg-primary">Atlas</span> is the intelligence
-              engine that finds it. Hundreds of millions of verified records on
-              properties, owners, infrastructure, and the signals around them
-              &mdash; discovered, ingested, and validated by an autonomous
-              pipeline that has never needed to be told what to do next.
+              <span className="text-fg-primary">Atlas</span> is the engine that
+              finds it. It pulls in property records, ownership chains,
+              infrastructure data, and the signals around them &mdash;
+              automatically, every night, without anyone telling it what to do.
+              Hundreds of millions of records and growing.
             </p>
 
             <div className="mt-10">

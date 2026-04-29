@@ -61,13 +61,11 @@ export function AnswerSection() {
       <Container className="py-16 md:py-24">
         <Eyebrow>What Atlas can answer</Eyebrow>
         <h2 className="mt-3 text-display-sm-mobile md:text-display-sm text-fg-primary">
-          Three questions. Different industries. One engine.
+          What you&apos;d ask. What Atlas tells you.
         </h2>
         <p className="mt-6 max-w-[640px] text-body text-fg-secondary">
-          Atlas isn&apos;t built for one vertical. It&apos;s built to answer
-          questions about places &mdash; properties, owners, infrastructure,
-          signals &mdash; wherever those questions come from. Here are three
-          real examples.
+          Three real questions from three different industries. Atlas pulls the
+          data, reconciles it, and gives you the answer.
         </p>
 
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -79,12 +77,12 @@ export function AnswerSection() {
         </div>
 
         <p className="mt-12 text-center text-body-sm text-fg-muted">
-          Three of thousands of questions Atlas can answer.{" "}
+          These are three. There are thousands more.{" "}
           <a
             href="#apply"
             className="text-fg-primary no-underline transition-all duration-200 hover:underline"
           >
-            Tell us yours.
+            Tell us what you&apos;re trying to figure out.
           </a>
         </p>
       </Container>

@@ -23,9 +23,9 @@ function RequiredMark() {
 function SuccessPanel() {
   return (
     <div className="flex h-full min-h-[420px] animate-fade-in flex-col items-center justify-center text-center">
-      <p className="text-h3 text-fg-primary">Application received.</p>
+      <p className="text-h3 text-fg-primary">Got it.</p>
       <p className="mt-3 max-w-[420px] text-body text-fg-secondary">
-        We&apos;ll review and respond within 24 hours. Check your email.
+        We&apos;ll be in touch within a day.
       </p>
     </div>
   );
