@@ -1,5 +1,4 @@
 import { Container } from "./Container";
-import { Eyebrow } from "./Eyebrow";
 import { IngestPanel } from "./IngestPanel";
 
 export function Hero() {
@@ -12,9 +11,7 @@ export function Hero() {
       <Container className="py-12 md:py-16 lg:py-20">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="flex flex-col lg:col-span-7">
-            <Eyebrow>Red Planet Data</Eyebrow>
-
-            <h1 className="mt-3 text-display-mobile leading-[1.0] md:text-display">
+            <h1 className="text-display-mobile leading-[1.0] md:text-display">
               <span className="block text-fg-primary">Data is everywhere.</span>
               <span className="block text-accent">Intelligence is rare.</span>
             </h1>
