@@ -6,90 +6,99 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          base: "#F5F0E8",
-          elevated: "#EEE8DC",
-          dark: "#1A1714",
+          bone: "#F4EFE6",
+          warm: "#FAF6EC",
+          depth: "#ECE6D8",
+          dark: "#1A1A1A",
         },
-        fg: {
-          primary: "#1A1714",
-          secondary: "#5A554C",
-          muted: "#8A8378",
-          "on-dark": "#F5F0E8",
+        ink: {
+          DEFAULT: "#1A1A1A",
+          muted: "#6B6760",
+          soft: "#4A4842",
+          oncream: "#F4EFE6",
         },
         accent: {
-          DEFAULT: "#C8553D",
-          dim: "#A86150",
+          DEFAULT: "#B89968",
         },
-        rule: "#D8D0C2",
+        rule: "rgba(0,0,0,0.08)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
+        mono: [
+          "var(--font-mono)",
+          "ui-monospace",
+          "SFMono-Regular",
+          "monospace",
+        ],
       },
       fontSize: {
+        // Display headlines
         display: [
-          "96px",
-          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "500" },
-        ],
-        "display-italic": [
-          "96px",
-          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "400" },
-        ],
-        section: [
           "64px",
-          { lineHeight: "1.05", letterSpacing: "-0.025em", fontWeight: "500" },
-        ],
-        "section-italic": [
-          "64px",
-          { lineHeight: "1.05", letterSpacing: "-0.025em", fontWeight: "400" },
-        ],
-        h2: [
-          "36px",
-          { lineHeight: "1.15", letterSpacing: "-0.015em", fontWeight: "500" },
-        ],
-        h3: [
-          "22px",
-          { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "500" },
-        ],
-        "body-lg": [
-          "20px",
-          { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
-        ],
-        body: [
-          "17px",
-          { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" },
-        ],
-        "body-sm": [
-          "15px",
-          { lineHeight: "1.55", letterSpacing: "0", fontWeight: "400" },
-        ],
-        eyebrow: [
-          "13px",
-          { lineHeight: "1.0", letterSpacing: "0.04em", fontWeight: "500" },
+          { lineHeight: "1.05", letterSpacing: "-0.015em", fontWeight: "400" },
         ],
         "display-mobile": [
-          "56px",
-          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "500" },
+          "44px",
+          { lineHeight: "1.05", letterSpacing: "-0.015em", fontWeight: "400" },
         ],
-        "display-italic-mobile": [
-          "56px",
-          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "400" },
-        ],
-        "section-mobile": [
-          "40px",
-          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "500" },
-        ],
-        "section-italic-mobile": [
-          "40px",
-          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "400" },
+        // Section H2
+        h2: [
+          "44px",
+          { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "400" },
         ],
         "h2-mobile": [
+          "32px",
+          { lineHeight: "1.15", letterSpacing: "-0.01em", fontWeight: "400" },
+        ],
+        // Card / sub headlines
+        h3: [
+          "26px",
+          { lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "400" },
+        ],
+        // Pull quote (dark section)
+        quote: [
+          "40px",
+          { lineHeight: "1.2", letterSpacing: "-0.015em", fontWeight: "400" },
+        ],
+        "quote-mobile": [
           "28px",
-          { lineHeight: "1.2", letterSpacing: "-0.015em", fontWeight: "500" },
+          { lineHeight: "1.25", letterSpacing: "-0.01em", fontWeight: "400" },
+        ],
+        // Thesis italic bar
+        thesis: [
+          "24px",
+          {
+            lineHeight: "1.4",
+            letterSpacing: "-0.005em",
+            fontWeight: "400",
+          },
+        ],
+        "thesis-mobile": [
+          "20px",
+          { lineHeight: "1.4", letterSpacing: "-0.005em", fontWeight: "400" },
+        ],
+        // Body
+        "body-lg": [
+          "19px",
+          { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" },
+        ],
+        body: [
+          "16px",
+          { lineHeight: "1.65", letterSpacing: "0", fontWeight: "400" },
+        ],
+        "body-sm": [
+          "14px",
+          { lineHeight: "1.55", letterSpacing: "0", fontWeight: "400" },
+        ],
+        // Eyebrow / small caps label
+        eyebrow: [
+          "11px",
+          { lineHeight: "1.0", letterSpacing: "0.16em", fontWeight: "500" },
         ],
       },
       maxWidth: {
-        container: "1280px",
+        container: "1240px",
       },
     },
   },

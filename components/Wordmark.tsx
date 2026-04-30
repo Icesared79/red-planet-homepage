@@ -5,10 +5,9 @@ type WordmarkProps = {
 export function Wordmark({ className = "" }: WordmarkProps) {
   return (
     <span
-      className={`font-sans tracking-[0.02em] text-[18px] font-medium ${className}`}
+      className={`font-serif text-[20px] tracking-[-0.01em] text-ink ${className}`}
     >
-      <span className="text-accent">Red</span>
-      <span className="text-fg-primary"> Planet</span>
+      Red Planet<span className="text-accent">.</span>
     </span>
   );
 }
