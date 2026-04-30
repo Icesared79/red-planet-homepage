@@ -17,7 +17,7 @@ export function Footer() {
             <a href="#foundation">The engine</a>
             <a href="#cta">Contact</a>
           </div>
-          <div className="footer-meta">© 2026 — BUILT IN CT</div>
+          <div className="footer-meta">© 2026 — BUILT 26.28</div>
         </div>
       </div>
     </footer>
