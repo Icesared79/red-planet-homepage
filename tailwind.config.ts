@@ -6,78 +6,90 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          base: "#0E0C0A",
-          elevated: "#161310",
-          light: "#F5F2EC",
+          base: "#F5F0E8",
+          elevated: "#EEE8DC",
+          dark: "#1A1714",
         },
         fg: {
-          primary: "#F2EEE6",
-          secondary: "#9C958A",
-          muted: "#6B655C",
-          "on-light": "#1A1714",
-          "secondary-on-light": "#5A554C",
+          primary: "#1A1714",
+          secondary: "#5A554C",
+          muted: "#8A8378",
+          "on-dark": "#F5F0E8",
         },
         accent: {
           DEFAULT: "#C8553D",
-          alt1: "#B84A33",
-          alt2: "#D26146",
           dim: "#A86150",
         },
-        rule: "#2A2520",
+        rule: "#D8D0C2",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+        serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
       },
       fontSize: {
         display: [
-          "72px",
-          { lineHeight: "1.02", letterSpacing: "-0.02em", fontWeight: "600" },
+          "96px",
+          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "500" },
         ],
-        "display-sm": [
-          "48px",
-          { lineHeight: "1.05", letterSpacing: "-0.015em", fontWeight: "600" },
+        "display-italic": [
+          "96px",
+          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "400" },
+        ],
+        section: [
+          "64px",
+          { lineHeight: "1.05", letterSpacing: "-0.025em", fontWeight: "500" },
+        ],
+        "section-italic": [
+          "64px",
+          { lineHeight: "1.05", letterSpacing: "-0.025em", fontWeight: "400" },
         ],
         h2: [
-          "32px",
-          { lineHeight: "1.15", letterSpacing: "-0.01em", fontWeight: "600" },
+          "36px",
+          { lineHeight: "1.15", letterSpacing: "-0.015em", fontWeight: "500" },
         ],
         h3: [
+          "22px",
+          { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "500" },
+        ],
+        "body-lg": [
           "20px",
-          { lineHeight: "1.3", letterSpacing: "-0.005em", fontWeight: "600" },
+          { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
         ],
-        body: ["16px", { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" }],
-        "body-sm": ["14px", { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" }],
+        body: [
+          "17px",
+          { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" },
+        ],
+        "body-sm": [
+          "15px",
+          { lineHeight: "1.55", letterSpacing: "0", fontWeight: "400" },
+        ],
         eyebrow: [
-          "12px",
-          { lineHeight: "1.0", letterSpacing: "0.08em", fontWeight: "500" },
+          "13px",
+          { lineHeight: "1.0", letterSpacing: "0.04em", fontWeight: "500" },
         ],
-        "mono-sm": ["13px", { lineHeight: "1.4", letterSpacing: "0", fontWeight: "400" }],
         "display-mobile": [
-          "44px",
-          { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" },
+          "56px",
+          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "500" },
         ],
-        "display-sm-mobile": [
-          "32px",
-          { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "600" },
+        "display-italic-mobile": [
+          "56px",
+          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "400" },
+        ],
+        "section-mobile": [
+          "40px",
+          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "500" },
+        ],
+        "section-italic-mobile": [
+          "40px",
+          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "400" },
+        ],
+        "h2-mobile": [
+          "28px",
+          { lineHeight: "1.2", letterSpacing: "-0.015em", fontWeight: "500" },
         ],
       },
       maxWidth: {
         container: "1280px",
-      },
-      keyframes: {
-        "pulse-dot": {
-          "0%, 100%": { opacity: "0.5" },
-          "50%": { opacity: "1" },
-        },
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        },
-      },
-      animation: {
-        "pulse-dot": "pulse-dot 2s ease-in-out infinite",
-        "fade-in": "fade-in 200ms ease-out",
       },
     },
   },
