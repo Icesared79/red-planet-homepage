@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
-  variable: "--font-serif",
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -25,9 +18,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Red Planet Data — Property intelligence, engineered.",
+  title: "Red Planet — We see every parcel in America",
   description:
-    "Atlas is the engine beneath the work — verified records, continuous signals, every American market.",
+    "Atlas brings hundreds of property data sources into one foundation. Used by solar installers, lenders, real estate developers — and by us, to build our own products.",
 };
 
 export default function RootLayout({
@@ -36,13 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable}`}
-    >
-      <body className="font-sans bg-bg-bone text-ink antialiased">
-        {children}
-      </body>
+    <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

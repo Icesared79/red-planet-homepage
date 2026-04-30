@@ -1,27 +1,25 @@
-import { Approach } from "@/components/Approach";
-import { BuiltFor } from "@/components/BuiltFor";
-import { FinalCTA } from "@/components/FinalCTA";
+import { CTA } from "@/components/CTA";
+import { Coverage } from "@/components/Coverage";
+import { Footer } from "@/components/Footer";
+import { Foundation } from "@/components/Foundation";
+import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { PullQuote } from "@/components/PullQuote";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
-import { ThesisBar } from "@/components/ThesisBar";
-import { WhatWeSee } from "@/components/WhatWeSee";
+import { Thesis } from "@/components/Thesis";
+import { UseCases } from "@/components/UseCases";
 
 export default function HomePage() {
   return (
     <>
-      <SiteHeader />
-      <main id="top">
+      <Header />
+      <main>
         <Hero />
-        <ThesisBar />
-        <WhatWeSee />
-        <PullQuote />
-        <BuiltFor />
-        <Approach />
-        <FinalCTA />
+        <Thesis />
+        <UseCases />
+        <Foundation />
+        <Coverage />
+        <CTA />
       </main>
-      <SiteFooter />
+      <Footer />
     </>
   );
 }
