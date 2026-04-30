@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const SITE_PASSWORD = process.env.SITE_PASSWORD ?? "redplanet2026";
+const SITE_PASSWORD =
+  process.env.SITE_PASS ?? process.env.SITE_PASSWORD ?? "redplanet2026";
 const COOKIE_NAME = "rp_unlock";
 const COOKIE_VALUE = "ok";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

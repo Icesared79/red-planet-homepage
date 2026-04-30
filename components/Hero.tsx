@@ -199,9 +199,9 @@ export function Hero() {
               </span>
             </h1>
             <p className="hero-sub reveal reveal-3">
-              Atlas brings hundreds of property data sources into one
-              foundation. Used by solar installers, lenders, real estate
-              developers — and by us, to build our own products.
+              The verified foundation for property intelligence. Continuously
+              refreshed. Built by us, used by anyone serious about real estate
+              data.
             </p>
             <div className="hero-actions reveal reveal-4">
               <a href="#cta" className="btn-primary">

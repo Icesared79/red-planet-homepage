@@ -48,9 +48,13 @@ export function Header() {
           <a href="#thesis">About</a>
           <a href="#possibilities">Use cases</a>
           <a href="#foundation">The engine</a>
-          <a href="#cta" className="nav-cta">
+          <button
+            type="button"
+            className="nav-cta"
+            onClick={() => window.dispatchEvent(new Event("rp:contact:open"))}
+          >
             Get in touch
-          </a>
+          </button>
         </nav>
       </div>
     </header>

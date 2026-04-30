@@ -1,4 +1,5 @@
 import { CTA } from "@/components/CTA";
+import { ContactDialog } from "@/components/ContactDialog";
 import { Coverage } from "@/components/Coverage";
 import { Footer } from "@/components/Footer";
 import { Foundation } from "@/components/Foundation";
@@ -20,6 +21,7 @@ export default function HomePage() {
         <CTA />
       </main>
       <Footer />
+      <ContactDialog />
     </>
   );
 }

@@ -126,8 +126,8 @@ function SolarVisual() {
       </g>
 
       <g fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,255,255,0.55)">
-        <text x="463" y="218">INSTALL FIT</text>
-        <text x="463" y="240" fontSize="22" fontWeight="700" fill="#D8392F">0.94</text>
+        <text x="463" y="218">INITIAL FIT</text>
+        <text x="463" y="240" fontSize="22" fontWeight="700" fill="#D8392F">94%</text>
       </g>
 
       <g fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(196,166,97,0.7)">
@@ -177,7 +177,7 @@ function ConversionVisual() {
       </g>
       <g fontFamily="JetBrains Mono, monospace" fontSize="10" fill="rgba(255,255,255,0.65)">
         <text x="395" y="55">CONVERSION SCORE</text>
-        <text x="395" y="78" fontSize="26" fill="#D8392F" fontWeight="700">0.87</text>
+        <text x="395" y="78" fontSize="26" fill="#D8392F" fontWeight="700">87%</text>
         <text x="395" y="105">ZONING — eligible</text>
         <text x="395" y="120">DEBT — at-risk</text>
         <text x="395" y="135">ABATEMENT — qualifies</text>

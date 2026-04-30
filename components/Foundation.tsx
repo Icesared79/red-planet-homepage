@@ -72,12 +72,13 @@ export function Foundation() {
           </div>
           <div className="stat">
             <div className="stat-number">
-              Nightly
+              Always
               <br />
-              <span className="accent">end-to-end</span>
+              <span className="accent">on</span>
             </div>
             <div className="stat-label">
-              Every source rechecked. Pipeline completes by 4 AM ET daily.
+              Sources monitored continuously. Self-healing runs throughout the
+              day. Full pipeline completes nightly.
             </div>
           </div>
         </div>

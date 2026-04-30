@@ -18,9 +18,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Red Planet — We see every parcel in America",
+  title: "Red Planet | The verified foundation for property intelligence",
   description:
-    "Atlas brings hundreds of property data sources into one foundation. Used by solar installers, lenders, real estate developers — and by us, to build our own products.",
+    "The verified foundation for property intelligence. Continuously refreshed. Built by us, used by anyone serious about real estate data.",
 };
 
 export default function RootLayout({

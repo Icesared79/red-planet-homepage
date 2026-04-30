@@ -39,6 +39,11 @@ const ITEMS = [
     title: "Climate & environmental",
     desc: "Risk exposure, flood zone designations, and regulatory overlays where they intersect with property.",
   },
+  {
+    num: "+",
+    title: "More",
+    desc: "Atlas adds new data layers continuously — tax delinquency, mechanics liens, UCC-1 filings, permits, zoning, rate data, and more as the engine expands.",
+  },
 ];
 
 export function Coverage() {

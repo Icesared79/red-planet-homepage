@@ -1,3 +1,5 @@
+import { ContactTrigger } from "./ContactTrigger";
+
 export function CTA() {
   return (
     <section className="cta" id="cta">
@@ -44,7 +46,7 @@ export function CTA() {
           building on Atlas — send us a note about what you&apos;re after.
         </p>
         <div className="cta-actions">
-          <a href="mailto:hello@redplanetdata.com" className="btn-primary">
+          <ContactTrigger className="btn-primary">
             Start the conversation
             <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
               <path
@@ -54,8 +56,7 @@ export function CTA() {
                 strokeLinecap="round"
               />
             </svg>
-          </a>
-          <span className="cta-email">hello@redplanetdata.com</span>
+          </ContactTrigger>
         </div>
       </div>
     </section>
