@@ -5,6 +5,8 @@ import { Footer } from "@/components/Footer";
 import { Foundation } from "@/components/Foundation";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { LiveActivity } from "@/components/LiveActivity";
+import { LiveStatus } from "@/components/LiveStatus";
 import { Thesis } from "@/components/Thesis";
 import { UseCases } from "@/components/UseCases";
 
@@ -14,9 +16,11 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <LiveStatus />
         <Thesis />
         <UseCases />
         <Foundation />
+        <LiveActivity />
         <Coverage />
         <CTA />
       </main>
