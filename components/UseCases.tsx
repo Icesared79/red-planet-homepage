@@ -387,7 +387,7 @@ export function UseCases() {
           <h2>
             What people ask <span className="accent">Atlas</span> to find.
           </h2>
-          <p>Every answer below started as a question. Tell us what you&apos;re looking for.</p>
+          <p>Each one started with someone asking us a question. If you&apos;ve got one, ask.</p>
         </div>
         <div className="vignettes">
           <article className="vignette vignette-featured">
@@ -400,7 +400,7 @@ export function UseCases() {
                 <span className="vignette-cat">Solar</span>
               </div>
               <h3>When a solar installer needs to find homes that will actually convert.</h3>
-              <p>Atlas combines ownership, equity, energy rates, roof viability, and incentive eligibility into AI-ranked installation leads.</p>
+              <p>Who owns the home, how much equity they have, what they pay for power, whether the roof works, what incentives apply. Atlas figures out who&apos;s actually worth knocking on.</p>
             </div>
           </article>
 
@@ -414,7 +414,7 @@ export function UseCases() {
                 <span className="vignette-cat">Conversion</span>
               </div>
               <h3>When a developer asks which downtown towers could become homes.</h3>
-              <p>Atlas scores conversion candidates on zoning, ownership, debt, abatement, and absorption data.</p>
+              <p>Whether the zoning allows it, whether the owner is in trouble, whether the math works on tax abatements, whether the rental market can absorb the units. Atlas pulls it together.</p>
             </div>
           </article>
 
@@ -428,7 +428,7 @@ export function UseCases() {
                 <span className="vignette-cat">Distress</span>
               </div>
               <h3>When a fund needs to spot stress before it shows in price.</h3>
-              <p>AI traces distress patterns across entity activity, ownership change, debt events, and asset condition.</p>
+              <p>We watch entity filings, ownership changes, missed payments, court activity, asset condition. When stress shows up across more than one of these at once, that usually means something.</p>
             </div>
           </article>
 
@@ -442,7 +442,7 @@ export function UseCases() {
                 <span className="vignette-cat">Outreach</span>
               </div>
               <h3>When a counselor needs to reach a family before the notice arrives.</h3>
-              <p>Household-level hardship signals — payment shock, court activity, equity at risk.</p>
+              <p>Households where the bills got harder, the courts got involved, and the equity is still there to lose. Atlas finds them before the filing does.</p>
             </div>
           </article>
 
@@ -456,7 +456,7 @@ export function UseCases() {
                 <span className="vignette-cat">Infrastructure</span>
               </div>
               <h3>When an operator picks where to build the next data center.</h3>
-              <p>Sites scored on power, water, fiber, zoning, climate exposure, and land.</p>
+              <p>Power, water, fiber, zoning, climate, land. Atlas scores sites on what actually matters for building.</p>
             </div>
           </article>
         </div>

@@ -22,14 +22,13 @@ export function Thesis() {
               </p>
               <p>
                 <strong>
-                  Atlas is what we built when we couldn&apos;t find a foundation
-                  that solved this.
+                  We built Atlas because nothing out there did this.
                 </strong>{" "}
-                The hard parts — entity resolution across jurisdictions, signal
-                compounding across data layers, pattern detection across
-                millions of records — are handled by AI. We use Atlas to build
-                our own products. We make it available to others building
-                theirs.
+                Figuring out who owns what across jurisdictions, spotting
+                patterns across millions of records, connecting signals that
+                live in different places — that&apos;s the work. AI does most
+                of it now. We use Atlas every day to build our own products.
+                Anyone else building something useful is welcome to it.
               </p>
             </div>
           </div>

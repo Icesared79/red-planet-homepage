@@ -42,9 +42,8 @@ export function CTA() {
           Tell us what you need to <span className="accent">see.</span>
         </h2>
         <p className="cta-body">
-          We don&apos;t sell off-the-shelf data. We work directly with people
-          who need answers — send us a note about what you&apos;re trying to
-          figure out.
+          We don&apos;t have a price list. If you&apos;ve got a question Atlas
+          might be able to answer, tell us about it.
         </p>
         <div className="cta-actions">
           <ContactTrigger className="btn-primary">

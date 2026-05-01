@@ -44,8 +44,8 @@ export function Foundation() {
               of millions
             </div>
             <div className="stat-label">
-              Records across property, ownership, court activity, entity, debt,
-              and energy data.
+              Property records, who owns them, what they owe, what&apos;s
+              happening in court, what they pay for power.
             </div>
           </div>
           <div className="stat">
@@ -55,8 +55,8 @@ export function Foundation() {
               <span className="accent-2">sources</span>
             </div>
             <div className="stat-label">
-              National records, jurisdictional filings, and economic
-              adjacencies.
+              National datasets, jurisdictional filings, and the economic data
+              that surrounds them.
             </div>
           </div>
           <div className="stat">
@@ -77,8 +77,8 @@ export function Foundation() {
               <span className="accent">on</span>
             </div>
             <div className="stat-label">
-              Sources monitored continuously. Self-healing runs throughout the
-              day. Full pipeline completes nightly.
+              Something&apos;s always running. If a source breaks, the pipeline
+              tries it again on its own. The full refresh finishes overnight.
             </div>
           </div>
         </div>

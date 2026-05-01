@@ -42,7 +42,7 @@ const ITEMS = [
   {
     num: "+",
     title: "More",
-    desc: "Atlas adds new data layers continuously — tax delinquency, mechanics liens, UCC-1 filings, permits, zoning, rate data, and more as the engine expands.",
+    desc: "Atlas grows continuously. New layers — tax delinquency, permits, zoning, water rights, broker activity — are added as the engine expands.",
   },
 ];
 
@@ -56,9 +56,8 @@ export function Coverage() {
             What <span className="accent">Atlas</span> covers.
           </h2>
           <p className="coverage-intro">
-            The data domains Atlas continuously ingests, verifies, and connects.
-            Coverage is ongoing — depth and recency matter to us more than
-            count.
+            Here&apos;s what&apos;s in Atlas. We care more about how deep and
+            how fresh it is than how big the number gets.
           </p>
           <div className="coverage-list">
             {ITEMS.map((item) => (
