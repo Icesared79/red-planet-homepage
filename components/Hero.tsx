@@ -199,9 +199,9 @@ export function Hero() {
               </span>
             </h1>
             <p className="hero-sub reveal reveal-3">
-              The verified foundation for property intelligence. Continuously
-              refreshed. Built by us, used by anyone serious about real estate
-              data.
+              We pull property data from hundreds of sources, clean it up, keep
+              it fresh, and make it usable. We use it to build our own
+              products. Other people use it to build theirs.
             </p>
             <div className="hero-actions reveal reveal-4">
               <a href="#cta" className="btn-primary">
