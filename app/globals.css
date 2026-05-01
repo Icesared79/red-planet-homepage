@@ -577,6 +577,12 @@ header.on-light nav a:hover {
   font-style: italic;
   font-weight: 600;
 }
+.foundation-header p {
+  font-size: 18px;
+  color: var(--text-on-dark-soft);
+  max-width: 560px;
+  margin-top: 24px;
+}
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

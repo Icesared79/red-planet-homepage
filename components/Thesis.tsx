@@ -15,20 +15,20 @@ export function Thesis() {
             </h2>
             <div className="thesis-text">
               <p>
-                Real estate data has been bad for a long time. Records go stale
-                before you can buy them. Court filings live in thousands of
-                jurisdictional portals. Entity chains take a week to map by
-                hand.
+                Real estate data has always been shallow. Records go stale.
+                Filings are scattered across thousands of jurisdictions.
+                Ownership chains take a week to map by hand. The patterns that
+                actually move deals — distress before it surfaces, ownership
+                shifts before they&apos;re public, signals that compound across
+                data layers — get lost in the noise.
               </p>
               <p>
-                <strong>
-                  We built Atlas because nothing out there did this.
-                </strong>{" "}
-                Figuring out who owns what across jurisdictions, spotting
-                patterns across millions of records, connecting signals that
-                live in different places — that&apos;s the work. AI does most
-                of it now. We use Atlas every day to build our own products.
-                Anyone else building something useful is welcome to it.
+                <strong>We built Atlas to find them.</strong> A self-building
+                foundation that pulls property records, ownership, court
+                activity, debt, and signals from hundreds of sources, then
+                connects them in ways the rest of the industry can&apos;t. We
+                use Atlas every day to close our own work. Other operators use
+                it to close theirs.
               </p>
             </div>
           </div>

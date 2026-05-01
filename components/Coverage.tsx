@@ -2,47 +2,47 @@ const ITEMS = [
   {
     num: "01",
     title: "Property records",
-    desc: "Parcels, deeds, transactions, and assessments — sourced county by county, normalized into one schema.",
+    desc: "Parcels, deeds, transactions, assessments. Sourced county by county.",
   },
   {
     num: "02",
     title: "Ownership",
-    desc: "Current and historical ownership, with entity chain resolution where the records make it possible.",
+    desc: "Current and historical owners, with entity chains resolved where the records allow.",
   },
   {
     num: "03",
     title: "Court activity",
-    desc: "Lis pendens, foreclosure filings, judgments, and eviction records pulled from jurisdictional portals.",
+    desc: "Lis pendens, foreclosures, judgments, evictions. Pulled directly from jurisdictional sources.",
   },
   {
     num: "04",
     title: "Entity data",
-    desc: "Secretary of State filings, formations, dissolutions, and officer changes across all 50 states.",
+    desc: "Secretary of State filings — formations, dissolutions, officer changes. All 50 states.",
   },
   {
     num: "05",
     title: "Debt and liens",
-    desc: "Recorded mortgages, UCC-1 filings, mechanics liens, federal tax liens, and assignment activity.",
+    desc: "Mortgages, UCC-1s, mechanics liens, federal tax liens, assignments.",
   },
   {
     num: "06",
     title: "Distress signals",
-    desc: "Composite indicators built across ownership, debt, court activity, and asset condition.",
+    desc: "Composite indicators built across ownership, debt, courts, and asset condition.",
   },
   {
     num: "07",
     title: "Energy infrastructure",
-    desc: "Power capacity, interconnection queue activity, renewable mix, and rate data at the utility level.",
+    desc: "Power capacity, interconnection queues, renewable mix, utility-level rate data.",
   },
   {
     num: "08",
     title: "Climate & environmental",
-    desc: "Risk exposure, flood zone designations, and regulatory overlays where they intersect with property.",
+    desc: "Risk exposure, flood zones, regulatory overlays — where they intersect with property.",
   },
   {
     num: "+",
     title: "More",
-    desc: "Atlas grows continuously. New layers — tax delinquency, permits, zoning, water rights, broker activity — are added as the engine expands.",
+    desc: "Atlas grows continuously. Tax delinquency, permits, zoning, water rights, broker activity — added as the engine expands.",
   },
 ];
 
@@ -53,11 +53,11 @@ export function Coverage() {
         <div className="manifesto-inner">
           <div className="eyebrow on-light">§ 04 — Coverage</div>
           <h2>
-            What <span className="accent">Atlas</span> covers.
+            What&apos;s in <span className="accent">Atlas.</span>
           </h2>
           <p className="coverage-intro">
-            Here&apos;s what&apos;s in Atlas. We care more about how deep and
-            how fresh it is than how big the number gets.
+            Depth and freshness over volume. Here&apos;s what the foundation is
+            built on.
           </p>
           <div className="coverage-list">
             {ITEMS.map((item) => (

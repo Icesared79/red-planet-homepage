@@ -199,9 +199,9 @@ export function Hero() {
               </span>
             </h1>
             <p className="hero-sub reveal reveal-3">
-              We pull property data from hundreds of sources, clean it up, keep
-              it fresh, and make it usable. We use it to build our own
-              products. Other people use it to build theirs.
+              Atlas finds patterns in real estate that were unfindable until
+              now. A self-building data foundation tuned to the deals
+              you&apos;re trying to close.
             </p>
             <div className="hero-actions reveal reveal-4">
               <a href="#cta" className="btn-primary">
