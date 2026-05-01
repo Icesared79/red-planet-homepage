@@ -35,6 +35,7 @@ export function Foundation() {
           <h2>
             Atlas, in <span className="accent-2">numbers.</span>
           </h2>
+          <p>What&apos;s underneath.</p>
         </div>
         <div className="stats">
           <div className="stat">
@@ -44,8 +45,8 @@ export function Foundation() {
               of millions
             </div>
             <div className="stat-label">
-              Property records, who owns them, what they owe, what&apos;s
-              happening in court, what they pay for power.
+              Records on properties, owners, debt, courts, and energy.
+              Connected, not just collected.
             </div>
           </div>
           <div className="stat">
@@ -55,8 +56,8 @@ export function Foundation() {
               <span className="accent-2">sources</span>
             </div>
             <div className="stat-label">
-              National datasets, jurisdictional filings, and the economic data
-              that surrounds them.
+              National datasets, jurisdictional filings, and the signals that
+              surround them. Growing every week.
             </div>
           </div>
           <div className="stat">
@@ -66,8 +67,8 @@ export function Foundation() {
               <span className="accent-2">runners</span>
             </div>
             <div className="stat-label">
-              Self-healing pipeline. Failed sources flagged and re-attempted
-              automatically.
+              Self-healing pipeline. When a source breaks, the system fixes it
+              on its own.
             </div>
           </div>
           <div className="stat">
@@ -77,8 +78,9 @@ export function Foundation() {
               <span className="accent">on</span>
             </div>
             <div className="stat-label">
-              Something&apos;s always running. If a source breaks, the pipeline
-              tries it again on its own. The full refresh finishes overnight.
+              Atlas grows on its own. When a source breaks, it fixes itself.
+              When new data appears, it gets added. The foundation gets
+              stronger every night.
             </div>
           </div>
         </div>

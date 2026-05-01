@@ -385,9 +385,9 @@ export function UseCases() {
         <div className="possibilities-header">
           <div className="eyebrow on-light">§ 02 — Use cases</div>
           <h2>
-            What people ask <span className="accent">Atlas</span> to find.
+            What <span className="accent">Atlas</span> finds.
           </h2>
-          <p>Each one started with someone asking us a question. If you&apos;ve got one, ask.</p>
+          <p>The patterns below don&apos;t show up in standard property data. They show up in Atlas.</p>
         </div>
         <div className="vignettes">
           <article className="vignette vignette-featured">
@@ -400,7 +400,7 @@ export function UseCases() {
                 <span className="vignette-cat">Solar</span>
               </div>
               <h3>When a solar installer needs to find homes that will actually convert.</h3>
-              <p>Who owns the home, how much equity they have, what they pay for power, whether the roof works, what incentives apply. Atlas figures out who&apos;s actually worth knocking on.</p>
+              <p>Homes where the equity, the power bill, the roof, and the incentives all line up. Atlas surfaces the ones actually worth installing.</p>
             </div>
           </article>
 
@@ -414,7 +414,7 @@ export function UseCases() {
                 <span className="vignette-cat">Conversion</span>
               </div>
               <h3>When a developer asks which downtown towers could become homes.</h3>
-              <p>Whether the zoning allows it, whether the owner is in trouble, whether the math works on tax abatements, whether the rental market can absorb the units. Atlas pulls it together.</p>
+              <p>Buildings where the zoning works, the owner is stretched, the abatement applies, and the rental market can absorb the units. Atlas finds them before the broker does.</p>
             </div>
           </article>
 
@@ -428,7 +428,7 @@ export function UseCases() {
                 <span className="vignette-cat">Distress</span>
               </div>
               <h3>When a fund needs to spot stress before it shows in price.</h3>
-              <p>We watch entity filings, ownership changes, missed payments, court activity, asset condition. When stress shows up across more than one of these at once, that usually means something.</p>
+              <p>When entity filings, ownership changes, missed payments, and asset condition all start moving in the same direction — that&apos;s stress. Atlas catches it months before it shows up in price.</p>
             </div>
           </article>
 
@@ -442,7 +442,7 @@ export function UseCases() {
                 <span className="vignette-cat">Outreach</span>
               </div>
               <h3>When a counselor needs to reach a family before the notice arrives.</h3>
-              <p>Households where the bills got harder, the courts got involved, and the equity is still there to lose. Atlas finds them before the filing does.</p>
+              <p>Households where the bills got harder, court activity started, and equity is still on the table. Atlas finds them before the notice does.</p>
             </div>
           </article>
 
@@ -456,7 +456,7 @@ export function UseCases() {
                 <span className="vignette-cat">Infrastructure</span>
               </div>
               <h3>When an operator picks where to build the next data center.</h3>
-              <p>Power, water, fiber, zoning, climate, land. Atlas scores sites on what actually matters for building.</p>
+              <p>Sites where power, water, fiber, zoning, climate, and land all favor a build. Atlas scores what other site selectors miss.</p>
             </div>
           </article>
         </div>

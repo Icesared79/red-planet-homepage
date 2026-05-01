@@ -39,11 +39,13 @@ export function CTA() {
       <div className="container cta-content">
         <div className="eyebrow">§ 05 — Get in touch</div>
         <h2>
-          Tell us what you need to <span className="accent">see.</span>
+          Tell us what you&apos;re trying to{" "}
+          <span className="accent">close.</span>
         </h2>
         <p className="cta-body">
-          We don&apos;t have a price list. If you&apos;ve got a question Atlas
-          might be able to answer, tell us about it.
+          We don&apos;t sell off-the-shelf data. We work directly with operators
+          who need an edge — tell us what you&apos;re working on and we&apos;ll
+          show you what Atlas can find.
         </p>
         <div className="cta-actions">
           <ContactTrigger className="btn-primary">
