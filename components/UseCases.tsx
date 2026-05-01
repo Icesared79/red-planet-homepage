@@ -385,9 +385,9 @@ export function UseCases() {
         <div className="possibilities-header">
           <div className="eyebrow on-light">§ 02 — Use cases</div>
           <h2>
-            What people use <span className="accent">Atlas</span> for.
+            What people ask <span className="accent">Atlas</span> to find.
           </h2>
-          <p>What becomes possible when AI works on top of verified property data.</p>
+          <p>Every answer below started as a question. Tell us what you&apos;re looking for.</p>
         </div>
         <div className="vignettes">
           <article className="vignette vignette-featured">
