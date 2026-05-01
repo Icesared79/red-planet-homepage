@@ -37,7 +37,7 @@ export function CTA() {
         <circle cx="320" cy="480" r="300" fill="url(#ctaGlow2)" />
       </svg>
       <div className="container cta-content">
-        <div className="eyebrow">§ 05 — Get in touch</div>
+        <div className="eyebrow">§ 06 — Get in touch</div>
         <h2>
           Tell us what you&apos;re trying to{" "}
           <span className="accent">close.</span>

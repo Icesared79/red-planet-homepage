@@ -51,7 +51,7 @@ export function Coverage() {
     <section className="manifesto">
       <div className="container">
         <div className="manifesto-inner">
-          <div className="eyebrow on-light">§ 04 — Coverage</div>
+          <div className="eyebrow on-light">§ 05 — Coverage</div>
           <h2>
             What&apos;s in <span className="accent">Atlas.</span>
           </h2>
