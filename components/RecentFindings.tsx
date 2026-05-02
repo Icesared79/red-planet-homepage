@@ -131,7 +131,8 @@ export async function RecentFindings() {
                             {formatCount(f.count)}
                           </span>{" "}
                           <span className="findings-summary-label">
-                            {f.label} {f.scope}
+                            {f.label}
+                            {f.scope ? ` ${f.scope}` : ""}
                           </span>
                         </div>
                       ))}
@@ -146,7 +147,8 @@ export async function RecentFindings() {
                             {formatCount(f.count)}
                           </span>{" "}
                           <span className="findings-summary-label">
-                            {f.label} {f.scope}
+                            {f.label}
+                            {f.scope ? ` ${f.scope}` : ""}
                           </span>
                         </div>
                       ))}

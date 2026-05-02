@@ -533,27 +533,31 @@ async function fetchPayload(): Promise<LivePayload> {
 async function fetchRecentFindings(
   client: SupabaseClient
 ): Promise<RecentFinding[]> {
-  const cutoff7d = new Date(Date.now() - 7 * 24 * 3600_000)
-    .toISOString()
-    .slice(0, 10);
-
+  // All counts below are current-state on the latest matview build, expressed
+  // as distinct properties. We deliberately do NOT use the matview's
+  // most_recent_*_date columns as a "last 7 days" filter — those dates can be
+  // future-valued (e.g. loan maturity references) and the bulk get reset to
+  // the matview rebuild date, so the filter doesn't isolate a real weekly
+  // delta. row count = distinct property count because map_id is unique.
   const queries = await Promise.allSettled([
-    // CT distress matches surfaced this week
+    // CT properties currently flagged with at least one active distress trigger
     client
       .from("atlas_ct_signal_map_data")
       .select("*", { count: "exact", head: true })
-      .gte("most_recent_trigger_date", cutoff7d),
-    // CT pre-listing signals surfaced this week
+      .gt("active_trigger_count", 0),
+    // CT properties currently showing pre-listing signals (any)
     client
       .from("atlas_ct_signal_map_data")
       .select("*", { count: "exact", head: true })
-      .gte("most_recent_pre_listing_date", cutoff7d),
-    // NYC office-to-residential conversion candidates (high tier)
+      .gt("pre_listing_count", 0),
+    // NYC office-to-residential conversion candidates (high tier).
+    // All rows in this scoring run were scored within the last 7 days, so
+    // the "scored in NYC" framing is honest current-state.
     client
       .from("atlas_nyc_office_conversion_scores")
       .select("*", { count: "exact", head: true })
       .in("conversion_tier", ["prime", "strong"]),
-    // CT high-fit solar homes
+    // CT high-fit solar homes (current state across the matview)
     client
       .from("atlas_ct_solar_scores")
       .select("*", { count: "exact", head: true })
@@ -574,23 +578,23 @@ async function fetchRecentFindings(
 
   addIfPositive(queries[0], {
     category: "real_estate",
-    label: "properties match the distress profile",
-    scope: "across CT this week",
+    label: "CT properties currently carry active distress triggers",
+    scope: "",
   });
   addIfPositive(queries[1], {
     category: "real_estate",
-    label: "pre-listing signals surfaced",
-    scope: "in CT this week",
+    label: "CT properties currently show pre-listing signals",
+    scope: "",
   });
   addIfPositive(queries[2], {
     category: "real_estate",
-    label: "office-to-residential candidates scored",
-    scope: "in NYC",
+    label: "office-to-residential candidates scored in NYC",
+    scope: "",
   });
   addIfPositive(queries[3], {
     category: "solar",
-    label: "high-fit solar homes",
-    scope: "across CT",
+    label: "high-fit solar homes across CT",
+    scope: "",
   });
 
   return findings;
@@ -598,6 +602,6 @@ async function fetchRecentFindings(
 
 export const getAtlasLive = unstable_cache(
   fetchPayload,
-  ["atlas-live-v5"],
+  ["atlas-live-v6"],
   { revalidate: 300, tags: ["atlas-live"] }
 );
