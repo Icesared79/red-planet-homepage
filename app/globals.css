@@ -356,8 +356,8 @@ header.on-light nav a:hover {
 /* ================ SECTION LABEL (shared across all sections) ================ */
 .section-grid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 80px;
+  grid-template-columns: 180px 1fr;
+  gap: 48px;
   align-items: start;
 }
 .section-label {
@@ -370,12 +370,12 @@ header.on-light nav a:hover {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--text-on-light-muted);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-weight: 500;
 }
 .section-label-num {
   font-weight: 800;
-  font-size: 84px;
+  font-size: 60px;
   color: var(--text-on-light);
   line-height: 1;
   letter-spacing: -0.05em;
@@ -1466,13 +1466,13 @@ footer {
   }
   .section-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 28px;
   }
   .section-label {
     position: static;
   }
   .section-label-num {
-    font-size: 64px;
+    font-size: 48px;
   }
   .possibilities {
     padding: 100px 0;
