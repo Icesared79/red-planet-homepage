@@ -1,4 +1,30 @@
-export function Hero() {
+import { getAtlasLive } from "@/lib/atlas-live";
+
+function relativeTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "—";
+  const diffSec = Math.max(0, Math.floor((Date.now() - then) / 1000));
+  if (diffSec < 60) return "just now";
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin} min ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 6) return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
+  if (diffHr < 24) return "earlier today";
+  const diffDay = Math.floor(diffHr / 24);
+  return `${diffDay} day${diffDay === 1 ? "" : "s"} ago`;
+}
+
+export async function Hero() {
+  let sourcesCovered: number | null = null;
+  let lastRefresh: string | null = null;
+  try {
+    const data = await getAtlasLive();
+    sourcesCovered = data.active_sources;
+    lastRefresh = data.last_updated;
+  } catch {
+    // fall through; render placeholders
+  }
   return (
     <section className="hero">
       <svg
@@ -221,6 +247,34 @@ export function Hero() {
             </div>
           </div>
 
+          <div className="hero-side reveal reveal-4">
+            <div className="hero-side-label">
+              <span className="live-dot" />
+              The engine, right now
+            </div>
+            <div className="hero-side-stats">
+              <div className="hero-stat-row">
+                <span className="hero-stat-label">Verified records</span>
+                <span className="hero-stat-value">
+                  <span className="accent">Hundreds</span> of millions
+                </span>
+              </div>
+              <div className="hero-stat-row">
+                <span className="hero-stat-label">Sources covered</span>
+                <span className="hero-stat-value">
+                  {sourcesCovered !== null
+                    ? new Intl.NumberFormat("en-US").format(sourcesCovered)
+                    : "—"}
+                </span>
+              </div>
+              <div className="hero-stat-row">
+                <span className="hero-stat-label">Last update</span>
+                <span className="hero-stat-value">
+                  <span className="accent-2">{relativeTime(lastRefresh)}</span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

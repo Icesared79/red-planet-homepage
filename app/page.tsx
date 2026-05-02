@@ -5,7 +5,6 @@ import { Footer } from "@/components/Footer";
 import { Foundation } from "@/components/Foundation";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { LiveStatus } from "@/components/LiveStatus";
 import { RecentFindings } from "@/components/RecentFindings";
 import { Thesis } from "@/components/Thesis";
 import { UseCases } from "@/components/UseCases";
@@ -16,7 +15,6 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
-        <LiveStatus />
         <Thesis />
         <UseCases />
         <Foundation />

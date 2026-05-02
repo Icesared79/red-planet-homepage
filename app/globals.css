@@ -178,7 +178,8 @@ header.on-light nav a:hover {
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 760px);
+  grid-template-columns: 1.5fr 1fr;
+  gap: 100px;
   align-items: end;
   min-height: calc(100vh - 240px);
 }
@@ -282,6 +283,76 @@ header.on-light nav a:hover {
 }
 
 /* HERO LIVE-FEEL SIDE PANEL */
+.hero-side {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line-dark);
+  border-radius: 12px;
+  padding: 28px;
+  backdrop-filter: blur(8px);
+}
+.hero-side-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.hero-side-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.hero-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line-dark-soft);
+}
+.hero-stat-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.hero-stat-label {
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+  font-weight: 400;
+}
+.hero-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  letter-spacing: -0.02em;
+}
+.hero-stat-value .accent {
+  color: var(--red);
+}
+.hero-stat-value .accent-2 {
+  color: var(--gold);
+}
+
 /* ================ SECTION LABEL (shared across all sections) ================ */
 .section-grid {
   display: grid;
@@ -940,47 +1011,7 @@ footer {
   }
 }
 
-/* ================ LIVE STATUS STRIP (DARK) ================ */
-.live-status {
-  background: var(--ink);
-  border-top: 1px solid var(--line-dark);
-  border-bottom: 1px solid var(--line-dark);
-  padding: 22px 0;
-  position: relative;
-  overflow: hidden;
-}
-.live-status::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 8% 50%,
-    rgba(216, 57, 47, 0.12),
-    transparent 35%
-  );
-  pointer-events: none;
-}
-.live-status-inner {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  position: relative;
-  z-index: 1;
-}
-.live-status-pulse {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.live-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 0 4px rgba(216, 57, 47, 0.18),
-    0 0 14px rgba(216, 57, 47, 0.55);
-  animation: liveStatusPulse 2s ease-in-out infinite;
-}
+/* Pulse keyframe used by findings panel dots */
 @keyframes liveStatusPulse {
   0%,
   100% {
@@ -993,61 +1024,6 @@ footer {
       0 0 22px rgba(216, 57, 47, 0.35);
     opacity: 0.78;
   }
-}
-.live-status-stats {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  flex-grow: 1;
-}
-.live-status-stat {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-family: var(--font-mono), monospace;
-}
-.live-status-num {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-on-dark);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
-  display: inline-block;
-  min-width: 1ch;
-}
-.live-status-num-flash {
-  animation: liveStatusFlash 1.4s ease-out;
-}
-@keyframes liveStatusFlash {
-  0% {
-    color: var(--gold);
-    text-shadow: 0 0 12px rgba(196, 166, 97, 0.6);
-  }
-  100% {
-    color: var(--text-on-dark);
-    text-shadow: none;
-  }
-}
-.live-status-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-on-dark-muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-family: var(--font-mono), monospace;
-}
-.live-status-divider {
-  width: 1px;
-  height: 18px;
-  background: var(--line-dark);
-}
-.live-status-stat-time .live-status-num {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-on-dark-soft);
-  letter-spacing: 0;
-  text-transform: none;
 }
 
 /* ================ FINDINGS (LIGHT) ================ */
@@ -1450,18 +1426,6 @@ footer {
   }
   .cta {
     padding: 120px 0;
-  }
-  .live-status {
-    padding: 18px 0;
-  }
-  .live-status-inner {
-    gap: 16px;
-  }
-  .live-status-stats {
-    gap: 14px 20px;
-  }
-  .live-status-divider {
-    display: none;
   }
   .findings {
     padding: 80px 0;
