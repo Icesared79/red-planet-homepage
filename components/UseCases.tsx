@@ -1,3 +1,5 @@
+import { SectionLabel } from "./SectionLabel";
+
 function SolarVisual() {
   return (
     <svg
@@ -382,14 +384,16 @@ export function UseCases() {
   return (
     <section className="possibilities" id="possibilities">
       <div className="container">
-        <div className="possibilities-header">
-          <div className="eyebrow on-light">§ 02 — Use cases</div>
-          <h2>
-            What <span className="accent">Atlas</span> finds.
-          </h2>
-          <p>The patterns below don&apos;t show up in standard property data. They show up in Atlas.</p>
-        </div>
-        <div className="vignettes">
+        <div className="section-grid">
+          <SectionLabel title="§ 02 — Use cases" num="02" />
+          <div className="section-body">
+            <div className="possibilities-header">
+              <h2>
+                What <span className="accent">Atlas</span> finds.
+              </h2>
+              <p>The patterns below don&apos;t show up in standard property data. They show up in Atlas.</p>
+            </div>
+            <div className="vignettes">
           <article className="vignette vignette-featured">
             <div className="vignette-visual">
               <SolarVisual />
@@ -459,6 +463,8 @@ export function UseCases() {
               <p>Sites where power, water, fiber, zoning, climate, and land all favor a build. Atlas scores what other site selectors miss.</p>
             </div>
           </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>

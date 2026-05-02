@@ -1,3 +1,5 @@
+import { SectionLabel } from "./SectionLabel";
+
 export function Foundation() {
   return (
     <section className="foundation" id="foundation">
@@ -30,46 +32,50 @@ export function Foundation() {
         </g>
       </svg>
       <div className="container foundation-content">
-        <div className="foundation-header">
-          <div className="eyebrow">§ 03 — The engine</div>
-          <h2>
-            Atlas, in <span className="accent-2">numbers.</span>
-          </h2>
-          <p>What&apos;s underneath.</p>
-        </div>
-        <div className="stats">
-          <div className="stat">
-            <div className="stat-number">
-              <span className="accent">Hundreds</span>
-              <br />
-              of millions
+        <div className="section-grid">
+          <SectionLabel title="§ 03 — The engine" num="03" variant="dark" />
+          <div className="section-body">
+            <div className="foundation-header">
+              <h2>
+                Atlas, in <span className="accent-2">numbers.</span>
+              </h2>
+              <p>What&apos;s underneath.</p>
             </div>
-            <div className="stat-label">
-              Records on properties, owners, debt, courts, and energy.
-              Connected, not just collected.
-            </div>
-          </div>
-          <div className="stat">
-            <div className="stat-number">
-              869
-              <br />
-              <span className="accent-2">sources</span>
-            </div>
-            <div className="stat-label">
-              National datasets, jurisdictional filings, and the signals that
-              surround them. Growing every week.
-            </div>
-          </div>
-          <div className="stat">
-            <div className="stat-number">
-              Always
-              <br />
-              <span className="accent">on</span>
-            </div>
-            <div className="stat-label">
-              Atlas grows on its own. When a source breaks, it fixes itself.
-              When new data appears, it gets added. The foundation gets
-              stronger every night.
+            <div className="stats">
+              <div className="stat">
+                <div className="stat-number">
+                  <span className="accent">Hundreds</span>
+                  <br />
+                  of millions
+                </div>
+                <div className="stat-label">
+                  Records on properties, owners, debt, courts, and energy.
+                  Connected, not just collected.
+                </div>
+              </div>
+              <div className="stat">
+                <div className="stat-number">
+                  869
+                  <br />
+                  <span className="accent-2">sources</span>
+                </div>
+                <div className="stat-label">
+                  National datasets, jurisdictional filings, and the signals that
+                  surround them. Growing every week.
+                </div>
+              </div>
+              <div className="stat">
+                <div className="stat-number">
+                  Always
+                  <br />
+                  <span className="accent">on</span>
+                </div>
+                <div className="stat-label">
+                  Atlas grows on its own. When a source breaks, it fixes itself.
+                  When new data appears, it gets added. The foundation gets
+                  stronger every night.
+                </div>
+              </div>
             </div>
           </div>
         </div>

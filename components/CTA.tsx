@@ -1,4 +1,5 @@
 import { ContactTrigger } from "./ContactTrigger";
+import { SectionLabel } from "./SectionLabel";
 
 export function CTA() {
   return (
@@ -37,28 +38,32 @@ export function CTA() {
         <circle cx="320" cy="480" r="300" fill="url(#ctaGlow2)" />
       </svg>
       <div className="container cta-content">
-        <div className="eyebrow">§ 06 — Get in touch</div>
-        <h2>
-          Tell us what you&apos;re trying to{" "}
-          <span className="accent">close.</span>
-        </h2>
-        <p className="cta-body">
-          We don&apos;t sell off-the-shelf data. We work directly with operators
-          who need an edge — tell us what you&apos;re working on and we&apos;ll
-          show you what Atlas can find.
-        </p>
-        <div className="cta-actions">
-          <ContactTrigger className="btn-primary">
-            Start the conversation
-            <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
-              <path
-                d="M9 1L13 5L9 9M13 5H1"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </ContactTrigger>
+        <div className="section-grid">
+          <SectionLabel title="§ 06 — Get in touch" num="06" variant="dark" />
+          <div className="section-body">
+            <h2>
+              Tell us what you&apos;re trying to{" "}
+              <span className="accent">close.</span>
+            </h2>
+            <p className="cta-body">
+              We don&apos;t sell off-the-shelf data. We work directly with operators
+              who need an edge — tell us what you&apos;re working on and we&apos;ll
+              show you what Atlas can find.
+            </p>
+            <div className="cta-actions">
+              <ContactTrigger className="btn-primary">
+                Start the conversation
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                  <path
+                    d="M9 1L13 5L9 9M13 5H1"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </ContactTrigger>
+            </div>
+          </div>
         </div>
       </div>
     </section>
