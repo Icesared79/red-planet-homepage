@@ -585,7 +585,7 @@ header.on-light nav a:hover {
 }
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   border-top: 1px solid var(--line-dark);
   border-bottom: 1px solid var(--line-dark);
@@ -1276,87 +1276,67 @@ footer {
   white-space: nowrap;
 }
 
-/* Tile-grid map */
-.findings-map-wrap {
-  display: flex;
-  flex-direction: column;
+/* Recent findings summary panel (right column) */
+.findings-summary {
   background: #1a1612;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  padding: 22px 24px;
-  box-shadow: 0 24px 60px -20px rgba(26, 22, 18, 0.18);
-}
-.findings-map-label {
+  overflow: hidden;
   font-family: var(--font-mono), monospace;
+  box-shadow: 0 24px 60px -20px rgba(26, 22, 18, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+.findings-summary-bar {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+.findings-summary-title {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-on-dark);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.findings-summary-body {
+  flex-grow: 1;
+  padding: 22px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.findings-summary-group-label {
   font-size: 11px;
   letter-spacing: 0.08em;
   color: var(--text-on-dark-muted);
   text-transform: uppercase;
-  margin-bottom: 18px;
-}
-.findings-map {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  gap: 4px;
-  flex-grow: 1;
-  aspect-ratio: 1.6 / 1;
-  margin-bottom: 14px;
-}
-.findings-tile {
-  position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono), monospace;
-  font-size: 9px;
+  margin-bottom: 12px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--text-on-dark-muted);
-  transition: background 0.3s ease, color 0.3s ease;
 }
-.findings-tile-active {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.15);
+.findings-summary-line {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-on-dark-soft);
+  padding: 4px 0;
+}
+.findings-summary-count {
+  color: var(--red);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.findings-summary-label {
   color: var(--text-on-dark);
 }
-.findings-tile-code {
-  position: relative;
-  z-index: 1;
+.findings-summary-line-static {
+  color: var(--text-on-dark-muted);
 }
-.findings-tile-dot {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 6px currentColor;
-}
-.findings-tile-court    { color: #d8392f; }
-.findings-tile-property { color: #d39528; }
-.findings-tile-entity   { color: #4cc8d6; }
-.findings-tile-distress { color: #ff5a4a; }
-.findings-tile-tax      { color: #e0782b; }
-.findings-tile-energy   { color: #5dc97a; }
-.findings-tile-ownership{ color: #b88ad8; }
-.findings-tile-pulse .findings-tile-dot {
-  animation: findingsTilePulse 2s ease-in-out infinite;
-}
-@keyframes findingsTilePulse {
-  0%, 100% {
-    box-shadow: 0 0 6px currentColor;
-    opacity: 1;
-  }
-  50% {
-    box-shadow: 0 0 14px currentColor, 0 0 22px currentColor;
-    opacity: 0.85;
-  }
-}
-.findings-map-caption {
-  font-family: var(--font-mono), monospace;
+.findings-summary-foot {
+  padding: 14px 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.015);
   font-size: 11px;
   color: var(--text-on-dark-muted);
   letter-spacing: 0.02em;
@@ -1477,17 +1457,15 @@ footer {
     margin-bottom: 60px;
   }
   .stats {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
   .stat {
     padding: 36px 20px;
-  }
-  .stat:nth-child(2) {
     border-right: none;
-  }
-  .stat:nth-child(1),
-  .stat:nth-child(2) {
     border-bottom: 1px solid var(--line-dark);
+  }
+  .stat:last-child {
+    border-bottom: none;
   }
   .manifesto {
     padding: 100px 0;
@@ -1539,14 +1517,17 @@ footer {
   .findings-feed-bar {
     padding: 12px 14px;
   }
-  .findings-map-wrap {
-    padding: 18px 20px;
+  .findings-summary-bar {
+    padding: 12px 14px;
   }
-  .findings-map {
-    aspect-ratio: 1.6 / 1;
+  .findings-summary-body {
+    padding: 18px 16px 14px;
+    gap: 18px;
   }
-  .findings-tile {
-    font-size: 8px;
-    border-radius: 3px;
+  .findings-summary-foot {
+    padding: 12px 16px;
+  }
+  .findings-summary-line {
+    font-size: 12px;
   }
 }
