@@ -178,8 +178,7 @@ header.on-light nav a:hover {
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 100px;
+  grid-template-columns: minmax(0, 760px);
   align-items: end;
   min-height: calc(100vh - 240px);
 }
@@ -283,76 +282,6 @@ header.on-light nav a:hover {
 }
 
 /* HERO LIVE-FEEL SIDE PANEL */
-.hero-side {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid var(--line-dark);
-  border-radius: 12px;
-  padding: 28px;
-  backdrop-filter: blur(8px);
-}
-.hero-side-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-on-dark-muted);
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-}
-.live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-.hero-side-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-.hero-stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--line-dark-soft);
-}
-.hero-stat-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-.hero-stat-label {
-  font-size: 13px;
-  color: var(--text-on-dark-muted);
-  font-weight: 400;
-}
-.hero-stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-on-dark);
-  letter-spacing: -0.02em;
-}
-.hero-stat-value .accent {
-  color: var(--red);
-}
-.hero-stat-value .accent-2 {
-  color: var(--gold);
-}
-
 /* ================ SECTION LABEL (shared across all sections) ================ */
 .section-grid {
   display: grid;
@@ -481,7 +410,7 @@ header.on-light nav a:hover {
 .vignette-featured .vignette-visual {
   flex: 1.4;
   aspect-ratio: auto;
-  min-height: 360px;
+  min-height: 240px;
 }
 .vignette-featured .vignette-body {
   flex: 1;
@@ -554,7 +483,6 @@ header.on-light nav a:hover {
   color: var(--text-on-dark);
   padding: 160px 0;
   position: relative;
-  overflow: hidden;
 }
 .foundation-bg {
   position: absolute;
@@ -694,7 +622,6 @@ header.on-light nav a:hover {
   color: var(--text-on-dark);
   padding: 160px 0;
   position: relative;
-  overflow: hidden;
 }
 .cta-bg {
   position: absolute;
