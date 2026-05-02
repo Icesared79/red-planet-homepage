@@ -4,6 +4,7 @@ import {
   type LiveEvent,
   type RecentFinding,
 } from "@/lib/atlas-live";
+import { SectionLabel } from "./SectionLabel";
 
 const CATEGORY_LABEL: Record<Category, string> = {
   court: "court",
@@ -62,15 +63,17 @@ export async function RecentFindings() {
   return (
     <section className="findings" id="findings">
       <div className="container">
-        <div className="findings-header">
-          <div className="eyebrow on-light">§ 04 — Activity</div>
-          <h2>
-            What Atlas <span className="accent">found this week.</span>
-          </h2>
-          <p>Recent ingestion activity from the engine, filtered to events that move deals.</p>
-        </div>
+        <div className="section-grid">
+          <SectionLabel title="§ 04 — Activity" num="04" />
+          <div className="section-body">
+            <div className="findings-header">
+              <h2>
+                What Atlas <span className="accent">found this week.</span>
+              </h2>
+              <p>Recent ingestion activity from the engine, filtered to events that move deals.</p>
+            </div>
 
-        <div className="findings-grid">
+            <div className="findings-grid">
           <div className="findings-feed">
             <div className="findings-feed-bar">
               <span className="findings-feed-dot" aria-hidden="true" />
@@ -167,6 +170,8 @@ export async function RecentFindings() {
             <div className="findings-summary-foot">
               Updated {relativeTime(lastUpdated)}
             </div>
+          </div>
+        </div>
           </div>
         </div>
       </div>

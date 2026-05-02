@@ -1,14 +1,11 @@
+import { SectionLabel } from "./SectionLabel";
+
 export function Thesis() {
   return (
     <section className="thesis" id="thesis">
       <div className="container">
-        <div className="thesis-grid">
-          <div className="thesis-label">
-            <div className="thesis-label-title">§ 01 — About</div>
-            <div className="thesis-label-num">
-              01<span className="dot">.</span>
-            </div>
-          </div>
+        <div className="section-grid">
+          <SectionLabel title="§ 01 — About" num="01" />
           <div className="thesis-body">
             <h2>
               Why we&apos;re building <span className="accent">Atlas.</span>

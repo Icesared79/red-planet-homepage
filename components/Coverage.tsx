@@ -1,3 +1,5 @@
+import { SectionLabel } from "./SectionLabel";
+
 const ITEMS = [
   {
     num: "01",
@@ -50,25 +52,29 @@ export function Coverage() {
   return (
     <section className="manifesto">
       <div className="container">
-        <div className="manifesto-inner">
-          <div className="eyebrow on-light">§ 05 — Coverage</div>
-          <h2>
-            What&apos;s in <span className="accent">Atlas.</span>
-          </h2>
-          <p className="coverage-intro">
-            Depth and freshness over volume. Here&apos;s what the foundation is
-            built on.
-          </p>
-          <div className="coverage-list">
-            {ITEMS.map((item) => (
-              <div key={item.num} className="coverage-item">
-                <div className="coverage-cat">
-                  <span className="num">{item.num}</span>
-                  {item.title}
-                </div>
-                <div className="coverage-desc">{item.desc}</div>
+        <div className="section-grid">
+          <SectionLabel title="§ 05 — Coverage" num="05" />
+          <div className="section-body">
+            <div className="manifesto-inner">
+              <h2>
+                What&apos;s in <span className="accent">Atlas.</span>
+              </h2>
+              <p className="coverage-intro">
+                Depth and freshness over volume. Here&apos;s what the foundation is
+                built on.
+              </p>
+              <div className="coverage-list">
+                {ITEMS.map((item) => (
+                  <div key={item.num} className="coverage-item">
+                    <div className="coverage-cat">
+                      <span className="num">{item.num}</span>
+                      {item.title}
+                    </div>
+                    <div className="coverage-desc">{item.desc}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

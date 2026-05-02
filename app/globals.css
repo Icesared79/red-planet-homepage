@@ -353,25 +353,18 @@ header.on-light nav a:hover {
   color: var(--gold);
 }
 
-/* ================ THESIS (LIGHT) ================ */
-.thesis {
-  background: var(--paper);
-  padding: 160px 0;
-  color: var(--text-on-light);
-  position: relative;
-}
-.thesis-grid {
+/* ================ SECTION LABEL (shared across all sections) ================ */
+.section-grid {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 80px;
   align-items: start;
-  max-width: 1200px;
 }
-.thesis-label {
+.section-label {
   position: sticky;
   top: 120px;
 }
-.thesis-label-title {
+.section-label-title {
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   text-transform: uppercase;
@@ -380,15 +373,29 @@ header.on-light nav a:hover {
   margin-bottom: 16px;
   font-weight: 500;
 }
-.thesis-label-num {
+.section-label-num {
   font-weight: 800;
   font-size: 84px;
   color: var(--text-on-light);
   line-height: 1;
   letter-spacing: -0.05em;
 }
-.thesis-label-num .dot {
+.section-label-num .dot {
   color: var(--red);
+}
+.section-label-on-dark .section-label-title {
+  color: var(--text-on-dark-muted);
+}
+.section-label-on-dark .section-label-num {
+  color: var(--text-on-dark);
+}
+
+/* ================ THESIS (LIGHT) ================ */
+.thesis {
+  background: var(--paper);
+  padding: 160px 0;
+  color: var(--text-on-light);
+  position: relative;
 }
 .thesis-body h2 {
   font-weight: 700;
@@ -1457,14 +1464,14 @@ footer {
   .thesis {
     padding: 100px 0;
   }
-  .thesis-grid {
+  .section-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  .thesis-label {
+  .section-label {
     position: static;
   }
-  .thesis-label-num {
+  .section-label-num {
     font-size: 64px;
   }
   .possibilities {
