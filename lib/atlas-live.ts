@@ -540,11 +540,18 @@ async function fetchRecentFindings(
   // the matview rebuild date, so the filter doesn't isolate a real weekly
   // delta. row count = distinct property count because map_id is unique.
   const queries = await Promise.allSettled([
-    // CT properties currently flagged with at least one active distress trigger
+    // CT properties in active distress: a severe trigger (foreclosure
+    // land record OR upcoming tax-sale auction) on file, OR three or
+    // more independent distress signals firing simultaneously. The
+    // earlier "active_trigger_count > 0" definition was 70% inflated
+    // by a zero-points absentee-owner heuristic; this threshold is
+    // the audit-defensible replacement (see
+    // atlas-dashboard/docs/distress-signal-precision-2026-05-02.md).
+    // PostgREST OR syntax: parenthesized condition list.
     client
       .from("atlas_ct_signal_map_data")
       .select("*", { count: "exact", head: true })
-      .gt("active_trigger_count", 0),
+      .or("severe_active_count.gt.0,active_trigger_count.gte.3"),
     // CT properties currently showing pre-listing signals (any)
     client
       .from("atlas_ct_signal_map_data")
@@ -578,7 +585,8 @@ async function fetchRecentFindings(
 
   addIfPositive(queries[0], {
     category: "real_estate",
-    label: "CT properties currently carry active distress triggers",
+    label:
+      "CT properties with active foreclosure or tax-sale filings, or three or more compounding distress signals",
     scope: "",
   });
   addIfPositive(queries[1], {
