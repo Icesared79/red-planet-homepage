@@ -1303,38 +1303,78 @@ footer {
 }
 .findings-summary-body {
   flex-grow: 1;
-  padding: 22px 22px 18px;
+  padding: 24px 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 28px;
+}
+.findings-summary-group {
+  display: flex;
+  flex-direction: column;
 }
 .findings-summary-group-label {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--text-on-dark-muted);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--text-on-dark);
   text-transform: uppercase;
-  margin-bottom: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--red);
+  margin-bottom: 14px;
 }
 .findings-summary-line {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--text-on-dark-soft);
-  padding: 4px 0;
+  display: grid;
+  grid-template-columns: 12px 110px 1fr;
+  align-items: baseline;
+  column-gap: 14px;
+  padding: 8px 0;
+}
+.findings-summary-line + .findings-summary-line {
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+.findings-summary-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  align-self: center;
+  flex-shrink: 0;
+}
+.findings-summary-dot-real_estate {
+  background: var(--red);
+  box-shadow: 0 0 6px rgba(216, 57, 47, 0.5);
+}
+.findings-summary-dot-solar {
+  background: #d39528;
+  box-shadow: 0 0 6px rgba(211, 149, 40, 0.5);
+}
+.findings-summary-dot-static {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: none;
 }
 .findings-summary-count {
-  color: var(--red);
+  text-align: right;
+  font-size: 17px;
   font-weight: 600;
+  color: var(--text-on-dark);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 .findings-summary-label {
-  color: var(--text-on-dark);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-on-dark-soft);
+  line-height: 1.45;
 }
-.findings-summary-line-static {
+.findings-summary-line-static .findings-summary-count {
+  color: var(--text-on-dark-muted);
+  font-size: 14px;
+}
+.findings-summary-line-static .findings-summary-label {
   color: var(--text-on-dark-muted);
 }
 .findings-summary-foot {
-  padding: 14px 22px;
+  padding: 14px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.015);
   font-size: 11px;
@@ -1522,12 +1562,20 @@ footer {
   }
   .findings-summary-body {
     padding: 18px 16px 14px;
-    gap: 18px;
+    gap: 22px;
   }
   .findings-summary-foot {
     padding: 12px 16px;
   }
   .findings-summary-line {
+    grid-template-columns: 10px 90px 1fr;
+    column-gap: 10px;
+    padding: 7px 0;
+  }
+  .findings-summary-count {
+    font-size: 15px;
+  }
+  .findings-summary-label {
     font-size: 12px;
   }
 }

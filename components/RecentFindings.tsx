@@ -115,8 +115,13 @@ export async function RecentFindings() {
                 <div className="findings-summary-group">
                   <div className="findings-summary-group-label">Coverage</div>
                   {STATIC_COVERAGE_LABELS.map((l) => (
-                    <div key={l} className="findings-summary-line findings-summary-line-static">
-                      {l}
+                    <div
+                      key={l}
+                      className="findings-summary-line findings-summary-line-static"
+                    >
+                      <span className="findings-summary-dot findings-summary-dot-static" />
+                      <span className="findings-summary-count">—</span>
+                      <span className="findings-summary-label">{l}</span>
                     </div>
                   ))}
                 </div>
@@ -127,9 +132,10 @@ export async function RecentFindings() {
                       <div className="findings-summary-group-label">Real estate</div>
                       {realEstateFindings.map((f, i) => (
                         <div key={`re-${i}`} className="findings-summary-line">
+                          <span className="findings-summary-dot findings-summary-dot-real_estate" />
                           <span className="findings-summary-count">
                             {formatCount(f.count)}
-                          </span>{" "}
+                          </span>
                           <span className="findings-summary-label">
                             {f.label}
                             {f.scope ? ` ${f.scope}` : ""}
@@ -143,9 +149,10 @@ export async function RecentFindings() {
                       <div className="findings-summary-group-label">Solar</div>
                       {solarFindings.map((f, i) => (
                         <div key={`solar-${i}`} className="findings-summary-line">
+                          <span className="findings-summary-dot findings-summary-dot-solar" />
                           <span className="findings-summary-count">
                             {formatCount(f.count)}
-                          </span>{" "}
+                          </span>
                           <span className="findings-summary-label">
                             {f.label}
                             {f.scope ? ` ${f.scope}` : ""}

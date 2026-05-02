@@ -1,7 +1,12 @@
 function SolarVisual() {
+  // Restructured to mirror ConversionVisual's left/right split:
+  //   LEFT  (x = 20–340):  panel grid with 3 candidates highlighted
+  //   RIGHT (x = 360–580): score callout + per-candidate stats
+  // This puts visual weight on both sides of viewBox center (x=300)
+  // so the composition reads centered within the dark panel.
   return (
     <svg
-      viewBox="0 0 600 360"
+      viewBox="0 0 600 320"
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
     >
@@ -19,124 +24,106 @@ function SolarVisual() {
             strokeWidth="0.5"
           />
         </pattern>
-        <pattern id="panels" width="6" height="6" patternUnits="userSpaceOnUse">
-          <path
-            d="M 6 0 L 0 0 0 6"
-            fill="none"
-            stroke="rgba(216,57,47,0.55)"
-            strokeWidth="0.5"
-          />
-        </pattern>
         <radialGradient id="solarGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="rgba(196,166,97,0.15)" />
+          <stop offset="0%" stopColor="rgba(196,166,97,0.18)" />
           <stop offset="100%" stopColor="rgba(196,166,97,0)" />
         </radialGradient>
       </defs>
-      <rect width="600" height="360" fill="#1A1612" />
-      <rect width="600" height="360" fill="url(#vSolarGrid)" />
+      <rect width="600" height="320" fill="#1A1612" />
+      <rect width="600" height="320" fill="url(#vSolarGrid)" />
 
-      <circle cx="540" cy="40" r="80" fill="url(#solarGlow)" />
+      {/* Soft sun glow above the panel grid */}
+      <circle cx="180" cy="30" r="60" fill="url(#solarGlow)" />
 
-      <g stroke="rgba(255,255,255,0.12)" strokeWidth="0.7">
-        <line x1="0" y1="120" x2="600" y2="120" />
-        <line x1="0" y1="240" x2="600" y2="240" />
-        <line x1="160" y1="0" x2="160" y2="360" />
-        <line x1="320" y1="0" x2="320" y2="360" />
-        <line x1="460" y1="0" x2="460" y2="360" />
+      {/* LEFT HALF — panel grid */}
+      {/* Row 1 */}
+      <g>
+        <rect x="20" y="50" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="85" y="50" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="150" y="50" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="215" y="50" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="280" y="50" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
       </g>
 
-      {/* Row 1: Top */}
+      {/* Row 2 — gold candidate at left, primary red at center */}
       <g>
-        <rect x="20" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="85" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="180" y="30" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="250" y="30" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="340" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="400" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="475" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="535" y="30" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="20" y="80" width="50" height="32" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="85" y="80" width="50" height="32" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-      </g>
+        <rect x="20" y="100" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
 
-      {/* Row 2: Middle */}
-      <g>
-        <rect x="20" y="140" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="90" y="140" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-
-        {/* Gold candidate */}
+        {/* Gold candidate (mid-tier) */}
         <g>
-          <rect x="180" y="140" width="60" height="44" rx="2" fill="rgba(196,166,97,0.15)" stroke="#C4A661" strokeWidth="1.2" />
-          <rect x="186" y="146" width="48" height="32" fill="rgba(196,166,97,0.25)" />
+          <rect x="85" y="100" width="60" height="44" rx="2" fill="rgba(196,166,97,0.15)" stroke="#C4A661" strokeWidth="1.2" />
+          <rect x="91" y="106" width="48" height="32" fill="rgba(196,166,97,0.25)" />
           <g stroke="rgba(196,166,97,0.6)" strokeWidth="0.4">
-            <line x1="198" y1="146" x2="198" y2="178" />
-            <line x1="210" y1="146" x2="210" y2="178" />
-            <line x1="222" y1="146" x2="222" y2="178" />
-            <line x1="186" y1="158" x2="234" y2="158" />
-            <line x1="186" y1="170" x2="234" y2="170" />
+            <line x1="103" y1="106" x2="103" y2="138" />
+            <line x1="115" y1="106" x2="115" y2="138" />
+            <line x1="127" y1="106" x2="127" y2="138" />
+            <line x1="91" y1="118" x2="139" y2="118" />
+            <line x1="91" y1="130" x2="139" y2="130" />
           </g>
         </g>
 
-        <rect x="255" y="140" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="155" y="100" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
 
-        {/* Primary red candidate */}
+        {/* Primary red candidate (top-tier, focal) */}
         <g>
-          <rect x="340" y="138" width="68" height="48" rx="2" fill="rgba(216,57,47,0.18)" stroke="#D8392F" strokeWidth="1.5" />
-          <rect x="346" y="144" width="56" height="36" fill="rgba(216,57,47,0.22)" />
+          <rect x="220" y="98" width="68" height="48" rx="2" fill="rgba(216,57,47,0.18)" stroke="#D8392F" strokeWidth="1.5" />
+          <rect x="226" y="104" width="56" height="36" fill="rgba(216,57,47,0.22)" />
           <g stroke="rgba(216,57,47,0.7)" strokeWidth="0.5">
-            <line x1="360" y1="144" x2="360" y2="180" />
-            <line x1="374" y1="144" x2="374" y2="180" />
-            <line x1="388" y1="144" x2="388" y2="180" />
-            <line x1="346" y1="156" x2="402" y2="156" />
-            <line x1="346" y1="168" x2="402" y2="168" />
+            <line x1="240" y1="104" x2="240" y2="140" />
+            <line x1="254" y1="104" x2="254" y2="140" />
+            <line x1="268" y1="104" x2="268" y2="140" />
+            <line x1="226" y1="116" x2="282" y2="116" />
+            <line x1="226" y1="128" x2="282" y2="128" />
           </g>
-          <circle className="signal-pulse" cx="374" cy="162" r="3" fill="#D8392F" />
+          <circle className="signal-pulse" cx="254" cy="122" r="3" fill="#D8392F" />
         </g>
 
-        <rect x="420" y="140" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="480" y="140" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="298" y="100" width="42" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
       </g>
 
-      {/* Row 3: Bottom */}
+      {/* Row 3 */}
       <g>
-        <rect x="20" y="260" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="85" y="260" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="180" y="260" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="250" y="260" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="340" y="260" width="55" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
-        <rect x="405" y="260" width="50" height="40" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="20" y="150" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="85" y="150" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
 
-        {/* Tertiary red candidate */}
+        {/* Tertiary red candidate (lower-tier) */}
         <g>
-          <rect x="475" y="258" width="55" height="44" rx="2" fill="rgba(216,57,47,0.15)" stroke="#D8392F" strokeWidth="1.2" />
-          <rect x="481" y="264" width="43" height="32" fill="rgba(216,57,47,0.18)" />
+          <rect x="150" y="148" width="55" height="44" rx="2" fill="rgba(216,57,47,0.15)" stroke="#D8392F" strokeWidth="1.2" />
+          <rect x="156" y="154" width="43" height="32" fill="rgba(216,57,47,0.18)" />
           <g stroke="rgba(216,57,47,0.6)" strokeWidth="0.4">
-            <line x1="495" y1="264" x2="495" y2="296" />
-            <line x1="509" y1="264" x2="509" y2="296" />
-            <line x1="481" y1="276" x2="524" y2="276" />
-            <line x1="481" y1="286" x2="524" y2="286" />
+            <line x1="170" y1="154" x2="170" y2="186" />
+            <line x1="184" y1="154" x2="184" y2="186" />
+            <line x1="156" y1="166" x2="199" y2="166" />
+            <line x1="156" y1="176" x2="199" y2="176" />
           </g>
         </g>
+
+        <rect x="215" y="150" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
+        <rect x="280" y="150" width="55" height="42" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.7" />
       </g>
 
-      {/* Annotation line + score */}
+      {/* Annotation line: from primary red panel out to right-side callout */}
       <g stroke="#D8392F" strokeWidth="0.8" fill="none">
-        <line x1="408" y1="162" x2="455" y2="220" strokeDasharray="2 3" />
-        <circle cx="455" cy="220" r="2.5" fill="#D8392F" />
+        <line x1="290" y1="122" x2="370" y2="80" strokeDasharray="2 3" />
+        <circle cx="370" cy="80" r="3" fill="#D8392F" />
       </g>
 
-      <g fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,255,255,0.55)">
-        <text x="463" y="218">INITIAL FIT</text>
-        <text x="463" y="240" fontSize="22" fontWeight="700" fill="#D8392F">94%</text>
+      {/* RIGHT HALF — score callout + ranked stats */}
+      <g fontFamily="JetBrains Mono, monospace" fill="rgba(255,255,255,0.65)">
+        <text x="385" y="75" fontSize="10" fill="rgba(255,255,255,0.55)">INITIAL FIT</text>
+        <text x="385" y="105" fontSize="32" fontWeight="700" fill="#D8392F">94%</text>
+
+        <text x="385" y="148" fontSize="9" fill="rgba(255,255,255,0.4)">RANKED BY</text>
+        <text x="385" y="167" fontSize="11">OWNERSHIP — verified</text>
+        <text x="385" y="184" fontSize="11">EQUITY — high</text>
+        <text x="385" y="201" fontSize="11">RATE SPREAD — strong</text>
+        <text x="385" y="218" fontSize="11">ROOF — viable</text>
       </g>
 
-      <g fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(196,166,97,0.7)">
-        <text x="540" y="32" textAnchor="middle">↓</text>
-        <text x="540" y="62" textAnchor="middle" fontSize="8">S 184°</text>
-      </g>
-
+      {/* Bottom caption */}
+      <line x1="0" y1="240" x2="600" y2="240" stroke="rgba(255,255,255,0.1)" strokeWidth="0.7" />
       <g fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,255,255,0.4)">
-        <text x="20" y="345">3 candidates · ranked by ownership · equity · rate spread · roof</text>
+        <text x="20" y="265">3 candidates surfaced · ranked by ownership · equity · rate spread · roof</text>
       </g>
     </svg>
   );
