@@ -1,4 +1,9 @@
-import { getAtlasLive, type Category, type LiveEvent } from "@/lib/atlas-live";
+import {
+  getAtlasLive,
+  type Category,
+  type LiveEvent,
+  type RecentFinding,
+} from "@/lib/atlas-live";
 
 const CATEGORY_LABEL: Record<Category, string> = {
   court: "court",
@@ -10,33 +15,8 @@ const CATEGORY_LABEL: Record<Category, string> = {
   ownership: "ownership",
 };
 
-// US tile-grid map. Each state placed at [row, col] in a 12-col × 8-row grid
-// to form a recognizable US silhouette without using a real geo map library.
-const STATE_GRID: Record<string, [number, number]> = {
-  AK: [1, 1],
-  ME: [1, 11],
-  WI: [2, 7],
-  VT: [2, 10], NH: [2, 11],
-  WA: [3, 2], ID: [3, 3], MT: [3, 4], ND: [3, 5], MN: [3, 6],
-  IL: [3, 7], MI: [3, 8], NY: [3, 9], MA: [3, 10],
-  OR: [4, 2], NV: [4, 3], WY: [4, 4], SD: [4, 5], IA: [4, 6],
-  IN: [4, 7], OH: [4, 8], PA: [4, 9], NJ: [4, 10], CT: [4, 11], RI: [4, 12],
-  CA: [5, 2], UT: [5, 3], CO: [5, 4], NE: [5, 5], MO: [5, 6],
-  KY: [5, 7], WV: [5, 8], VA: [5, 9], MD: [5, 10],
-  AZ: [6, 3], NM: [6, 4], KS: [6, 5], AR: [6, 6], TN: [6, 7],
-  NC: [6, 8], SC: [6, 9], DC: [6, 10], DE: [6, 11],
-  HI: [7, 1], OK: [7, 5], LA: [7, 6], MS: [7, 7], AL: [7, 8], GA: [7, 9],
-  TX: [8, 4], FL: [8, 9],
-};
-
-function formatTime(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "--:--:--";
-  const pad = (n: number) => n.toString().padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-}
-
-function relativeTime(iso: string): string {
+function relativeTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "—";
   const diffSec = Math.max(0, Math.floor((Date.now() - then) / 1000));
@@ -54,53 +34,30 @@ function formatCount(n: number): string {
   return new Intl.NumberFormat("en-US").format(n);
 }
 
-type StateAggregate = {
-  category: Category;
-  count: number;
-  mostRecent: string;
-};
-
-function aggregateByState(events: LiveEvent[]): Map<string, StateAggregate> {
-  const map = new Map<string, StateAggregate>();
-  for (const ev of events) {
-    if (!ev.state) continue;
-    const existing = map.get(ev.state);
-    if (!existing) {
-      map.set(ev.state, {
-        category: ev.category,
-        count: ev.count,
-        mostRecent: ev.timestamp,
-      });
-    } else {
-      existing.count += ev.count;
-      if (ev.timestamp > existing.mostRecent) {
-        existing.mostRecent = ev.timestamp;
-        existing.category = ev.category;
-      }
-    }
-  }
-  return map;
-}
-
-function dotSizeFromCount(count: number): number {
-  // Subtle scale: 4px → 10px, log-ish.
-  if (count <= 0) return 4;
-  const v = Math.log10(count);
-  return Math.min(10, Math.max(4, Math.round(4 + v * 1.4)));
-}
+const STATIC_COVERAGE_LABELS = [
+  "Real estate",
+  "Solar",
+  "Distress",
+  "Outreach",
+  "Energy",
+];
 
 export async function RecentFindings() {
   let events: LiveEvent[] = [];
+  let findings: RecentFinding[] = [];
+  let lastUpdated: string | null = null;
   try {
     const data = await getAtlasLive();
     events = data.recent_events;
+    findings = data.recent_findings ?? [];
+    lastUpdated = data.last_updated;
   } catch {
-    events = [];
+    /* fall through */
   }
 
-  const stateAggregates = aggregateByState(events);
-  const newestState = events[0]?.state ?? null;
-  const stateCount = stateAggregates.size;
+  const realEstateFindings = findings.filter((f) => f.category === "real_estate");
+  const solarFindings = findings.filter((f) => f.category === "solar");
+  const showStaticFallback = findings.length === 0;
 
   return (
     <section className="findings" id="findings">
@@ -149,49 +106,57 @@ export async function RecentFindings() {
             </div>
           </div>
 
-          <div className="findings-map-wrap">
-            <div className="findings-map-label">GEOGRAPHIC DISTRIBUTION</div>
-            <div className="findings-map" aria-hidden="true">
-              {Object.entries(STATE_GRID).map(([code, [row, col]]) => {
-                const agg = stateAggregates.get(code);
-                const active = !!agg;
-                const isNewest = code === newestState;
-                const dotSize = agg ? dotSizeFromCount(agg.count) : 0;
-                const cls = [
-                  "findings-tile",
-                  active ? "findings-tile-active" : "",
-                  active ? `findings-tile-${agg!.category}` : "",
-                  isNewest ? "findings-tile-pulse" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ");
-                return (
-                  <div
-                    key={code}
-                    className={cls}
-                    style={{
-                      gridRow: row,
-                      gridColumn: col,
-                    }}
-                    title={
-                      agg
-                        ? `${code} · ${formatCount(agg.count)} records · ${CATEGORY_LABEL[agg.category]}`
-                        : code
-                    }
-                  >
-                    <span className="findings-tile-code">{code}</span>
-                    {active && (
-                      <span
-                        className="findings-tile-dot"
-                        style={{ width: `${dotSize}px`, height: `${dotSize}px` }}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+          <div className="findings-summary">
+            <div className="findings-summary-bar">
+              <span className="findings-summary-title">ATLAS · RECENT FINDINGS</span>
             </div>
-            <div className="findings-map-caption">
-              {stateCount} state{stateCount === 1 ? "" : "s"} with activity in the last 48 hours
+            <div className="findings-summary-body">
+              {showStaticFallback ? (
+                <div className="findings-summary-group">
+                  <div className="findings-summary-group-label">Coverage</div>
+                  {STATIC_COVERAGE_LABELS.map((l) => (
+                    <div key={l} className="findings-summary-line findings-summary-line-static">
+                      {l}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  {realEstateFindings.length > 0 && (
+                    <div className="findings-summary-group">
+                      <div className="findings-summary-group-label">Real estate</div>
+                      {realEstateFindings.map((f, i) => (
+                        <div key={`re-${i}`} className="findings-summary-line">
+                          <span className="findings-summary-count">
+                            {formatCount(f.count)}
+                          </span>{" "}
+                          <span className="findings-summary-label">
+                            {f.label} {f.scope}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {solarFindings.length > 0 && (
+                    <div className="findings-summary-group">
+                      <div className="findings-summary-group-label">Solar</div>
+                      {solarFindings.map((f, i) => (
+                        <div key={`solar-${i}`} className="findings-summary-line">
+                          <span className="findings-summary-count">
+                            {formatCount(f.count)}
+                          </span>{" "}
+                          <span className="findings-summary-label">
+                            {f.label} {f.scope}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="findings-summary-foot">
+              Updated {relativeTime(lastUpdated)}
             </div>
           </div>
         </div>

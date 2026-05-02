@@ -3,7 +3,7 @@ function SolarVisual() {
     <svg
       viewBox="0 0 600 360"
       xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio="xMidYMid meet"
     >
       <defs>
         <pattern

@@ -20,11 +20,21 @@ export type LiveEvent = {
   count: number;
 };
 
+export type FindingCategory = "real_estate" | "solar";
+
+export type RecentFinding = {
+  category: FindingCategory;
+  label: string;
+  count: number;
+  scope: string;
+};
+
 export type LivePayload = {
   total_records: number;
   active_sources: number;
   last_updated: string | null;
   recent_events: LiveEvent[];
+  recent_findings: RecentFinding[];
 };
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -410,6 +420,7 @@ async function fetchPayload(): Promise<LivePayload> {
       active_sources: 0,
       last_updated: null,
       recent_events: [],
+      recent_findings: [],
     };
   }
 
@@ -508,11 +519,85 @@ async function fetchPayload(): Promise<LivePayload> {
 
   const last_updated = events[0]?.timestamp ?? recordsRes.data?.last_verified_at ?? null;
 
-  return { total_records, active_sources, last_updated, recent_events: events };
+  const recent_findings = await fetchRecentFindings(client);
+
+  return {
+    total_records,
+    active_sources,
+    last_updated,
+    recent_events: events,
+    recent_findings,
+  };
+}
+
+async function fetchRecentFindings(
+  client: SupabaseClient
+): Promise<RecentFinding[]> {
+  const cutoff7d = new Date(Date.now() - 7 * 24 * 3600_000)
+    .toISOString()
+    .slice(0, 10);
+
+  const queries = await Promise.allSettled([
+    // CT distress matches surfaced this week
+    client
+      .from("atlas_ct_signal_map_data")
+      .select("*", { count: "exact", head: true })
+      .gte("most_recent_trigger_date", cutoff7d),
+    // CT pre-listing signals surfaced this week
+    client
+      .from("atlas_ct_signal_map_data")
+      .select("*", { count: "exact", head: true })
+      .gte("most_recent_pre_listing_date", cutoff7d),
+    // NYC office-to-residential conversion candidates (high tier)
+    client
+      .from("atlas_nyc_office_conversion_scores")
+      .select("*", { count: "exact", head: true })
+      .in("conversion_tier", ["prime", "strong"]),
+    // CT high-fit solar homes
+    client
+      .from("atlas_ct_solar_scores")
+      .select("*", { count: "exact", head: true })
+      .eq("recommendation_category", "strong_fit"),
+  ]);
+
+  const findings: RecentFinding[] = [];
+
+  function addIfPositive(
+    result: PromiseSettledResult<{ count: number | null }>,
+    f: Omit<RecentFinding, "count">
+  ) {
+    if (result.status !== "fulfilled") return;
+    const c = result.value.count ?? 0;
+    if (c <= 0) return;
+    findings.push({ ...f, count: c });
+  }
+
+  addIfPositive(queries[0], {
+    category: "real_estate",
+    label: "properties match the distress profile",
+    scope: "across CT this week",
+  });
+  addIfPositive(queries[1], {
+    category: "real_estate",
+    label: "pre-listing signals surfaced",
+    scope: "in CT this week",
+  });
+  addIfPositive(queries[2], {
+    category: "real_estate",
+    label: "office-to-residential candidates scored",
+    scope: "in NYC",
+  });
+  addIfPositive(queries[3], {
+    category: "solar",
+    label: "high-fit solar homes",
+    scope: "across CT",
+  });
+
+  return findings;
 }
 
 export const getAtlasLive = unstable_cache(
   fetchPayload,
-  ["atlas-live-v4"],
+  ["atlas-live-v5"],
   { revalidate: 300, tags: ["atlas-live"] }
 );

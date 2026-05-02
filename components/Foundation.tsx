@@ -62,17 +62,6 @@ export function Foundation() {
           </div>
           <div className="stat">
             <div className="stat-number">
-              566
-              <br />
-              <span className="accent-2">runners</span>
-            </div>
-            <div className="stat-label">
-              Self-healing pipeline. When a source breaks, the system fixes it
-              on its own.
-            </div>
-          </div>
-          <div className="stat">
-            <div className="stat-number">
               Always
               <br />
               <span className="accent">on</span>
