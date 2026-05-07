@@ -97,10 +97,15 @@ header.on-light {
   line-height: 0;
 }
 .wordmark-lockup {
-  height: 34px;
   width: auto;
   display: block;
   transition: opacity 0.4s ease;
+}
+header .wordmark-lockup {
+  height: 27px;
+}
+footer .wordmark-lockup {
+  height: 17px;
 }
 .wordmark-lockup-light {
   position: absolute;
@@ -117,8 +122,11 @@ header .wordmark {
   position: relative;
 }
 @media (max-width: 640px) {
-  .wordmark-lockup {
-    height: 28px;
+  header .wordmark-lockup {
+    height: 22px;
+  }
+  footer .wordmark-lockup {
+    height: 14px;
   }
 }
 nav {
