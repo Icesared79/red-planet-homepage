@@ -1,6 +1,23 @@
+import { getAtlasLive } from "@/lib/atlas-live";
 import { SectionLabel } from "./SectionLabel";
 
-export function Foundation() {
+export async function Foundation() {
+  let totalRecords: number | null = null;
+  let activeSources: number | null = null;
+  try {
+    const data = await getAtlasLive();
+    totalRecords = data.total_records;
+    activeSources = data.active_sources > 0 ? data.active_sources : null;
+  } catch {
+    /* fall through to static fallbacks */
+  }
+
+  // Round DOWN to nearest million so the headline always understates.
+  const millions =
+    totalRecords != null && totalRecords >= 1_000_000
+      ? Math.floor(totalRecords / 1_000_000)
+      : null;
+
   return (
     <section className="foundation" id="foundation">
       <svg
@@ -44,9 +61,19 @@ export function Foundation() {
             <div className="stats">
               <div className="stat">
                 <div className="stat-number">
-                  <span className="accent">Hundreds</span>
-                  <br />
-                  of millions
+                  {millions !== null ? (
+                    <>
+                      Over
+                      <br />
+                      <span className="accent">{millions}</span> million records
+                    </>
+                  ) : (
+                    <>
+                      <span className="accent">Hundreds</span>
+                      <br />
+                      of millions
+                    </>
+                  )}
                 </div>
                 <div className="stat-label">
                   Records on properties, owners, debt, courts, and energy.
@@ -55,7 +82,7 @@ export function Foundation() {
               </div>
               <div className="stat">
                 <div className="stat-number">
-                  869
+                  {activeSources !== null ? activeSources : "Hundreds"}
                   <br />
                   <span className="accent-2">sources</span>
                 </div>
