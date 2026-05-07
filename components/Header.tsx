@@ -48,6 +48,13 @@ export function Header() {
           <a href="#thesis">About</a>
           <a href="#possibilities">Use cases</a>
           <a href="#foundation">The engine</a>
+          <a
+            href="https://docs.redplanetdata.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Documentation
+          </a>
           <button
             type="button"
             className="nav-cta"
