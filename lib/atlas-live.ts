@@ -30,7 +30,6 @@ export type RecentFinding = {
 };
 
 export type LivePayload = {
-  total_records: number;
   active_sources: number;
   last_updated: string | null;
   recent_events: LiveEvent[];
@@ -416,7 +415,6 @@ async function fetchPayload(): Promise<LivePayload> {
   const client = getClient();
   if (!client) {
     return {
-      total_records: 0,
       active_sources: 0,
       last_updated: null,
       recent_events: [],
@@ -426,10 +424,15 @@ async function fetchPayload(): Promise<LivePayload> {
 
   const cutoff48h = new Date(Date.now() - 48 * 3600_000).toISOString();
 
+  // The headline record count is intentionally not fetched here. The hero
+  // renders descriptive framing ("Hundreds of millions") so the public
+  // /api/atlas-live endpoint should not broadcast the underlying number,
+  // which can drift between the per-table true counts and the inflated
+  // atlas_record_counts SUM consumed by atlas_verified_record_count.
   const [recordsRes, sourcesRes, syncRes] = await Promise.all([
     client
       .from("atlas_verified_record_count")
-      .select("verified_records_total, last_verified_at")
+      .select("last_verified_at")
       .maybeSingle(),
     client
       .from("atlas_source_baselines")
@@ -459,7 +462,6 @@ async function fetchPayload(): Promise<LivePayload> {
       .limit(200),
   ]);
 
-  const total_records = recordsRes.data?.verified_records_total ?? 0;
   const active_sources = sourcesRes.count ?? 0;
   const syncRows = (syncRes.data ?? []).filter((r) => !isExcluded(r.source));
 
@@ -522,7 +524,6 @@ async function fetchPayload(): Promise<LivePayload> {
   const recent_findings = await fetchRecentFindings(client);
 
   return {
-    total_records,
     active_sources,
     last_updated,
     recent_events: events,
