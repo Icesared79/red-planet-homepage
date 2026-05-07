@@ -40,9 +40,18 @@ export function Header() {
   return (
     <header id="site-header" ref={headerRef}>
       <div className="header-inner">
-        <a href="#" className="wordmark">
-          <span className="wordmark-dot" />
-          Red Planet
+        <a href="/" className="wordmark" aria-label="Red Planet — home">
+          <img
+            src="/brand/lockup-horizontal.svg"
+            alt="Red Planet"
+            className="wordmark-lockup wordmark-lockup-dark"
+          />
+          <img
+            src="/brand/lockup-horizontal-light.svg"
+            alt=""
+            aria-hidden="true"
+            className="wordmark-lockup wordmark-lockup-light"
+          />
         </a>
         <nav>
           <a href="#thesis">About</a>

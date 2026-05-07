@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 96" width="720" height="96">
+  <g transform="scale(0.4)">
+    <path d="M120 0A120 120 0 1 1 35.147 35.147L120 120Z" fill="#C8392D"/>
+  </g>
+  <text x="120" y="82" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-weight="500" font-size="96" letter-spacing="-2.88" fill="#F0EBE5">Red Planet<tspan fill="#C8392D">.</tspan></text>
+</svg>
