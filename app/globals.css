@@ -102,7 +102,7 @@ header.on-light {
   transition: opacity 0.4s ease;
 }
 header .wordmark-lockup {
-  height: 27px;
+  height: 24px;
 }
 footer .wordmark-lockup {
   height: 17px;
@@ -123,7 +123,7 @@ header .wordmark {
 }
 @media (max-width: 640px) {
   header .wordmark-lockup {
-    height: 22px;
+    height: 20px;
   }
   footer .wordmark-lockup {
     height: 14px;
