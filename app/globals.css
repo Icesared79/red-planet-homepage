@@ -740,15 +740,6 @@ header.on-light nav a:hover {
   color: var(--gold);
   font-weight: 500;
 }
-.cta-footnote {
-  margin-top: 32px;
-  max-width: 640px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text-on-dark-soft);
-  opacity: 0.75;
-  font-weight: 400;
-}
 
 /* ================ FOOTER (DARK) ================ */
 footer {
