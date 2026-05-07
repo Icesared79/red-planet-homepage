@@ -91,25 +91,35 @@ header.on-light {
   margin: 0 auto;
 }
 .wordmark {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 11px;
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: -0.015em;
-  color: var(--text-on-dark);
   text-decoration: none;
-  transition: color 0.4s ease;
+  line-height: 0;
 }
-header.on-light .wordmark {
-  color: var(--text-on-light);
+.wordmark-lockup {
+  height: 34px;
+  width: auto;
+  display: block;
+  transition: opacity 0.4s ease;
 }
-.wordmark-dot {
-  width: 9px;
-  height: 9px;
-  background: var(--red);
-  border-radius: 50%;
-  box-shadow: 0 0 0 4px var(--red-soft);
+.wordmark-lockup-light {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+header.on-light .wordmark-lockup-dark {
+  opacity: 0;
+}
+header.on-light .wordmark-lockup-light {
+  opacity: 1;
+}
+header .wordmark {
+  position: relative;
+}
+@media (max-width: 640px) {
+  .wordmark-lockup {
+    height: 28px;
+  }
 }
 nav {
   display: flex;
