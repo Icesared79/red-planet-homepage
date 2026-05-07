@@ -42,13 +42,13 @@ export function CTA() {
           <SectionLabel title="§ 06 — Get in touch" num="06" variant="dark" />
           <div className="section-body">
             <h2>
-              Tell us what you&apos;re trying to{" "}
-              <span className="accent">close.</span>
+              Built for operators shaping what&apos;s{" "}
+              <span className="accent">next.</span>
             </h2>
             <p className="cta-body">
-              We don&apos;t sell off-the-shelf data. We work directly with operators
-              who need an edge — tell us what you&apos;re working on and we&apos;ll
-              show you what Atlas can find.
+              Atlas isn&apos;t off-the-shelf data. We work directly with the
+              operators reshaping how property intelligence gets used — funds,
+              lenders, counselors, installers, conversion shops.
             </p>
             <div className="cta-actions">
               <ContactTrigger className="btn-primary">
