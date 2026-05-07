@@ -63,6 +63,11 @@ export function CTA() {
                 </svg>
               </ContactTrigger>
             </div>
+            <p className="cta-footnote">
+              We don&apos;t sell off-the-shelf data. We work directly with
+              operators who need an edge — tell us what you&apos;re working on
+              and we&apos;ll show you what Atlas can find.
+            </p>
           </div>
         </div>
       </div>
