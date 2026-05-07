@@ -42,8 +42,8 @@ export function CTA() {
           <SectionLabel title="§ 06 — Get in touch" num="06" variant="dark" />
           <div className="section-body">
             <h2>
-              Tell us what you&apos;re trying to{" "}
-              <span className="accent">close.</span>
+              Built for operators shaping what&apos;s{" "}
+              <span className="accent">next.</span>
             </h2>
             <p className="cta-body">
               We don&apos;t sell off-the-shelf data. We work directly with operators
