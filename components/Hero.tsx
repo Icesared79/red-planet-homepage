@@ -207,7 +207,9 @@ export async function Hero() {
           <text x="40" y="40">41.7658°N</text>
           <text x="40" y="56">72.6734°W</text>
           <text x="1480" y="40" textAnchor="end">N · 0001</text>
-          <text x="1480" y="860" textAnchor="end">869 sources</text>
+          <text x="1480" y="860" textAnchor="end">
+            {sourcesCovered !== null ? `${sourcesCovered} sources` : "sources active"}
+          </text>
           <text x="40" y="860">→ ingestion</text>
         </g>
       </svg>
