@@ -225,7 +225,7 @@ export async function Hero() {
       <div className="container hero-content">
         <div className="hero-grid">
           <div>
-            <div className="eyebrow reveal reveal-1">Property intelligence</div>
+            <div className="eyebrow reveal reveal-1">Red Planet · Property intelligence</div>
             <h1 className="reveal reveal-2">
               <span className="line">Property data,</span>
               <span className="line">
