@@ -25,8 +25,7 @@ function relativeTime(iso: string | null | undefined): string {
   const diffMin = Math.floor(diffSec / 60);
   if (diffMin < 60) return `${diffMin} min ago`;
   const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 6) return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
-  if (diffHr < 24) return "earlier today";
+  if (diffHr < 24) return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
   const diffDay = Math.floor(diffHr / 24);
   return `${diffDay} day${diffDay === 1 ? "" : "s"} ago`;
 }
