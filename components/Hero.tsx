@@ -17,14 +17,21 @@ function relativeTime(iso: string | null | undefined): string {
 
 export async function Hero() {
   let sourcesCovered: number | null = null;
+  let totalRecords: number | null = null;
   let lastRefresh: string | null = null;
   try {
     const data = await getAtlasLive();
     sourcesCovered = data.active_sources;
+    totalRecords = data.total_records;
     lastRefresh = data.last_updated;
   } catch {
     // fall through; render placeholders
   }
+  // Round DOWN to nearest million so the headline always understates.
+  const recordsMillions =
+    totalRecords != null && totalRecords >= 1_000_000
+      ? Math.floor(totalRecords / 1_000_000)
+      : null;
   return (
     <section className="hero">
       <svg
@@ -258,7 +265,15 @@ export async function Hero() {
               <div className="hero-stat-row">
                 <span className="hero-stat-label">Verified records</span>
                 <span className="hero-stat-value">
-                  <span className="accent">Hundreds</span> of millions
+                  {recordsMillions !== null ? (
+                    <>
+                      Over <span className="accent">{recordsMillions}</span> million records
+                    </>
+                  ) : (
+                    <>
+                      <span className="accent">Hundreds</span> of millions
+                    </>
+                  )}
                 </span>
               </div>
               <div className="hero-stat-row">
