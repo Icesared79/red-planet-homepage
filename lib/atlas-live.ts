@@ -31,6 +31,7 @@ export type RecentFinding = {
 
 export type LivePayload = {
   active_sources: number;
+  total_records: number | null;
   last_updated: string | null;
   recent_events: LiveEvent[];
   recent_findings: RecentFinding[];
@@ -416,6 +417,7 @@ async function fetchPayload(): Promise<LivePayload> {
   if (!client) {
     return {
       active_sources: 0,
+      total_records: null,
       last_updated: null,
       recent_events: [],
       recent_findings: [],
@@ -424,15 +426,23 @@ async function fetchPayload(): Promise<LivePayload> {
 
   const cutoff48h = new Date(Date.now() - 48 * 3600_000).toISOString();
 
-  // The headline record count is intentionally not fetched here. The hero
-  // renders descriptive framing ("Hundreds of millions") so the public
-  // /api/atlas-live endpoint should not broadcast the underlying number,
-  // which can drift between the per-table true counts and the inflated
-  // atlas_record_counts SUM consumed by atlas_verified_record_count.
-  const [recordsRes, sourcesRes, syncRes] = await Promise.all([
+  // verified_records_total can drift slightly between per-table true counts
+  // and the atlas_record_counts SUM. The homepage rounds DOWN to the
+  // nearest million before display ("Over N million records"), so the
+  // headline always understates the true count.
+  // active_sources reads atlas_stats_cache.active_sources_total — the same
+  // canonical count atlas-dash uses (mirrors atlas_source_registry.status='active').
+  // baselinesCountRes is a defensive fallback so a missing/zero cache row
+  // never publishes 0; we prefer cache, fall back to "baselines not offline."
+  const [recordsRes, sourcesCacheRes, baselinesCountRes, syncRes] = await Promise.all([
     client
       .from("atlas_verified_record_count")
-      .select("last_verified_at")
+      .select("verified_records_total, last_verified_at")
+      .maybeSingle(),
+    client
+      .from("atlas_stats_cache")
+      .select("value")
+      .eq("key", "active_sources_total")
       .maybeSingle(),
     client
       .from("atlas_source_baselines")
@@ -462,7 +472,17 @@ async function fetchPayload(): Promise<LivePayload> {
       .limit(200),
   ]);
 
-  const active_sources = sourcesRes.count ?? 0;
+  const cachedActive = Number(sourcesCacheRes.data?.value);
+  const active_sources =
+    Number.isFinite(cachedActive) && cachedActive > 0
+      ? cachedActive
+      : (baselinesCountRes.count ?? 0);
+  const total_records =
+    typeof recordsRes.data?.verified_records_total === "number"
+      ? recordsRes.data.verified_records_total
+      : recordsRes.data?.verified_records_total != null
+        ? Number(recordsRes.data.verified_records_total)
+        : null;
   const syncRows = (syncRes.data ?? []).filter((r) => !isExcluded(r.source));
 
   // Batch enrichment.
@@ -525,6 +545,7 @@ async function fetchPayload(): Promise<LivePayload> {
 
   return {
     active_sources,
+    total_records: Number.isFinite(total_records as number) ? (total_records as number) : null,
     last_updated,
     recent_events: events,
     recent_findings,
@@ -611,6 +632,6 @@ async function fetchRecentFindings(
 
 export const getAtlasLive = unstable_cache(
   fetchPayload,
-  ["atlas-live-v6"],
+  ["atlas-live-v8"],
   { revalidate: 300, tags: ["atlas-live"] }
 );

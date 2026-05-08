@@ -17,14 +17,21 @@ function relativeTime(iso: string | null | undefined): string {
 
 export async function Hero() {
   let sourcesCovered: number | null = null;
+  let totalRecords: number | null = null;
   let lastRefresh: string | null = null;
   try {
     const data = await getAtlasLive();
     sourcesCovered = data.active_sources;
+    totalRecords = data.total_records;
     lastRefresh = data.last_updated;
   } catch {
     // fall through; render placeholders
   }
+  // Round DOWN to nearest million so the headline always understates.
+  const recordsMillions =
+    totalRecords != null && totalRecords >= 1_000_000
+      ? Math.floor(totalRecords / 1_000_000)
+      : null;
   return (
     <section className="hero">
       <svg
@@ -207,7 +214,9 @@ export async function Hero() {
           <text x="40" y="40">41.7658°N</text>
           <text x="40" y="56">72.6734°W</text>
           <text x="1480" y="40" textAnchor="end">N · 0001</text>
-          <text x="1480" y="860" textAnchor="end">869 sources</text>
+          <text x="1480" y="860" textAnchor="end">
+            {sourcesCovered !== null ? `${sourcesCovered} sources` : "sources active"}
+          </text>
           <text x="40" y="860">→ ingestion</text>
         </g>
       </svg>
@@ -256,7 +265,15 @@ export async function Hero() {
               <div className="hero-stat-row">
                 <span className="hero-stat-label">Verified records</span>
                 <span className="hero-stat-value">
-                  <span className="accent">Hundreds</span> of millions
+                  {recordsMillions !== null ? (
+                    <>
+                      Over <span className="accent">{recordsMillions}</span> million records
+                    </>
+                  ) : (
+                    <>
+                      <span className="accent">Hundreds</span> of millions
+                    </>
+                  )}
                 </span>
               </div>
               <div className="hero-stat-row">
