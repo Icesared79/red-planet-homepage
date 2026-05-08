@@ -780,6 +780,20 @@ footer {
   letter-spacing: 0.04em;
   font-weight: 500;
 }
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 360px;
+}
+.footer-tagline {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--text-on-dark-muted);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  font-weight: 500;
+}
 .footer-links {
   display: flex;
   gap: 32px;

@@ -3,13 +3,19 @@ export function Footer() {
     <footer>
       <div className="container">
         <div className="footer-inner">
-          <a href="/" className="wordmark" aria-label="Red Planet — home">
-            <img
-              src="/brand/lockup-horizontal.svg"
-              alt="Red Planet"
-              className="wordmark-lockup"
-            />
-          </a>
+          <div className="footer-brand">
+            <a href="/" className="wordmark" aria-label="Red Planet — home">
+              <img
+                src="/brand/lockup-horizontal.svg"
+                alt="Red Planet"
+                className="wordmark-lockup"
+              />
+            </a>
+            <div className="footer-tagline">
+              Red Planet builds Atlas — the autonomous property intelligence
+              engine.
+            </div>
+          </div>
           <div className="footer-links">
             <a href="#thesis">About</a>
             <a href="#possibilities">Use cases</a>
