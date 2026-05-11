@@ -1,0 +1,8 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+        name: Detect secrets with gitleaks
+        description: Block commits that introduce hardcoded credentials
+        # Uses .gitleaks.toml in repo root if present

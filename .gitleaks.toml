@@ -1,0 +1,27 @@
+title = "Red Planet repos — gitleaks config"
+
+# Use the bundled default rule pack
+[extend]
+useDefault = true
+
+# Allowlist legitimate fingerprints that aren't secrets
+[[allowlists]]
+description = "Common false positives in Red Planet repos"
+paths = [
+  '''(.*?)package-lock\.json$''',
+  '''(.*?)pnpm-lock\.yaml$''',
+  '''(.*?)yarn\.lock$''',
+  '''(.*?)\.lock$''',
+  '''node_modules/''',
+  '''\.next/''',
+  '''dist/''',
+  '''build/''',
+]
+regexes = [
+  # Supabase URL alone isn't a secret — only flagged with key
+  '''https://[a-z]{20}\.supabase\.co''',
+  # Vercel deployment URLs
+  '''[a-z0-9-]+\.vercel\.app''',
+  # Placeholders / templates
+  '''(?i)(your_|YOUR_|<your|placeholder|example|env\(|\$\{)''',
+]
