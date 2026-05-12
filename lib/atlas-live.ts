@@ -32,6 +32,7 @@ export type RecentFinding = {
 export type LivePayload = {
   active_sources: number;
   total_records: number | null;
+  runners_total: number | null;
   last_updated: string | null;
   recent_events: LiveEvent[];
   recent_findings: RecentFinding[];
@@ -418,6 +419,7 @@ async function fetchPayload(): Promise<LivePayload> {
     return {
       active_sources: 0,
       total_records: null,
+      runners_total: null,
       last_updated: null,
       recent_events: [],
       recent_findings: [],
@@ -434,7 +436,7 @@ async function fetchPayload(): Promise<LivePayload> {
   // canonical count atlas-dash uses (mirrors atlas_source_registry.status='active').
   // baselinesCountRes is a defensive fallback so a missing/zero cache row
   // never publishes 0; we prefer cache, fall back to "baselines not offline."
-  const [recordsRes, sourcesCacheRes, baselinesCountRes, syncRes] = await Promise.all([
+  const [recordsRes, sourcesCacheRes, runnersCacheRes, baselinesCountRes, syncRes] = await Promise.all([
     client
       .from("atlas_verified_record_count")
       .select("verified_records_total, last_verified_at")
@@ -443,6 +445,11 @@ async function fetchPayload(): Promise<LivePayload> {
       .from("atlas_stats_cache")
       .select("value")
       .eq("key", "active_sources_total")
+      .maybeSingle(),
+    client
+      .from("atlas_stats_cache")
+      .select("value")
+      .eq("key", "runners_total")
       .maybeSingle(),
     client
       .from("atlas_source_baselines")
@@ -477,6 +484,9 @@ async function fetchPayload(): Promise<LivePayload> {
     Number.isFinite(cachedActive) && cachedActive > 0
       ? cachedActive
       : (baselinesCountRes.count ?? 0);
+  const cachedRunners = Number(runnersCacheRes.data?.value);
+  const runners_total =
+    Number.isFinite(cachedRunners) && cachedRunners > 0 ? cachedRunners : null;
   const total_records =
     typeof recordsRes.data?.verified_records_total === "number"
       ? recordsRes.data.verified_records_total
@@ -546,6 +556,7 @@ async function fetchPayload(): Promise<LivePayload> {
   return {
     active_sources,
     total_records: Number.isFinite(total_records as number) ? (total_records as number) : null,
+    runners_total,
     last_updated,
     recent_events: events,
     recent_findings,
@@ -632,6 +643,6 @@ async function fetchRecentFindings(
 
 export const getAtlasLive = unstable_cache(
   fetchPayload,
-  ["atlas-live-v8"],
+  ["atlas-live-v9"],
   { revalidate: 300, tags: ["atlas-live"] }
 );

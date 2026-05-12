@@ -17,10 +17,11 @@ export function Footer() {
             </div>
           </div>
           <div className="footer-links">
-            <a href="#thesis">About</a>
-            <a href="#possibilities">Use cases</a>
-            <a href="#foundation">The engine</a>
-            <a href="#cta">Contact</a>
+            <a href="/#thesis">About</a>
+            <a href="/#possibilities">Use cases</a>
+            <a href="/#foundation">The engine</a>
+            <a href="/careers">Careers</a>
+            <a href="/#cta">Contact</a>
           </div>
           <div className="footer-meta">© 2026 — BUILT 26.28</div>
         </div>
