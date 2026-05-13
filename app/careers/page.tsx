@@ -41,7 +41,8 @@ export default function CareersIndexPage() {
             estate, finance, energy, and the industries connected to them — and
             the products built on top of it. We&apos;re a one-person team
             today, with a working platform in production, and we&apos;re hiring
-            two senior people to help us turn it into a company. If you want
+            two senior people to own the functions that turn it into a
+            company. If you want
             context on what we actually do, that&apos;s on{" "}
             <a
               href="https://redplanetdata.com"

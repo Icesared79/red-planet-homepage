@@ -63,7 +63,7 @@ export const ROLES: Role[] = [
     slug: "head-of-platform",
     title: "Head of Platform",
     summary:
-      "Own Atlas and everything built on top of it. Source coverage, signal quality, the API, the products. Senior engineer who ships daily.",
+      "Own Atlas and everything built on top of it. Source coverage, signal quality, the API, the products. Senior engineer who directs and hardens AI-generated code at production scale.",
     equityRange: "2–3.5%",
     compensation:
       "Equity range: 2–3.5% depending on experience and commitment level. Four-year vest, one-year cliff. Cash compensation activates at funding close.",
