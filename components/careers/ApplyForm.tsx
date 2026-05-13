@@ -1,92 +1,159 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
+import type { Role } from "./roles";
 
-type Status = "idle" | "submitting" | "success" | "error";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-type Form = {
+type Status = "idle" | "submitting" | "error";
+
+const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
+const ALLOWED_EXT = [".pdf", ".doc", ".docx"] as const;
+const ALLOWED_MIME = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+]);
+
+type FormState = {
   name: string;
   email: string;
-  role: string;
   linkedin_url: string;
-  note: string;
+  q1: string;
+  q2: string;
+  q3: string;
+  anything_else: string;
 };
 
-const EMPTY: Form = {
+const EMPTY: FormState = {
   name: "",
   email: "",
-  role: "",
   linkedin_url: "",
-  note: "",
+  q1: "",
+  q2: "",
+  q3: "",
+  anything_else: "",
 };
 
-const ROLE_OPTIONS: Array<{ slug: string; label: string }> = [
-  { slug: "head-of-operations-strategy", label: "Head of Operations & Strategy" },
-  { slug: "head-of-platform", label: "Head of Platform" },
-];
-
-export function ApplyForm() {
-  const [form, setForm] = useState<Form>(EMPTY);
+export function ApplyForm({ role }: { role: Role }) {
+  const router = useRouter();
+  const [form, setForm] = useState<FormState>(EMPTY);
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    const onRole = (e: Event) => {
-      const detail = (e as CustomEvent<{ slug: string }>).detail;
-      if (!detail?.slug) return;
-      const match = ROLE_OPTIONS.find((r) => r.slug === detail.slug);
-      if (match) setForm((f) => ({ ...f, role: match.label }));
-    };
-    window.addEventListener("rp:careers:role", onRole);
-    return () => window.removeEventListener("rp:careers:role", onRole);
-  }, []);
-
-  const update = <K extends keyof Form>(key: K, value: Form[K]) =>
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
+
+  const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0] ?? null;
+    if (!f) {
+      setFile(null);
+      return;
+    }
+    const lower = f.name.toLowerCase();
+    const extOk = ALLOWED_EXT.some((ext) => lower.endsWith(ext));
+    const mimeOk = ALLOWED_MIME.has(f.type) || f.type === ""; // some browsers omit MIME for .doc
+    if (!extOk || !mimeOk) {
+      setErrorMsg("Resume must be a .pdf, .doc, or .docx file.");
+      setFile(null);
+      e.target.value = "";
+      return;
+    }
+    if (f.size > MAX_FILE_BYTES) {
+      setErrorMsg("Resume is larger than 10MB.");
+      setFile(null);
+      e.target.value = "";
+      return;
+    }
+    setErrorMsg("");
+    setFile(f);
+  };
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    setStatus("submitting");
     setErrorMsg("");
+    if (!file) {
+      setErrorMsg("Please attach a resume.");
+      return;
+    }
+    setStatus("submitting");
+
     try {
-      const res = await fetch("/api/careers", {
+      // 1. Ask the server for a signed upload URL.
+      const uploadRes = await fetch("/api/careers/upload-url", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          role: role.slug,
+          filename: file.name,
+          content_type: file.type || "application/octet-stream",
+          size: file.size,
+        }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setErrorMsg(data?.error ?? "Something went wrong. Please try again.");
+      if (!uploadRes.ok) {
+        const data = await uploadRes.json().catch(() => ({}));
+        setErrorMsg(
+          data?.error ?? "Couldn't prepare the upload. Please try again."
+        );
         setStatus("error");
         return;
       }
-      setStatus("success");
+      const { path, token } = await uploadRes.json();
+
+      // 2. Upload directly to Supabase Storage via the signed upload token.
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const { error: uploadErr } = await supabase.storage
+        .from("resumes")
+        .uploadToSignedUrl(path, token, file, {
+          contentType: file.type || "application/octet-stream",
+          upsert: false,
+        });
+      if (uploadErr) {
+        setErrorMsg(
+          "Resume upload failed. Please try again or use a different file."
+        );
+        setStatus("error");
+        return;
+      }
+
+      // 3. Submit the application payload referencing the resume path.
+      const res = await fetch("/api/careers", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          role: role.title,
+          role_slug: role.slug,
+          resume_path: path,
+          resume_filename: file.name,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setErrorMsg(
+          data?.error ?? "Something went wrong. Please try again."
+        );
+        setStatus("error");
+        return;
+      }
+
+      router.push("/careers/thanks");
     } catch {
       setErrorMsg("Network error. Please try again.");
       setStatus("error");
     }
   };
 
-  if (status === "success") {
-    return (
-      <div className="apply-success">
-        <div className="apply-success-title">
-          Thanks — your application is in.
-        </div>
-        <p className="apply-success-body">
-          We&apos;ll review it personally and reply by email. If it&apos;s a
-          fit, the next step is a call.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <form className="apply-form" onSubmit={submit} noValidate>
-      <div className="apply-field">
-        <label htmlFor="af-name">Name</label>
+    <form className="careers-form" onSubmit={submit} noValidate>
+      <div className="careers-field">
+        <label htmlFor="cf-name">Name</label>
         <input
-          id="af-name"
+          id="cf-name"
           type="text"
           required
           autoComplete="name"
@@ -94,10 +161,10 @@ export function ApplyForm() {
           onChange={(e) => update("name", e.target.value)}
         />
       </div>
-      <div className="apply-field">
-        <label htmlFor="af-email">Email</label>
+      <div className="careers-field">
+        <label htmlFor="cf-email">Email</label>
         <input
-          id="af-email"
+          id="cf-email"
           type="email"
           required
           autoComplete="email"
@@ -105,61 +172,68 @@ export function ApplyForm() {
           onChange={(e) => update("email", e.target.value)}
         />
       </div>
-      <div className="apply-field">
-        <label htmlFor="af-role">Role applying for</label>
-        <select
-          id="af-role"
-          required
-          value={form.role}
-          onChange={(e) => update("role", e.target.value)}
-        >
-          <option value="" disabled>
-            Select a role
-          </option>
-          {ROLE_OPTIONS.map((r) => (
-            <option key={r.slug} value={r.label}>
-              {r.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="apply-field">
-        <label htmlFor="af-linkedin">
-          LinkedIn URL <span className="optional">(optional)</span>
-        </label>
+      <div className="careers-field">
+        <label htmlFor="cf-linkedin">LinkedIn URL</label>
         <input
-          id="af-linkedin"
+          id="cf-linkedin"
           type="url"
+          required
           placeholder="https://linkedin.com/in/…"
           value={form.linkedin_url}
           onChange={(e) => update("linkedin_url", e.target.value)}
         />
       </div>
-      <div className="apply-field">
-        <label htmlFor="af-note">
-          Brief note <span className="optional">(optional)</span>
+      <div className="careers-field">
+        <label htmlFor="cf-resume">Resume</label>
+        <input
+          id="cf-resume"
+          type="file"
+          required
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          onChange={onFile}
+        />
+        <span className="careers-field-hint">
+          .pdf, .doc, or .docx · max 10MB
+        </span>
+      </div>
+
+      {role.questions.map((q) => (
+        <div className="careers-field" key={q.id}>
+          <label htmlFor={`cf-${q.id}`}>{q.prompt}</label>
+          <textarea
+            id={`cf-${q.id}`}
+            required
+            rows={5}
+            value={form[q.id]}
+            onChange={(e) => update(q.id, e.target.value)}
+          />
+        </div>
+      ))}
+
+      <div className="careers-field">
+        <label htmlFor="cf-anything">
+          Anything else <span className="optional">(optional)</span>
         </label>
         <textarea
-          id="af-note"
-          rows={5}
-          placeholder="Why this role, what you'd want to build, anything else we should know."
-          value={form.note}
-          onChange={(e) => update("note", e.target.value)}
+          id="cf-anything"
+          rows={4}
+          value={form.anything_else}
+          onChange={(e) => update("anything_else", e.target.value)}
         />
       </div>
 
-      {status === "error" && (
-        <div className="apply-error" role="alert">
+      {errorMsg && (
+        <div className="careers-error" role="alert">
           {errorMsg}
         </div>
       )}
 
       <button
         type="submit"
-        className="apply-submit"
+        className="careers-submit"
         disabled={status === "submitting"}
       >
-        {status === "submitting" ? "Sending…" : "Send application"}
+        {status === "submitting" ? "Submitting…" : "Submit application"}
         {status !== "submitting" && (
           <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
             <path
