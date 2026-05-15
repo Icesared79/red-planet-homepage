@@ -122,7 +122,7 @@ export function ContactDialog() {
           </div>
         ) : (
           <>
-            <div className="contact-eyebrow">§ 05 — Get in touch</div>
+            <div className="contact-eyebrow">§ 06 — Get in touch</div>
             <h2 id="contact-title" className="contact-title">
               Tell us what you&apos;re building.
             </h2>
