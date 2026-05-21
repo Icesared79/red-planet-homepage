@@ -44,7 +44,7 @@ const ITEMS = [
   {
     num: "+",
     title: "More",
-    desc: "Atlas grows continuously. Tax delinquency, permits, zoning, water rights, broker activity — added as the engine expands.",
+    desc: "Coverage expands continuously. Tax delinquency, permits, zoning, water rights, broker activity — added as the engine expands.",
   },
 ];
 

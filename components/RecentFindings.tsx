@@ -67,7 +67,7 @@ export async function RecentFindings() {
           <div className="section-body">
             <div className="findings-header">
               <h2>
-                What Atlas <span className="accent">found this week.</span>
+                What Atlas <span className="accent">surfaced this week.</span>
               </h2>
               <p>Recent ingestion activity from the engine, filtered to events that move deals.</p>
             </div>

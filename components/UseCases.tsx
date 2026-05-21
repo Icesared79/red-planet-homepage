@@ -376,7 +376,7 @@ export function UseCases() {
           <div className="section-body">
             <div className="possibilities-header">
               <h2>
-                What <span className="accent">Atlas</span> finds.
+                What <span className="accent">Atlas</span> surfaces.
               </h2>
               <p>The patterns below don&apos;t show up in standard property data. They show up in Atlas.</p>
             </div>
@@ -405,7 +405,7 @@ export function UseCases() {
                 <span className="vignette-cat">Conversion</span>
               </div>
               <h3>When a developer asks which downtown towers could become homes.</h3>
-              <p>Buildings where the zoning works, the owner is stretched, the abatement applies, and the rental market can absorb the units. Atlas finds them before the broker does.</p>
+              <p>Buildings where the zoning works, the owner is stretched, the abatement applies, and the rental market can absorb the units. Atlas surfaces them before the broker does.</p>
             </div>
           </article>
 
@@ -419,7 +419,7 @@ export function UseCases() {
                 <span className="vignette-cat">Distress</span>
               </div>
               <h3>When a fund needs to spot stress before it shows in price.</h3>
-              <p>When entity filings, ownership changes, missed payments, and asset condition all start moving in the same direction — that&apos;s stress. Atlas catches it months before it shows up in price.</p>
+              <p>When entity filings, ownership changes, missed payments, and asset condition all start moving in the same direction — that&apos;s stress. The system catches it months before it shows up in price.</p>
             </div>
           </article>
 
@@ -433,7 +433,7 @@ export function UseCases() {
                 <span className="vignette-cat">Outreach</span>
               </div>
               <h3>When a counselor needs to reach a family before the notice arrives.</h3>
-              <p>Households where the bills got harder, court activity started, and equity is still on the table. Atlas finds them before the notice does.</p>
+              <p>Households where the bills got harder, court activity started, and equity is still on the table. Atlas surfaces them before the notice does.</p>
             </div>
           </article>
 
