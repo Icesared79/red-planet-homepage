@@ -48,7 +48,7 @@ export function CTA() {
             <p className="cta-body">
               We don&apos;t sell off-the-shelf data. We work directly with operators
               who need an edge — tell us what you&apos;re working on and we&apos;ll
-              show you what Atlas can find.
+              show you what Atlas can surface.
             </p>
             <div className="cta-actions">
               <ContactTrigger className="btn-primary">

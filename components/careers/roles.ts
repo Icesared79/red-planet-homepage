@@ -68,7 +68,7 @@ export const ROLES: Role[] = [
     compensation:
       "Equity range: 2–3.5% depending on experience and commitment level. Four-year vest, one-year cliff. Cash compensation activates at funding close.",
     ownership: [
-      "The Atlas data pipeline — agents, sources, nightly refresh, self-healing.",
+      "The Atlas data pipeline — agents, sources, nightly refresh, the system that catches and resolves source failures.",
       "Signal quality standards and new composite scores end-to-end.",
       "The API surface and developer experience for everyone building on Atlas.",
       "AI-native development practice — Claude Code in the loop on every commit.",

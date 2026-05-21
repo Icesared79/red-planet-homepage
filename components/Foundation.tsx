@@ -98,9 +98,10 @@ export async function Foundation() {
                   <span className="accent">on</span>
                 </div>
                 <div className="stat-label">
-                  Atlas grows on its own. When a source breaks, it fixes itself.
-                  When new data appears, it gets added. The foundation gets
-                  stronger every night.
+                  Atlas runs a team of agents that monitor sources continuously.
+                  When something changes — a new filing, a new dataset, a broken
+                  endpoint — the system catches it and keeps moving. The
+                  foundation stays current without manual intervention.
                 </div>
               </div>
             </div>

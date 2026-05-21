@@ -21,12 +21,12 @@ export function Thesis() {
                 data layers — get lost in the noise.
               </p>
               <p>
-                <strong>We built Atlas to find them.</strong> A self-building
-                foundation that pulls property records, ownership, court
-                activity, debt, and signals from hundreds of sources, then
-                connects them in ways the rest of the industry can&apos;t. We
-                use Atlas every day to close our own work. Other operators use
-                it to close theirs.
+                <strong>We built Atlas to find them.</strong> An agent-driven
+                foundation. Continuous data work — property records, ownership,
+                court activity, debt, signals — pulled from hundreds of sources
+                across the country, then connected in ways the rest of the
+                industry can&apos;t. We use Atlas every day to close our own
+                work. Other operators use it to close theirs.
               </p>
             </div>
           </div>
