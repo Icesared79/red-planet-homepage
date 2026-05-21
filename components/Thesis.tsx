@@ -12,8 +12,8 @@ export function Thesis() {
             </h2>
             <div className="thesis-text">
               <p>
-                Red Planet built Atlas because real estate data has always
-                been shallow. Records go stale.
+                Red Planet built Atlas because the data real estate runs on
+                doesn&apos;t go deep enough. Records go stale.
                 Filings are scattered across thousands of jurisdictions.
                 Ownership chains take a week to map by hand. The patterns that
                 actually move deals — distress before it surfaces, ownership

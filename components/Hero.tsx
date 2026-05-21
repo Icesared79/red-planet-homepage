@@ -234,7 +234,7 @@ export async function Hero() {
             </h1>
             <p className="hero-sub reveal reveal-3">
               Surfaces the patterns in real estate that were unfindable until
-              now. Tuned to the deals you&apos;re trying to close.
+              now. Atlas does the heavy lifting. You make the call.
             </p>
             <div className="hero-actions reveal reveal-4">
               <a href="#cta" className="btn-primary">

@@ -60,8 +60,7 @@ export function Coverage() {
                 What&apos;s in <span className="accent">Atlas.</span>
               </h2>
               <p className="coverage-intro">
-                Depth and freshness over volume. Here&apos;s what the foundation is
-                built on.
+                The data layers the engine pulls from.
               </p>
               <div className="coverage-list">
                 {ITEMS.map((item) => (
