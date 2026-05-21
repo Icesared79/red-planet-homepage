@@ -233,9 +233,8 @@ export async function Hero() {
               </span>
             </h1>
             <p className="hero-sub reveal reveal-3">
-              Red Planet surfaces patterns in real estate and beyond that were
-              simply unfindable until now. Atlas does the heavy lifting. You
-              make the decisions.
+              Red Planet surfaces patterns that were simply unfindable until
+              now. Atlas does the heavy lifting. You make the decisions.
             </p>
             <div className="hero-actions reveal reveal-4">
               <a href="#cta" className="btn-primary">
