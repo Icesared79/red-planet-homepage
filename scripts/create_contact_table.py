@@ -1,4 +1,12 @@
-"""Create contact_submissions table with RLS + anon insert policy in Atlas Supabase."""
+"""Create/repair contact_submissions in the locked-down (service-role-only) state.
+
+The contact form inserts via the SERVICE ROLE through /api/contact and reads the
+row back server-side — it never uses the anon/publishable key. So this table
+must NOT carry any anon/public policy or grant. Re-running this script asserts
+that locked-down shape (idempotent): RLS on, all access revoked from
+PUBLIC/anon/authenticated, service_role only. (Hardened 2026-06-19; Atlas
+migration 20260619140000_drop_contact_anon_writepath.sql.)
+"""
 import os
 import sys
 import psycopg2
@@ -22,16 +30,18 @@ CREATE TABLE IF NOT EXISTS public.contact_submissions (
 
 ALTER TABLE public.contact_submissions ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS contact_submissions_anon_insert ON public.contact_submissions;
-CREATE POLICY contact_submissions_anon_insert
-  ON public.contact_submissions
-  FOR INSERT
-  TO anon
-  WITH CHECK (true);
+-- Default-deny lockdown. The form uses the service role; never grant anon.
+DROP POLICY IF EXISTS contact_submissions_anon_insert   ON public.contact_submissions;
+DROP POLICY IF EXISTS contact_submissions_public_insert ON public.contact_submissions;
+REVOKE ALL ON public.contact_submissions FROM PUBLIC, anon, authenticated;
+GRANT ALL  ON public.contact_submissions TO service_role;
 
-GRANT INSERT ON public.contact_submissions TO anon;
-GRANT USAGE ON SCHEMA public TO anon;
+DROP POLICY IF EXISTS service_role_full_access ON public.contact_submissions;
+CREATE POLICY service_role_full_access
+  ON public.contact_submissions
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 """
+
 
 def main():
     with psycopg2.connect(DB_URL) as conn:
@@ -39,27 +49,24 @@ def main():
         with conn.cursor() as cur:
             cur.execute(SQL)
             cur.execute("""
-                SELECT column_name, data_type, is_nullable, column_default
-                FROM information_schema.columns
-                WHERE table_schema='public' AND table_name='contact_submissions'
-                ORDER BY ordinal_position
-            """)
-            print("Columns:")
-            for row in cur.fetchall():
-                print(f"  {row[0]:12s} {row[1]:20s} nullable={row[2]:3s} default={row[3]}")
-            cur.execute("""
                 SELECT polname, polcmd, polroles::regrole[]
                 FROM pg_policy
                 WHERE polrelid = 'public.contact_submissions'::regclass
             """)
-            print("Policies:")
+            print("Policies (expect service_role only):")
             for row in cur.fetchall():
                 print(f"  {row}")
             cur.execute("""
-                SELECT relrowsecurity FROM pg_class
-                WHERE oid = 'public.contact_submissions'::regclass
+                SELECT grantee, string_agg(privilege_type, ',' ORDER BY privilege_type)
+                FROM information_schema.role_table_grants
+                WHERE table_schema='public' AND table_name='contact_submissions'
+                  AND grantee IN ('anon','authenticated','PUBLIC','service_role')
+                GROUP BY grantee ORDER BY grantee
             """)
-            print(f"RLS enabled: {cur.fetchone()[0]}")
+            print("Grants (expect service_role only):")
+            for row in cur.fetchall():
+                print(f"  {row[0]:14s} {row[1]}")
+
 
 if __name__ == "__main__":
     main()

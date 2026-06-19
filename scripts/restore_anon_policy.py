@@ -1,24 +1,18 @@
-import os, psycopg2
-url = os.environ["SUPABASE_DB_DIRECT_URL"]
-SQL = """
-DROP POLICY IF EXISTS contact_submissions_public_insert ON public.contact_submissions;
-DROP POLICY IF EXISTS contact_submissions_anon_insert ON public.contact_submissions;
-CREATE POLICY contact_submissions_anon_insert
-  ON public.contact_submissions
-  AS PERMISSIVE
-  FOR INSERT
-  TO anon
-  WITH CHECK (true);
+"""DISABLED 2026-06-19 — do not re-create the anon write path.
+
+This script used to (re)create the `contact_submissions_anon_insert` policy
+back when the contact form inserted directly with the anon/publishable key.
+The form no longer does that: it POSTs to /api/contact, which inserts with the
+SERVICE ROLE (app/api/contact/route.ts) and reads the row back server-side.
+
+The anon INSERT policy + grant were dropped as a security hardening (Atlas
+migration 20260619140000_drop_contact_anon_writepath.sql). Re-creating them
+would re-open a public write path with no consumer and trip the daily security
+scanner. If the form ever needs anon again, do it deliberately in a migration —
+not via this script.
 """
-with psycopg2.connect(url) as conn:
-    conn.autocommit = True
-    with conn.cursor() as cur:
-        cur.execute(SQL)
-        cur.execute("""
-          SELECT polname, polcmd, polroles::regrole[]::text[], pg_get_expr(polwithcheck, polrelid), polpermissive
-          FROM pg_policy WHERE polrelid='public.contact_submissions'::regclass
-          ORDER BY polname
-        """)
-        print("Final policy state:")
-        for row in cur.fetchall():
-            print(f"  {row}")
+import sys
+
+print(__doc__)
+print("Refusing to run: this script would re-open the dropped anon write path.")
+sys.exit(1)
