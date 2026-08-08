@@ -48,6 +48,16 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Red Planet",
+  url: "https://redplanetdata.com",
+  logo: "https://redplanetdata.com/brand/lockup-horizontal.svg",
+  description:
+    "Red Planet builds Atlas — the autonomous property intelligence engine. The verified foundation for property intelligence, continuously refreshed.",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -55,7 +65,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </body>
     </html>
   );
 }
