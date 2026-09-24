@@ -9,6 +9,14 @@ import { RecentFindings } from "@/components/RecentFindings";
 import { Thesis } from "@/components/Thesis";
 import { UseCases } from "@/components/UseCases";
 
+// Hero, Foundation, and RecentFindings all read live Atlas data via
+// getAtlasLive(). Without a route-level revalidate, Next statically
+// generates this page once at build time and never re-renders it, freezing
+// whatever getAtlasLive() returned at that build forever regardless of how
+// the live data changes underneath it. Matches the 300s revalidate already
+// on app/api/atlas-live/route.ts.
+export const revalidate = 300;
+
 export default function HomePage() {
   return (
     <>
