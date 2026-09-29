@@ -56,6 +56,22 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Familjen+Grotesk:wght@700&display=swap"
         />
+        {/* Review-only motion override, read before first paint so there is no
+            flash. A browser in a Remote Desktop session reports
+            prefers-reduced-motion: reduce whatever the host is set to, so an
+            animated page looks frozen to anyone reviewing it that way.
+            ?motion=1 forces motion on for that page load, ?motion=0 forces it
+            off. Without the parameter nothing is set and the page behaves
+            exactly as it does for every visitor. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{var m=new URL(location.href).searchParams.get("motion");' +
+              'if(m==="1"){document.documentElement.setAttribute("data-motion","force");}' +
+              'else if(m==="0"){document.documentElement.setAttribute("data-motion","reduce");}' +
+              "}catch(e){}})();",
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>

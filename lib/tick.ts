@@ -31,8 +31,23 @@ function subscribe(fn: (n: number) => void): () => void {
   };
 }
 
+/**
+ * True when this page load should show every animation in its final state.
+ *
+ * Normally that is just the browser's own preference. A reviewer can override
+ * it for one page load with `?motion=1` (force motion on) or `?motion=0`
+ * (force it off), which the inline script in app/layout.tsx turns into
+ * `data-motion` on <html> before first paint. That exists because a browser in
+ * a Remote Desktop session reports `reduce` whatever the host is set to, which
+ * makes an animated page look broken. With no query parameter the attribute is
+ * absent and this behaves exactly as it did before.
+ */
 export function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
+  if (typeof window === "undefined") return false;
+  const override = document.documentElement.dataset.motion;
+  if (override === "force") return false;
+  if (override === "reduce") return true;
+  if (!window.matchMedia) return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 

@@ -1319,15 +1319,31 @@ a:hover {
 }
 
 /* ==========================================================================
-   Reduced motion, every animation shows its final state
+   Reduced motion, every animation shows its final state.
+
+   A browser in a Remote Desktop session reports reduce whatever the host's
+   own setting says, so the page looks frozen to anyone reviewing it that way.
+   The data-motion attribute, set before first paint by the inline script in
+   app/layout.tsx, lets a reviewer override that for one page load:
+   ?motion=1 forces motion on, ?motion=0 forces it off. With no query
+   parameter the attribute is absent and only the media query applies, so
+   nothing about a visitor's experience changes.
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  :root:not([data-motion="force"]) *,
+  :root:not([data-motion="force"]) *::before,
+  :root:not([data-motion="force"]) *::after {
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
+}
+
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] *::before,
+:root[data-motion="reduce"] *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
 }
