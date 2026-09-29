@@ -1,9 +1,10 @@
 /* Manrope is the Red Planet text/display sans. The design package ships Geist as
    a documented stand-in for the then-unconfirmed sans, and loads Geist +
-   Fragment Mono itself (design-system/red-planet/tokens/fonts.css). This adds the
-   two faces the package does not carry: Manrope, and Familjen Grotesk for the
-   TeleAcre wordmark. Geist stays loaded for the Signal wordmark. */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Familjen+Grotesk:wght@700&display=swap');
+   Fragment Mono itself (design-system/red-planet/tokens/fonts.css). The two
+   faces the package does not carry, Manrope and Familjen Grotesk for the
+   TeleAcre wordmark, are loaded by a <link> in app/layout.tsx: an @import here
+   is dropped by the Tailwind/PostCSS pass, so the faces never arrive. Geist
+   stays loaded by the package, for the Signal wordmark. */
 
 @tailwind base;
 @tailwind components;

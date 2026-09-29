@@ -50,6 +50,12 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
+        {/* Manrope (--font-sans) and Familjen Grotesk (the TeleAcre wordmark).
+            The design system loads Geist and Fragment Mono itself. */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Familjen+Grotesk:wght@700&display=swap"
+        />
       </head>
       <body>{children}</body>
     </html>
