@@ -90,6 +90,8 @@ export function BuiltOnAtlas() {
           <a
             href="https://teleacre.com"
             className="rph-underline--sm rph-platform__link"
+            target="_blank"
+            rel="noopener"
           >
             teleacre.com &#8599;
           </a>

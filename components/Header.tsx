@@ -12,7 +12,13 @@ export function Header() {
         <a href="#engine">How it works</a>
         <a href="#products">Platforms</a>
         <a href="#coverage">Coverage</a>
-        <a href="https://docs.redplanetdata.com">Documentation</a>
+        <a
+          href="https://docs.redplanetdata.com"
+          target="_blank"
+          rel="noopener"
+        >
+          Documentation
+        </a>
         <a href="#contact" className="rph-pill-moss">
           Get in touch
         </a>

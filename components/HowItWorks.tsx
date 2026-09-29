@@ -62,6 +62,8 @@ export function HowItWorks() {
           <a
             href="https://docs.redplanetdata.com"
             className="rph-underline--moss"
+            target="_blank"
+            rel="noopener"
           >
             Read the documentation
           </a>
