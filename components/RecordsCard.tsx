@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/lib/in-view";
 import { prefersReducedMotion } from "@/lib/tick";
 import { useRelative } from "@/lib/relative";
 
@@ -32,14 +33,18 @@ export function RecordsCard({ total, updatedIso }: Props) {
   const [shown, setShown] = useState(total);
   const [drawn, setDrawn] = useState(false);
   const raf = useRef<number | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(cardRef);
   const rel = useRelative(updatedIso);
 
   useEffect(() => {
+    if (!inView) return;
     const drawT = setTimeout(() => setDrawn(true), 150);
     return () => clearTimeout(drawT);
-  }, []);
+  }, [inView]);
 
   useEffect(() => {
+    if (!inView) return;
     if (prefersReducedMotion()) {
       setShown(total);
       return;
@@ -57,10 +62,10 @@ export function RecordsCard({ total, updatedIso }: Props) {
     return () => {
       if (raf.current !== null) cancelAnimationFrame(raf.current);
     };
-  }, [total]);
+  }, [total, inView]);
 
   return (
-    <div id="records" className="rph-records">
+    <div id="records" ref={cardRef} className="rph-records">
       <div className="rph-records__head">
         <span className="rph-records__label">
           <span className="rph-dot" />

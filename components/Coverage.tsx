@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/lib/in-view";
 import { prefersReducedMotion } from "@/lib/tick";
 
 const COV_TYPES = [
@@ -59,15 +60,29 @@ function nightHeight(i: number): string {
 export function Coverage() {
   const [type, setType] = useState(0);
   const [filled, setFilled] = useState(NIGHTS);
+  const nightsRef = useRef<HTMLDivElement | null>(null);
+  // The nights strip loops, so run it only while the card is on screen.
+  const inView = useInView(nightsRef, { once: false });
+
+  // Rendered full on the server so a visitor without JavaScript sees the
+  // finished state; emptied as soon as we hydrate, well before the card can be
+  // scrolled to, so arriving at it does not flash a full strip first.
+  useEffect(() => {
+    if (!prefersReducedMotion()) setFilled(0);
+  }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (!inView) return;
+    if (prefersReducedMotion()) {
+      setFilled(NIGHTS);
+      return;
+    }
     setFilled(0);
     const id = setInterval(() => {
       setFilled((n) => (n >= 52 ? 0 : n + 1));
     }, 160);
     return () => clearInterval(id);
-  }, []);
+  }, [inView]);
 
   const current = COV_TYPES[type];
 
@@ -121,6 +136,7 @@ export function Coverage() {
 
           <div className="rph-nights-wrap">
             <div
+              ref={nightsRef}
               className="rph-nights"
               role="img"
               aria-label="History accumulating night by night from the first night a market is captured"

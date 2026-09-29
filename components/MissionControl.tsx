@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/lib/in-view";
 import { prefersReducedMotion } from "@/lib/tick";
 import { useRelative } from "@/lib/relative";
 
@@ -14,13 +15,19 @@ type Props = {
 
 export function MissionControl({ updatedIso }: Props) {
   const [done, setDone] = useState(0);
+  const stripRef = useRef<HTMLDivElement | null>(null);
+  // The run strip reads as last night's pipeline working through its steps, so
+  // it is worth watching again: re-arm it each time the band comes into view.
+  const inView = useInView(stripRef, { once: false });
   const rel = useRelative(updatedIso);
 
   useEffect(() => {
+    if (!inView) return;
     if (prefersReducedMotion()) {
       setDone(STEPS);
       return;
     }
+    setDone(0);
     const id = setInterval(() => {
       setDone((d) => {
         if (d >= STEPS) {
@@ -31,7 +38,7 @@ export function MissionControl({ updatedIso }: Props) {
       });
     }, 45);
     return () => clearInterval(id);
-  }, []);
+  }, [inView]);
 
   const doneCount = done - (done > FLAGGED ? 1 : 0);
 
@@ -54,6 +61,7 @@ export function MissionControl({ updatedIso }: Props) {
       </div>
 
       <div
+        ref={stripRef}
         className="rph-runstrip"
         role="img"
         aria-label={`Last night's run: ${doneCount} of ${STEPS} pipeline steps completed, 1 flagged for retry`}
