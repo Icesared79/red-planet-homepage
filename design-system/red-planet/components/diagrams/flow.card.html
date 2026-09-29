@@ -1,0 +1,23 @@
+<!-- @dsCard group="Components" viewport="700x270" name="Flow diagram" subtitle="Lineage: sources → tables → layers → places → storage" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { FlowDiagram } = DS;
+
+const stages=[{key:'src',label:'Sources'},{key:'tbl',label:'Tables'},{key:'lyr',label:'Layers'},{key:'plc',label:'Places'},{key:'sto',label:'Storage'}];
+const nodes=[{id:'s1',stage:'src',label:'Fairfield Recorder',meta:'SRC-0142',status:'live'},{id:'s2',stage:'src',label:'Hartford Court',meta:'SRC-0077',status:'stale'},{id:'s3',stage:'src',label:'Miami-Dade Tax',meta:'SRC-0310',status:'failed'},
+{id:'t1',stage:'tbl',label:'deeds',meta:'2.4M rows',status:'live'},{id:'t2',stage:'tbl',label:'liens',meta:'880K rows',status:'live'},{id:'t3',stage:'tbl',label:'tax_status',meta:'1.2M rows',status:'stale'},
+{id:'l1',stage:'lyr',label:'Ownership',meta:'layer',status:'live'},{id:'l2',stage:'lyr',label:'Distress',meta:'layer',status:'live'},
+{id:'p1',stage:'plc',label:'Parcels',meta:'18.2M',status:'live'},{id:'p2',stage:'plc',label:'Governing bodies',meta:'3,114',status:'live'},
+{id:'o1',stage:'sto',label:'Archive',meta:'every version',status:'live'},{id:'o2',stage:'sto',label:'Warehouse',meta:'serving',status:'live'}];
+const edges=[{from:'s1',to:'t1'},{from:'s1',to:'t2'},{from:'s2',to:'t2'},{from:'s3',to:'t3',status:'failed'},{from:'t1',to:'l1'},{from:'t2',to:'l2'},{from:'t3',to:'l2',status:'failed'},{from:'l1',to:'p1'},{from:'l2',to:'p1'},{from:'l1',to:'p2'},{from:'p1',to:'o1'},{from:'p1',to:'o2'},{from:'p2',to:'o2'}];
+function App(){ const [sel,setSel]=React.useState('t3'); return <div className="pad" data-density="compact" data-product="atlas" style={{'--flow-gap':'22px','--flow-col-min':'100px'}}><FlowDiagram stages={stages} nodes={nodes} edges={edges} selectedId={sel} onSelect={setSel} /></div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

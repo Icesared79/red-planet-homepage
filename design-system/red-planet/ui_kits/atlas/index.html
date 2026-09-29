@@ -1,0 +1,15 @@
+<!-- @dsCard group="Atlas" viewport="1280x800" name="Atlas app" subtitle="Compact density: shell, sources, lineage, map, runs" -->
+<!-- @startingPoint section="Atlas" subtitle="Atlas application screen — sidebar shell, table, drawer" viewport="1280x800" -->
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atlas</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>html,body{margin:0;height:100%}body{background:var(--bg)}*{box-sizing:border-box}</style></head>
+<body class="rp-root"><div id="root" style="height:100%"></div>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="Screens.jsx"></script>
+<script type="text/babel" src="App.jsx"></script>
+<script type="text/babel">loadDS('../../').then(DS => { window.DS = DS; ReactDOM.createRoot(document.getElementById('root')).render(<App />); });</script>
+</body></html>

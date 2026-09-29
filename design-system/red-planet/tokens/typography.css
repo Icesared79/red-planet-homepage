@@ -1,0 +1,59 @@
+:root {
+  --font-sans: 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'Fragment Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Display — editorial headlines (Red Planet) */
+  --fs-display-xl: clamp(56px, 7.2vw, 104px);
+  --fs-display-l: clamp(38px, 4.2vw, 60px);
+  --fs-display-m: clamp(30px, 3vw, 42px);
+  /* Text */
+  --fs-title-l: 28px;
+  --fs-title: 22px;
+  --fs-title-s: 17px;
+  --fs-body-l: 19px;
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-caption: 13px;
+  --fs-micro: 12px;
+  /* Mono */
+  --fs-label: 13px;
+  --fs-figure-xl: clamp(40px, 4.4vw, 64px);
+  --fs-figure-l: clamp(30px, 2.8vw, 40px);
+  --fs-figure-m: 26px;
+  --fs-figure-s: 18px;
+
+  --lh-display: 0.95;
+  --lh-heading: 1.08;
+  --lh-title: 1.25;
+  --lh-body: 1.55;
+  --lh-ui: 1.3;
+
+  --tracking-display: -0.04em;
+  --tracking-heading: -0.028em;
+  --tracking-title: -0.015em;
+  --tracking-body: -0.003em;
+  --tracking-mono: 0;
+  --tracking-figure: -0.01em;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+}
+
+/* Type helpers — use these instead of restating font stacks */
+.rp-display-xl { font: var(--fw-regular) var(--fs-display-xl)/var(--lh-display) var(--font-sans); letter-spacing: var(--tracking-display); text-wrap: balance; margin: 0; }
+.rp-display-l  { font: var(--fw-regular) var(--fs-display-l)/1.02 var(--font-sans); letter-spacing: var(--tracking-heading); text-wrap: balance; margin: 0; }
+.rp-display-m  { font: var(--fw-regular) var(--fs-display-m)/var(--lh-heading) var(--font-sans); letter-spacing: var(--tracking-heading); text-wrap: balance; margin: 0; }
+.rp-title-l    { font: var(--fw-regular) var(--fs-title-l)/var(--lh-title) var(--font-sans); letter-spacing: var(--tracking-title); margin: 0; }
+.rp-title      { font: var(--fw-medium) var(--fs-title)/var(--lh-title) var(--font-sans); letter-spacing: var(--tracking-title); margin: 0; }
+.rp-title-s    { font: var(--fw-medium) var(--fs-title-s)/var(--lh-title) var(--font-sans); letter-spacing: -0.01em; margin: 0; }
+.rp-body-l     { font: var(--fw-regular) var(--fs-body-l)/var(--lh-body) var(--font-sans); letter-spacing: var(--tracking-body); text-wrap: pretty; margin: 0; }
+.rp-body       { font: var(--fw-regular) var(--fs-body)/var(--lh-body) var(--font-sans); letter-spacing: var(--tracking-body); text-wrap: pretty; margin: 0; }
+.rp-small      { font: var(--fw-regular) var(--fs-small)/1.5 var(--font-sans); margin: 0; }
+.rp-caption    { font: var(--fw-regular) var(--fs-caption)/1.45 var(--font-sans); color: var(--fg-3); margin: 0; }
+.rp-label      { font: var(--fw-regular) var(--fs-label)/1.3 var(--font-mono); letter-spacing: var(--tracking-mono); color: var(--fg-3); margin: 0; }
+.rp-figure-xl  { font: var(--fw-regular) var(--fs-figure-xl)/1 var(--font-mono); letter-spacing: var(--tracking-figure); font-variant-numeric: tabular-nums; margin: 0; }
+.rp-figure-l   { font: var(--fw-regular) var(--fs-figure-l)/1 var(--font-mono); letter-spacing: var(--tracking-figure); font-variant-numeric: tabular-nums; margin: 0; }
+.rp-figure-m   { font: var(--fw-regular) var(--fs-figure-m)/1.1 var(--font-mono); font-variant-numeric: tabular-nums; margin: 0; }
+.rp-figure-s   { font: var(--fw-regular) var(--fs-figure-s)/1.2 var(--font-mono); font-variant-numeric: tabular-nums; margin: 0; }
+.rp-mono       { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }

@@ -1,0 +1,26 @@
+<!-- @dsCard group="Components" viewport="700x460" name="Sidebar shell" subtitle="Atlas frame with grouped, filterable navigation" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { SidebarShell, Breadcrumbs, Button, Icon, EmptyState } = DS;
+
+const I = n => <Icon name={n} />;
+const groups = [
+ {label:'Monitor',items:[{id:'overview',label:'Overview',icon:I('activity')},{id:'runs',label:'Runs',icon:I('play'),meta:'1',attention:true},{id:'alerts',label:'Alerts',icon:I('bell'),meta:'3',attention:true}]},
+ {label:'Catalog',items:[{id:'sources',label:'Sources',icon:I('database'),meta:'2,418',children:[{id:'s-rec',label:'Recorders'},{id:'s-crt',label:'Courts'},{id:'s-tax',label:'Tax collectors'}]},{id:'tables',label:'Tables',icon:I('table-2'),meta:'312'},{id:'layers',label:'Layers',icon:I('layers'),meta:'41'}]},
+ {label:'Geography',items:[{id:'places',label:'Places',icon:I('map-pin')},{id:'coverage',label:'Coverage',icon:I('map')}]},
+ {label:'Storage',items:[{id:'archive',label:'Archive',icon:I('archive')},{id:'buckets',label:'Buckets',icon:I('hard-drive')}]},
+];
+function App(){ const [id,setId]=React.useState('sources'); return <div style={{height:460}}>
+<SidebarShell workspace="prod" groups={groups} activeId={id} onSelect={setId} header={<><Breadcrumbs items={['Catalog','Sources']} /><div style={{marginLeft:'auto'}}><Button size="sm" icon={I('plus')}>Add source</Button></div></>}>
+<EmptyState code={id} title="Screen content goes here." description="The shell provides the sidebar, 48px header row and scrolling body." />
+</SidebarShell></div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

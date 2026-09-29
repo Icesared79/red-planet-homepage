@@ -10,3 +10,5 @@ next-env.d.ts
 legacy_static/
 
 .env*.local
+
+.inputs/

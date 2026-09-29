@@ -1,0 +1,21 @@
+<!-- @dsCard group="Components" viewport="700x250" name="Badges & status" subtitle="Five lifecycle states; mono tags" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { StatusIndicator, Badge } = DS;
+
+const S=['live','activating','dormant','stale','failed'];
+function App(){ return <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
+<div className="pad col"><span className="l">Light</span><div className="row" style={{gap:18}}>{S.map(s=><StatusIndicator key={s} status={s} />)}</div><div className="row" style={{gap:14}}>{S.map(s=><StatusIndicator key={s} status={s} showLabel={false} />)}<StatusIndicator status="failed" meta="E-504" /><StatusIndicator status="live" meta="9h ago" /></div>
+<div className="row"><Badge>Tax lien</Badge><Badge variant="outline">CT</Badge><Badge tone="positive">verified</Badge><Badge tone="caution">48 stale</Badge><Badge tone="attention">3 failed</Badge><Badge tone="attention" variant="text">kept</Badge></div></div>
+<div data-theme="dark" className="pad col" style={{background:'var(--bg)'}}><span className="l">Dark</span><div className="row" style={{gap:18}}>{S.map(s=><StatusIndicator key={s} status={s} />)}</div><div className="row"><Badge>Tax lien</Badge><Badge variant="outline">CT</Badge><Badge tone="positive">verified</Badge><Badge tone="caution">48 stale</Badge><Badge tone="attention">3 failed</Badge></div></div>
+</div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

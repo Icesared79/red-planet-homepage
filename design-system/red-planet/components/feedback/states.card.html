@@ -1,0 +1,19 @@
+<!-- @dsCard group="Components" viewport="700x250" name="Empty & error states" subtitle="Typographic, one action each" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { EmptyState, Button } = DS;
+
+function App(){ return <div data-density="compact" data-product="atlas" style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
+<EmptyState code="0 results" title="No sources match these filters." description="Clear a filter or search a different jurisdiction." actions={<Button variant="secondary">Clear filters</Button>} />
+<EmptyState variant="error" code="E-SRC-504 · 03:12" title="The county server stopped responding." description="Atlas will retry at 04:00. You can retry now." actions={<><Button variant="danger">Retry now</Button><Button variant="ghost">View log</Button></>} />
+</div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

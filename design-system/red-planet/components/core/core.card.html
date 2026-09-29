@@ -1,0 +1,20 @@
+<!-- @dsCard group="Components" viewport="700x200" name="Eyebrow & Icon" subtitle="Section labels and thin-stroke icons" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { Eyebrow, Icon } = DS;
+
+function App(){ return <div className="pad col">
+<div className="row" style={{gap:28}}><Eyebrow index={1}>What we do</Eyebrow><Eyebrow index={4}>How it works</Eyebrow><Eyebrow tone="muted">Last night's run</Eyebrow></div>
+<div data-product="atlas" className="row" style={{gap:28}}><span className="l">In Atlas →</span><Eyebrow>Catalog · Sources</Eyebrow></div>
+<div className="row" style={{gap:18,color:'var(--fg-1)'}}>{['database','table-2','layers','map-pin','hard-drive','git-branch','activity','triangle-alert'].map(n=><Icon key={n} name={n} />)}</div>
+</div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

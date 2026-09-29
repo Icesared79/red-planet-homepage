@@ -1,0 +1,14 @@
+<!-- @dsCard group="Red Planet" viewport="1280x900" name="Homepage" subtitle="Red Planet public site, comfortable density" -->
+<!-- @startingPoint section="Red Planet" subtitle="Editorial homepage with hero metric, run chart, ruled table" viewport="1280x900" -->
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Red Planet — Homepage</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>html,body{margin:0;height:100%}body{background:var(--bg)}*{box-sizing:border-box}html{scroll-behavior:smooth}</style></head>
+<body class="rp-root"><div id="root" style="height:100%"></div>
+<script type="text/babel" src="Sections.jsx"></script>
+<script type="text/babel" src="App.jsx"></script>
+<script type="text/babel">loadDS('../../').then(DS => { window.DS = DS; ReactDOM.createRoot(document.getElementById('root')).render(<App />); });</script>
+</body></html>

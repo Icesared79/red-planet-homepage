@@ -16,8 +16,26 @@ type Body = {
   name?: string;
   email?: string;
   company?: string;
+  // Legacy shape, still accepted.
   building?: string;
   source?: string;
+  // Shape the redesigned homepage modal sends.
+  topic?: string;
+  product?: string | null;
+  markets?: string | null;
+  message?: string;
+};
+
+/**
+ * The redesigned modal collects a topic, an optional product or market list and
+ * a free-text message. contact_submissions is unchanged, so the topic lands in
+ * `source` and the message plus its qualifiers land in `building`.
+ */
+const TOPIC_LABELS: Record<string, string> = {
+  data: "Data access",
+  product: "A product",
+  partnership: "Partnership",
+  other: "Something else",
 };
 
 function escapeHtml(value: string): string {
@@ -39,13 +57,24 @@ export async function POST(request: Request) {
 
   const name = (body.name ?? "").trim();
   const email = (body.email ?? "").trim();
-  const company = (body.company ?? "").trim();
-  const building = (body.building ?? "").trim();
-  const source = (body.source ?? "").trim();
+  const company = (body.company ?? "").trim() || "(not provided)";
+  const topic = (body.topic ?? "").trim();
+  const message = (body.message ?? "").trim();
+  const product = (body.product ?? "").trim();
+  const markets = (body.markets ?? "").trim();
 
-  if (!name || !email || !company || !building) {
+  const detailParts = [message || (body.building ?? "").trim()];
+  if (product) detailParts.push(`Product: ${product}`);
+  if (markets) detailParts.push(`Markets: ${markets}`);
+  const building = detailParts.filter(Boolean).join("\n\n");
+
+  const source = topic
+    ? TOPIC_LABELS[topic] ?? topic
+    : (body.source ?? "").trim();
+
+  if (!name || !email || !building) {
     return NextResponse.json(
-      { error: "Name, email, company, and building are required." },
+      { error: "Name, email, and a message are required." },
       { status: 400 }
     );
   }
@@ -95,10 +124,9 @@ export async function POST(request: Request) {
         `Name: ${name}`,
         `Email: ${email}`,
         `Company: ${company}`,
-        `What are you building?`,
+        `Topic: ${source || "(not provided)"}`,
+        `Message:`,
         building,
-        `How did you hear about us?`,
-        source || "(not provided)",
         ``,
         `Submission id: ${row?.id}`,
         `Submitted: ${row?.created_at}`,
@@ -110,8 +138,8 @@ export async function POST(request: Request) {
             <tr><td style="padding:6px 0;color:#6b6760;width:160px;">Name</td><td style="padding:6px 0;">${escapeHtml(name)}</td></tr>
             <tr><td style="padding:6px 0;color:#6b6760;">Email</td><td style="padding:6px 0;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
             <tr><td style="padding:6px 0;color:#6b6760;">Company</td><td style="padding:6px 0;">${escapeHtml(company)}</td></tr>
-            <tr><td style="padding:6px 0;color:#6b6760;vertical-align:top;">What are you building?</td><td style="padding:6px 0;white-space:pre-wrap;">${escapeHtml(building)}</td></tr>
-            <tr><td style="padding:6px 0;color:#6b6760;">How did you hear?</td><td style="padding:6px 0;">${escapeHtml(source || "(not provided)")}</td></tr>
+            <tr><td style="padding:6px 0;color:#6b6760;vertical-align:top;">Message</td><td style="padding:6px 0;white-space:pre-wrap;">${escapeHtml(building)}</td></tr>
+            <tr><td style="padding:6px 0;color:#6b6760;">Topic</td><td style="padding:6px 0;">${escapeHtml(source || "(not provided)")}</td></tr>
             <tr><td style="padding:12px 0 0;color:#8a8478;font-size:12px;">Submission</td><td style="padding:12px 0 0;color:#8a8478;font-size:12px;">${escapeHtml(String(row?.id ?? ""))}</td></tr>
           </table>
         </div>`;

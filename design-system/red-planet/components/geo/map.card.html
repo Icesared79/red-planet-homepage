@@ -1,0 +1,19 @@
+<!-- @dsCard group="Components" viewport="700x380" name="Map container" subtitle="Overlay slots around any map library" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { MapFrame, MapLegendItem, Tabs } = DS;
+
+function App(){ return <div className="pad" data-density="compact" data-product="atlas">
+<MapFrame height={330} toolbar={<div style={{background:'var(--bg-raised)',padding:4,borderRadius:4,boxShadow:'var(--elev-1)'}}><Tabs variant="pill" items={['Parcels','Filings','Coverage']} /></div>}
+legend={<><MapLegendItem>Covered market</MapLegendItem><MapLegendItem swatch="var(--green-300)">Filings, last 30d</MapLegendItem><MapLegendItem swatch="var(--attention)" shape="circle">Needs review</MapLegendItem></>}
+readout="41.1792° N, 73.1894° W · z12 · 18,204 parcels" attribution="Basemap attribution" /></div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

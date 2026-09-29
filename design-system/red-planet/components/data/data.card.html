@@ -1,0 +1,24 @@
+<!-- @dsCard group="Components" viewport="700x470" name="Tables & metrics" subtitle="Ruled table and mono figures" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.2/babel.min.js"></script>
+<script src="../../assets/ds-loader.js"></script>
+<style>body{margin:0;background:var(--bg)}*{box-sizing:border-box}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.col{display:grid;gap:14px}.l{font:400 11px/1.3 var(--font-mono);color:var(--fg-3)}.pad{padding:22px}</style></head>
+<body class="rp-root"><div id="root"></div>
+<script type="text/babel">
+loadDS('../../').then(DS => {
+const { DataTable, Metric, StatusIndicator, Badge } = DS;
+
+const rows=[{id:1,a:'Judgment · Norwalk · 9/25',b:'Judgment · Norwalk · 9/25'},{id:2,a:'Mechanics lien · Bridgeport · 9/25',b:'Mechanics lien · Bridgeport · 9/25'},{id:3,a:'Removed from source',b:'Lis pendens · Bristol · 9/23',kept:1}];
+const src=[{id:'SRC-0142',name:'Fairfield County Recorder',st:'live',rows:2418339,t:'9h'},{id:'SRC-0077',name:'Hartford Superior Court',st:'stale',rows:880412,t:'3d'},{id:'SRC-0310',name:'Miami-Dade Tax Collector',st:'failed',rows:1204551,t:'E-504'},{id:'SRC-0402',name:'Erie County Clerk',st:'activating',rows:0,t:'—'}];
+function App(){ const [sel,setSel]=React.useState('SRC-0310'); return <div className="col" style={{gap:0}}>
+<div className="pad" style={{display:'grid',gridTemplateColumns:'1.25fr 1fr',gap:28}}>
+<DataTable columns={[{key:'a',label:'The source shows',render:r=><span style={{color:r.kept?'var(--fg-4)':undefined,fontSize:r.kept?12:undefined}}>{r.a}</span>},{key:'b',label:'Atlas holds · 27 filings',render:r=><span style={{display:'flex',justifyContent:'space-between'}}>{r.b}{r.kept&&<Badge tone="attention" variant="text">kept</Badge>}</span>}]} rows={rows} />
+<div className="col" style={{gap:18}}><Metric size="l" label="Verified records" aside="9 hours ago" value="502,392,645" meta="+275.5M archived" /><div style={{display:'flex',gap:28}}><Metric size="m" label="Pipeline steps completed" value="126 of 127" /><Metric size="m" label="Flagged for retry" value="1" tone="attention" /></div></div></div>
+<div className="pad" data-density="compact" data-product="atlas" style={{borderTop:'1px solid var(--rule)',paddingTop:14}}>
+<DataTable sortable selectedKey={sel} onRowClick={r=>setSel(r.id)} columns={[{key:'id',label:'ID',mono:true,muted:true,width:90},{key:'name',label:'Source'},{key:'st',label:'Status',render:r=><StatusIndicator status={r.st} />},{key:'rows',label:'Rows',align:'right',mono:true,render:r=>r.rows.toLocaleString()},{key:'t',label:'Last',align:'right',mono:true,muted:true}]} rows={src} /></div>
+</div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script></body></html>

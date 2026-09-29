@@ -1,0 +1,63 @@
+:root {
+  --space-0: 0;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 20px;
+  --space-7: 24px;
+  --space-8: 32px;
+  --space-9: 40px;
+  --space-10: 48px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+  --space-14: 128px;
+  --space-15: 160px;
+
+  --page-max: 1280px;
+  --page-gutter: clamp(20px, 4vw, 56px);
+  --grid-gap: 24px;
+}
+
+/* ---------- Density ----------
+   One set of names, two sets of values.
+   Red Planet pages = comfortable (default). Atlas = compact. */
+:root,
+[data-density="comfortable"] {
+  --control-h: 44px;
+  --control-h-sm: 36px;
+  --control-px: 20px;
+  --control-gap: 8px;
+  --fs-ui: 15px;
+  --radius-control: var(--radius-pill);
+  --radius-field: var(--radius-sm);
+  --row-h: 48px;
+  --cell-px: 0px;
+  --fs-cell: 15px;
+  --panel-pad: 32px;
+  --stack-gap: 24px;
+  --section-pad-y: clamp(64px, 9vw, 128px);
+  --icon-size: 20px;
+  --nav-item-h: 40px;
+  --drawer-w: 480px;
+}
+[data-density="compact"] {
+  --control-h: 28px;
+  --control-h-sm: 24px;
+  --control-px: 10px;
+  --control-gap: 6px;
+  --fs-ui: 13px;
+  --radius-control: var(--radius-xs);
+  --radius-field: var(--radius-xs);
+  --row-h: 32px;
+  --cell-px: 10px;
+  --fs-cell: 13px;
+  --panel-pad: 16px;
+  --stack-gap: 12px;
+  --section-pad-y: 24px;
+  --icon-size: 16px;
+  --nav-item-h: 28px;
+  --drawer-w: 400px;
+}
