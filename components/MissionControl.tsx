@@ -48,15 +48,14 @@ export function MissionControl({ updatedIso }: Props) {
         &sect; 02 &mdash; Mission control
       </div>
       <h2 className="rph-h2 rph-mission__h2">
-        Atlas allows Red Planet to monitor the entire data stack.
+        We watch everything Atlas collects, from one place.
       </h2>
       <p className="rph-intro rph-intro--moss rph-mission__intro">
-        It{" "} also allow us to build any number of products on top.
-        {" "}
+        It also lets us build any number of products on top.
       </p>
 
       <div className="rph-runhead">
-        <span className="rph-runhead__title">Last night&rsquo;s run</span>
+        <span className="rph-runhead__title">Last night</span>
         <span className="rph-runhead__rel">Updated {rel}</span>
       </div>
 
@@ -64,7 +63,7 @@ export function MissionControl({ updatedIso }: Props) {
         ref={stripRef}
         className="rph-runstrip"
         role="img"
-        aria-label={`Last night's run: ${doneCount} of ${STEPS} pipeline steps completed, 1 flagged for retry`}
+        aria-label={`Last night: ${doneCount} of ${STEPS} checks completed, 1 needs another attempt`}
       >
         {Array.from({ length: STEPS }, (_, i) => {
           const complete = i < done;
@@ -87,13 +86,13 @@ export function MissionControl({ updatedIso }: Props) {
 
       <div className="rph-runstats">
         <div>
-          <div className="rph-runstats__label">Pipeline steps completed</div>
+          <div className="rph-runstats__label">Checks completed</div>
           <div className="rph-runstats__value">
             {doneCount} of {STEPS}
           </div>
         </div>
         <div>
-          <div className="rph-runstats__label">Flagged for retry</div>
+          <div className="rph-runstats__label">Needs another attempt</div>
           <div className="rph-runstats__value rph-runstats__value--flag">1</div>
         </div>
       </div>
