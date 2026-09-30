@@ -1,14 +1,9 @@
 import { LegalFooter } from "@/components/LegalFooter";
 
 /**
- * The homepage carries its legal block inside the § 07 closing band
- * (components/GetInTouch.tsx). This is the same block as a standalone band,
- * for pages that do not end on that section.
+ * Pages that do not end on the § 07 band close on the legal footer alone, so
+ * it takes the rounded top that band would have carried.
  */
 export function Footer() {
-  return (
-    <section className="rph-contact">
-      <LegalFooter topRule={false} />
-    </section>
-  );
+  return <LegalFooter standalone />;
 }

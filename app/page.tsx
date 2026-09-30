@@ -5,6 +5,7 @@ import { GetInTouch } from "@/components/GetInTouch";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/HowItWorks";
+import { LegalFooter } from "@/components/LegalFooter";
 import { MissionControl } from "@/components/MissionControl";
 import { WhyDifferent } from "@/components/WhyDifferent";
 import { getAtlasLive } from "@/lib/atlas-live";
@@ -36,10 +37,11 @@ export default async function HomePage() {
           <Coverage />
         </main>
       </div>
-      {/* Outside .rph-page so the closing band runs to the edges of the
-          window instead of stopping at the 1560px column. Its content keeps
-          the same column and gutters as every section above it. */}
+      {/* Both are outside .rph-page so they run to the edges of the window
+          instead of stopping at the 1560px column. Their content keeps the
+          same column and gutters as every section above. */}
       <GetInTouch />
+      <LegalFooter />
       <ContactDialog />
     </>
   );

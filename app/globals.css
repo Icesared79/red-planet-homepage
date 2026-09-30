@@ -59,6 +59,9 @@
   --rph-inverse: var(--forest-800);
   --rph-on-inverse: var(--paper-100);
 
+  /* The footer floor: one step below the closing band in both themes. */
+  --rph-footer-bg: var(--forest-950);
+
   /* Accents that have to hold on whichever ground they sit on. */
   --rph-red: var(--red-500);
   --rph-positive: var(--green-600);
@@ -141,6 +144,11 @@
 
   --rph-inverse: #F1F0EA;
   --rph-on-inverse: var(--ink-900);
+
+  /* forest-950 is the bottom of the ramp, so on dark the footer lands on the
+     same value as the page. Against the forest-800 band above it that is
+     still a clear step down, and the rule marks the boundary. */
+  --rph-footer-bg: var(--forest-950);
 
   --rph-red: var(--red-400);
   --rph-red-on-sage: var(--red-400);
@@ -1170,14 +1178,26 @@ a:hover {
    Legal footer, inside the closing band
    ========================================================================== */
 
+/* Its own band, a step deeper than the § 07 slab above it, so the page has a
+   floor instead of the dark simply continuing. Full bleed like that band, and
+   square, because this is the thing that ends the page. */
 .rph-legal {
+  background: var(--rph-footer-bg);
+  color: var(--rph-on-moss);
   border-top: 1px solid var(--rph-rule-moss);
+}
+
+/* On a page that does not carry the § 07 band, the footer is the only closing
+   band, so it rises from the page the way that one does. */
+.rph-legal--standalone {
+  border-top: 0;
+  border-radius: var(--band-radius) var(--band-radius) 0 0;
 }
 
 .rph-legal__inner {
   max-width: var(--page-max);
   margin: 0 auto;
-  padding: clamp(32px, 4vw, 48px) var(--page-gutter) clamp(32px, 4vw, 44px);
+  padding: clamp(40px, 4.8vw, 60px) var(--page-gutter) clamp(36px, 4.4vw, 52px);
 }
 
 .rph-legal__top {

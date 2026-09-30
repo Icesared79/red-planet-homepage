@@ -1,5 +1,4 @@
 import { ContactTrigger } from "@/components/ContactTrigger";
-import { LegalFooter } from "@/components/LegalFooter";
 
 export function GetInTouch() {
   return (
@@ -21,7 +20,6 @@ export function GetInTouch() {
           </ContactTrigger>
         </div>
       </div>
-      <LegalFooter />
     </section>
   );
 }

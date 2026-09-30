@@ -1,15 +1,18 @@
 import { RedPlanetMark } from "@/components/Marks";
 
 type Props = {
-  /** Dropped when the legal block is the only thing in its band. */
-  topRule?: boolean;
+  /**
+   * True when the footer is the only closing band on the page, so it takes
+   * the rounded top the § 07 band would otherwise have carried. On the
+   * homepage it follows that band and sits flush beneath it.
+   */
+  standalone?: boolean;
 };
 
-export function LegalFooter({ topRule = true }: Props) {
+export function LegalFooter({ standalone = false }: Props) {
   return (
     <footer
-      className="rph-legal"
-      style={topRule ? undefined : { borderTop: "0" }}
+      className={`rph-legal${standalone ? " rph-legal--standalone" : ""}`}
     >
       <div className="rph-legal__inner">
         <div className="rph-legal__top">
