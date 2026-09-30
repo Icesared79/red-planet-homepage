@@ -24,18 +24,23 @@ export default async function HomePage() {
   const updatedIso = live?.last_updated ?? null;
 
   return (
-    <div className="rph-page">
-      <Header />
-      <main>
-        <Hero total={total} updatedIso={updatedIso} />
-        <MissionControl updatedIso={updatedIso} />
-        <WhyDifferent />
-        <HowItWorks />
-        <BuiltOnAtlas />
-        <Coverage />
-        <GetInTouch />
-      </main>
+    <>
+      <div className="rph-page">
+        <Header />
+        <main>
+          <Hero total={total} updatedIso={updatedIso} />
+          <MissionControl updatedIso={updatedIso} />
+          <WhyDifferent />
+          <HowItWorks />
+          <BuiltOnAtlas />
+          <Coverage />
+        </main>
+      </div>
+      {/* Outside .rph-page so the closing band runs to the edges of the
+          window instead of stopping at the 1560px column. Its content keeps
+          the same column and gutters as every section above it. */}
+      <GetInTouch />
       <ContactDialog />
-    </div>
+    </>
   );
 }

@@ -99,14 +99,14 @@ export function RecordsCard({ total, updatedIso }: Props) {
         />
         <polygon
           points={AREA_POINTS}
-          fill="var(--forest-800)"
+          fill="var(--rph-chart-line)"
           fillOpacity={drawn ? 0.08 : 0}
           style={{ transition: "fill-opacity 1.2s ease .6s" }}
         />
         <polyline
           points={LINE_POINTS}
           fill="none"
-          stroke="var(--forest-800)"
+          stroke="var(--rph-chart-line)"
           strokeWidth="2"
           vectorEffect="non-scaling-stroke"
           pathLength={1}

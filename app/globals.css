@@ -38,10 +38,33 @@
   --card-radius-lg: 24px;
   --pill: 999px;
 
-  /* --- Surfaces the package has no exact token for ------------------------ */
+  /* --- Themed surfaces ----------------------------------------------------
+     Every one of these is redefined under [data-theme="dark"] below. Nothing
+     in a component rule names a palette primitive directly, so the whole page
+     re-themes from this block alone. Light values are the design's. ------- */
+  --rph-page: var(--paper-100);
+  --rph-ink: var(--ink-900);
+  --rph-rule-ink: var(--ink-900);
+  --rph-band-moss: var(--forest-800);
+  --rph-band-sage: var(--sage-200);
+  --rph-band-paper2: var(--paper-200);
+  --rph-card-platform: var(--paper-200);
   --rph-card-records: #E6E7DF;
   --rph-card-sage-inner: #EEF1EA;
   --rph-card-quiet: #F6F6F1;
+  --rph-dialog: var(--paper-100);
+  --rph-field: var(--bg-raised);
+
+  /* Inverse pair: the moss pill, the selected tab, the pressed chip. */
+  --rph-inverse: var(--forest-800);
+  --rph-on-inverse: var(--paper-100);
+
+  /* Accents that have to hold on whichever ground they sit on. */
+  --rph-red: var(--red-500);
+  --rph-positive: var(--green-600);
+  --rph-error-bg: var(--red-100);
+  --rph-focus: var(--focus);
+  --rph-chart-line: var(--forest-800);
 
   /* --- Ink ramp on paper -------------------------------------------------- */
   --rph-body: #414842;
@@ -84,6 +107,71 @@
 }
 
 /* ==========================================================================
+   Dark theme.
+
+   Built from the design system's forest ramp and its dark semantic values
+   (design-system/red-planet/tokens/colors.css, [data-theme="dark"]), so the
+   two themes stay one system rather than two palettes. The page sits at
+   forest-950, the deepest step, which leaves the bands and cards above it
+   reading as raised in the same order they do on paper.
+
+   Improvised, because the package documents dark for Atlas screens and not
+   for a Red Planet marketing page: the sage band and the paper-200 blocks map
+   to forest-900, their inner cards to forest-700, and the inverse pair (the
+   moss pill, the selected tab, the pressed chip) flips to light-on-ink so it
+   still reads as the strongest control on the page.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --rph-page: var(--forest-950);
+  --rph-ink: #F1F0EA;
+  --rph-rule-ink: rgba(241, 240, 234, .38);
+
+  --rph-band-moss: var(--forest-800);
+  --rph-band-sage: var(--forest-900);
+  --rph-band-paper2: var(--forest-900);
+  --rph-card-platform: var(--forest-800);
+  --rph-card-records: var(--forest-800);
+  --rph-card-sage-inner: var(--forest-700);
+  --rph-card-quiet: var(--forest-700);
+  --rph-dialog: var(--forest-900);
+  --rph-field: var(--forest-950);
+
+  --rph-inverse: #F1F0EA;
+  --rph-on-inverse: var(--ink-900);
+
+  --rph-red: var(--red-400);
+  --rph-red-on-sage: var(--red-400);
+  --rph-positive: var(--green-300);
+  --rph-error-bg: rgba(227, 106, 85, .14);
+  --rph-focus: #F1F0EA;
+  --rph-chart-line: #F1F0EA;
+
+  /* Ink ramp on a dark ground */
+  --rph-body: #C2C9C1;
+  --rph-body-strong: #C2C9C1;
+  --rph-meta: #98A399;
+  --rph-meta-2: #98A399;
+  --rph-struck: #6F7B72;
+
+  /* Hairlines */
+  --rph-rule-chart: rgba(241, 240, 234, .18);
+  --rph-rule-card: rgba(241, 240, 234, .14);
+  --rph-rule-step: rgba(241, 240, 234, .10);
+  --rph-rule-tab: rgba(241, 240, 234, .22);
+  --rph-rule-row: rgba(241, 240, 234, .12);
+  --rph-connector: rgba(241, 240, 234, .22);
+
+  /* Product wordmarks sit on dark cards now. The TeleAcre chartreuse and the
+     Atlas equator gold are brand colours and do not change. */
+  --rph-teleacre-ink: #F1F0EA;
+  --rph-signal-ink: #F1F0EA;
+  --rph-signal-mark: var(--red-400);
+}
+
+/* ==========================================================================
    Base
    ========================================================================== */
 
@@ -93,8 +181,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper-100);
-  color: var(--ink-900);
+  background: var(--rph-page);
+  color: var(--rph-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -106,11 +194,11 @@ a {
 }
 
 a:hover {
-  color: var(--red-500);
+  color: var(--rph-red);
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 2px solid var(--rph-focus);
   outline-offset: 2px;
 }
 
@@ -126,8 +214,8 @@ a:hover {
 .rph-page {
   max-width: var(--page-max);
   margin: 0 auto;
-  background: var(--paper-100);
-  color: var(--ink-900);
+  background: var(--rph-page);
+  color: var(--rph-ink);
 }
 
 .rph-band {
@@ -137,12 +225,12 @@ a:hover {
 }
 
 .rph-band--moss {
-  background: var(--forest-800);
+  background: var(--rph-band-moss);
   color: var(--rph-on-moss);
 }
 
 .rph-band--sage {
-  background: var(--sage-200);
+  background: var(--rph-band-sage);
 }
 
 .rph-band--plain {
@@ -157,7 +245,7 @@ a:hover {
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.3;
-  color: var(--red-500);
+  color: var(--rph-red);
   margin: 0 0 24px;
 }
 
@@ -224,14 +312,14 @@ a:hover {
 .rph-underline {
   font-size: 15.5px;
   font-weight: 500;
-  border-bottom: 1px solid var(--red-500);
+  border-bottom: 1px solid var(--rph-red);
   padding-bottom: 3px;
 }
 
 .rph-underline--sm {
   font-size: 15px;
   font-weight: 500;
-  border-bottom: 1px solid var(--red-500);
+  border-bottom: 1px solid var(--rph-red);
   padding-bottom: 2px;
 }
 
@@ -244,13 +332,13 @@ a:hover {
 }
 
 .rph-pill-moss {
-  background: var(--forest-800);
-  color: var(--paper-100);
+  background: var(--rph-inverse);
+  color: var(--rph-on-inverse);
   padding: 9px 18px;
   border-radius: var(--pill);
 }
 
-.rph-pill-moss:hover { color: var(--paper-100); }
+.rph-pill-moss:hover { color: var(--rph-on-inverse); }
 
 .rph-cta {
   display: inline-block;
@@ -306,8 +394,8 @@ a:hover {
 }
 
 .rph-nav a { color: var(--rph-body); }
-.rph-nav a:hover { color: var(--red-500); }
-.rph-nav a.rph-pill-moss { color: var(--paper-100); }
+.rph-nav a:hover { color: var(--rph-red); }
+.rph-nav a.rph-pill-moss { color: var(--rph-on-inverse); }
 
 @media (max-width: 860px) {
   .rph-nav { gap: 14px 18px; font-size: 14px; }
@@ -362,7 +450,7 @@ a:hover {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--red-500);
+  background: var(--rph-red);
   flex: none;
   animation: rph-pulse 2.4s ease-in-out infinite;
 }
@@ -416,7 +504,7 @@ a:hover {
   align-items: baseline;
   gap: 16px;
   padding-top: 14px;
-  border-top: 1px solid var(--ink-900);
+  border-top: 1px solid var(--rph-rule-ink);
 }
 
 .rph-records__foot-label {
@@ -428,7 +516,7 @@ a:hover {
   font-family: var(--font-mono);
   font-size: 20px;
   font-weight: 700;
-  color: var(--green-600);
+  color: var(--rph-positive);
   font-variant-numeric: tabular-nums;
 }
 
@@ -562,7 +650,7 @@ a:hover {
 .rph-parcel__foot {
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid var(--ink-900);
+  border-top: 1px solid var(--rph-rule-ink);
 }
 
 .rph-parcel__row {
@@ -574,7 +662,7 @@ a:hover {
 
 .rph-parcel__row--head {
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--ink-900);
+  border-bottom: 1px solid var(--rph-rule-ink);
   font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--rph-meta);
@@ -599,7 +687,7 @@ a:hover {
 .rph-parcel__county {
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: var(--ink-900);
+  color: var(--rph-ink);
   transition: color .4s;
 }
 
@@ -611,7 +699,7 @@ a:hover {
 .rph-parcel__atlas {
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: var(--green-600);
+  color: var(--rph-positive);
   font-weight: 700;
   transition: opacity .4s ease .5s;
 }
@@ -737,7 +825,7 @@ a:hover {
 }
 
 .rph-atlas-card {
-  background: var(--forest-800);
+  background: var(--rph-band-moss);
   color: var(--rph-on-moss);
   border-radius: var(--card-radius);
   padding: 24px 28px 26px;
@@ -803,7 +891,7 @@ a:hover {
 }
 
 .rph-platform {
-  background: var(--paper-200);
+  background: var(--rph-card-platform);
   border-radius: var(--card-radius);
   padding: 40px 40px 36px;
   display: flex;
@@ -867,7 +955,7 @@ a:hover {
 .rph-platform__draws-body {
   font-size: 14.5px;
   line-height: 1.5;
-  color: var(--ink-900);
+  color: var(--rph-ink);
 }
 
 .rph-platform__link { align-self: flex-start; white-space: nowrap; }
@@ -893,7 +981,7 @@ a:hover {
 .rph-coverage { padding: 0 var(--page-gutter) clamp(72px, 8.6vw, 112px); }
 
 .rph-coverage__inner {
-  background: var(--paper-200);
+  background: var(--rph-band-paper2);
   border-radius: var(--band-radius);
   padding: clamp(40px, 5.5vw, 72px) clamp(24px, 4.3vw, 56px);
   display: grid;
@@ -921,14 +1009,14 @@ a:hover {
   border-radius: var(--pill);
   border: 1px solid var(--rph-rule-tab);
   background: transparent;
-  color: var(--ink-900);
+  color: var(--rph-ink);
   transition: background .25s, color .25s;
 }
 
 .rph-tab[aria-selected="true"] {
-  background: var(--forest-800);
-  border-color: var(--forest-800);
-  color: var(--paper-100);
+  background: var(--rph-inverse);
+  border-color: var(--rph-inverse);
+  color: var(--rph-on-inverse);
 }
 
 .rph-coverage__desc {
@@ -945,7 +1033,7 @@ a:hover {
   font-size: 12px;
   color: var(--rph-meta-2);
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--ink-900);
+  border-bottom: 1px solid var(--rph-rule-ink);
 }
 
 .rph-coverage__item {
@@ -979,7 +1067,7 @@ a:hover {
 .rph-expand__num {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--red-500);
+  color: var(--rph-red);
   padding-top: 3px;
 }
 
@@ -1033,11 +1121,20 @@ a:hover {
    07 Get in touch
    ========================================================================== */
 
+/* The closing band is the one band rendered outside .rph-page, so it runs to
+   the edges of the window instead of stopping at the 1560px column and leaving
+   paper either side of it on a wide screen. Its content stays in the same
+   column as every section above, so nothing moves at or below 1560px. */
 .rph-contact {
-  background: var(--forest-800);
+  background: var(--rph-band-moss);
   color: var(--rph-on-moss);
-  padding: var(--band-pad-top) var(--page-gutter) 40px;
   border-radius: var(--band-radius) var(--band-radius) 0 0;
+}
+
+.rph-contact__inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--band-pad-top) var(--page-gutter) clamp(48px, 6vw, 72px);
 }
 
 .rph-contact__row {
@@ -1063,14 +1160,202 @@ a:hover {
   max-width: 52ch;
 }
 
-.rph-footer {
+/* ==========================================================================
+   Legal footer, inside the closing band
+   ========================================================================== */
+
+.rph-legal {
+  border-top: 1px solid var(--rph-rule-moss);
+}
+
+.rph-legal__inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(32px, 4vw, 48px) var(--page-gutter) clamp(32px, 4vw, 44px);
+}
+
+.rph-legal__top {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: clamp(56px, 7vw, 96px);
+  gap: 32px 64px;
+  margin-bottom: clamp(28px, 3.4vw, 40px);
+}
+
+.rph-legal__notice {
+  max-width: 62ch;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--rph-on-moss-muted);
+  margin: 10px 0 0;
+  text-wrap: pretty;
+}
+
+.rph-legal__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--rph-on-moss);
+}
+
+.rph-legal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  align-content: flex-start;
+  font-size: 14px;
+}
+
+.rph-legal__links a {
+  color: var(--rph-on-moss-muted);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 120ms cubic-bezier(.2, .7, .2, 1),
+    border-color 120ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.rph-legal__links a:hover {
+  color: var(--rph-on-moss);
+  border-bottom-color: var(--red-400);
+}
+
+.rph-legal__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 32px;
+  padding-top: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--rph-rule-moss);
   font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--rph-on-moss-label);
+}
+
+/* ==========================================================================
+   Theme toggle
+   ========================================================================== */
+
+.rph-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  padding: 0;
+  border-radius: var(--pill);
+  border: 1px solid var(--rph-rule-tab);
+  background: transparent;
+  color: var(--rph-body);
+  cursor: pointer;
+  transition: color 120ms cubic-bezier(.2, .7, .2, 1),
+    border-color 120ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.rph-theme:hover {
+  color: var(--rph-ink);
+  border-color: var(--rph-ink);
+}
+
+.rph-theme svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Both marks are rendered and CSS picks one, so the button needs no client
+   state to paint correctly and cannot mismatch during hydration. These need
+   to out-specify `.rph-theme svg`, hence the two-class selectors. */
+.rph-theme .rph-theme__moon { display: block; }
+.rph-theme .rph-theme__sun { display: none; }
+[data-theme="dark"] .rph-theme .rph-theme__moon { display: none; }
+[data-theme="dark"] .rph-theme .rph-theme__sun { display: block; }
+
+/* ==========================================================================
+   Long-form document pages (privacy, terms)
+   ========================================================================== */
+
+.rph-doc {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(32px, 4vw, 56px) var(--page-gutter) clamp(72px, 8vw, 112px);
+}
+
+.rph-doc__inner {
+  max-width: 74ch;
+}
+
+.rph-doc__updated {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--rph-meta);
+  margin: 0 0 clamp(36px, 4.4vw, 56px);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rph-rule-ink);
+}
+
+.rph-doc h1 {
+  font-weight: 500;
+  font-size: clamp(38px, 4.6vw, 62px);
+  line-height: 1.02;
+  letter-spacing: -.04em;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+
+.rph-doc__lede {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--rph-body);
+  margin: 0 0 8px;
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.rph-doc h2 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  margin: clamp(40px, 4.6vw, 56px) 0 14px;
+}
+
+.rph-doc p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--rph-body);
+  margin: 0 0 14px;
+  text-wrap: pretty;
+}
+
+.rph-doc ul {
+  margin: 0 0 14px;
+  padding-left: 22px;
+  list-style: disc;
+}
+
+.rph-doc li::marker {
+  color: var(--rph-meta);
+}
+
+.rph-doc li {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--rph-body);
+  margin-bottom: 8px;
+  text-wrap: pretty;
+}
+
+.rph-doc a {
+  border-bottom: 1px solid var(--rph-red);
+  padding-bottom: 1px;
+}
+
+.rph-doc strong {
+  font-weight: 600;
+  color: var(--rph-ink);
 }
 
 /* ==========================================================================
@@ -1093,8 +1378,8 @@ a:hover {
   width: min(640px, 100%);
   max-height: calc(100vh - 48px);
   overflow: auto;
-  background: var(--paper-100);
-  color: var(--ink-900);
+  background: var(--rph-dialog);
+  color: var(--rph-ink);
   border-radius: var(--card-radius);
   padding: 28px 32px 32px;
 }
@@ -1130,7 +1415,7 @@ a:hover {
   font-size: 12px;
   color: var(--rph-meta-2);
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--ink-900);
+  border-bottom: 1px solid var(--rph-rule-ink);
 }
 
 .rph-form__options {
@@ -1148,7 +1433,7 @@ a:hover {
   border-left: 3px solid transparent;
   padding: 15px 16px 17px;
   background: var(--rph-card-quiet);
-  color: var(--ink-900);
+  color: var(--rph-ink);
   font-family: var(--font-sans);
   display: block;
   width: 100%;
@@ -1156,8 +1441,8 @@ a:hover {
 }
 
 .rph-form__option[aria-pressed="true"] {
-  background: var(--paper-200);
-  border-left-color: var(--red-500);
+  background: var(--rph-band-paper2);
+  border-left-color: var(--rph-red);
 }
 
 .rph-form__option-label {
@@ -1201,8 +1486,8 @@ a:hover {
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.5;
-  color: var(--ink-900);
-  background: var(--bg-raised);
+  color: var(--rph-ink);
+  background: var(--rph-field);
   border: 1px solid var(--rph-rule-card);
   border-radius: 10px;
   padding: 11px 12px;
@@ -1213,17 +1498,17 @@ a:hover {
 .rph-field input:focus,
 .rph-field textarea:focus {
   outline: none;
-  border-color: var(--ink-900);
+  border-color: var(--rph-ink);
 }
 
 .rph-field--error input,
-.rph-field--error textarea { border-color: var(--red-500); }
+.rph-field--error textarea { border-color: var(--rph-red); }
 
 .rph-field__error {
   display: block;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--red-500);
+  color: var(--rph-red);
   margin-top: 6px;
 }
 
@@ -1242,16 +1527,16 @@ a:hover {
 }
 
 .rph-chip[aria-pressed="true"] {
-  background: var(--forest-800);
-  color: var(--paper-100);
-  border-color: var(--forest-800);
+  background: var(--rph-inverse);
+  color: var(--rph-on-inverse);
+  border-color: var(--rph-inverse);
 }
 
 .rph-form__error {
   margin-top: 16px;
-  border-left: 3px solid var(--red-500);
+  border-left: 3px solid var(--rph-red);
   padding: 11px 14px;
-  background: var(--red-100);
+  background: var(--rph-error-bg);
   font-size: 14px;
   color: var(--rph-body);
   border-radius: 0 10px 10px 0;
@@ -1301,7 +1586,7 @@ a:hover {
 .rph-form__done-kicker {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--red-500);
+  color: var(--rph-red);
   margin-bottom: 16px;
 }
 

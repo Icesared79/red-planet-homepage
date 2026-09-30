@@ -149,7 +149,7 @@ export function Coverage() {
                     style={{
                       height: on ? nightHeight(i) : "14%",
                       background: on
-                        ? "var(--forest-800)"
+                        ? "var(--rph-chart-line)"
                         : "var(--rph-rule-card)",
                     }}
                   />

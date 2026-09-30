@@ -1,15 +1,14 @@
+import { LegalFooter } from "@/components/LegalFooter";
+
 /**
- * The homepage carries its footer line inside the § 07 contact band
- * (components/GetInTouch.tsx). This standalone band is for pages that do not
- * end on that section.
+ * The homepage carries its legal block inside the § 07 closing band
+ * (components/GetInTouch.tsx). This is the same block as a standalone band,
+ * for pages that do not end on that section.
  */
 export function Footer() {
   return (
     <section className="rph-contact">
-      <div className="rph-footer" style={{ marginTop: 0 }}>
-        <span>Red Planet Data</span>
-        <span>&copy; 2026</span>
-      </div>
+      <LegalFooter topRule={false} />
     </section>
   );
 }

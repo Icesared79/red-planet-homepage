@@ -72,6 +72,18 @@ export default function RootLayout({
               "}catch(e){}})();",
           }}
         />
+        {/* Theme, resolved before first paint so the page never flashes the
+            wrong one. A choice the visitor made here wins; otherwise their
+            browser's own colour-scheme preference decides. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{var s=null;try{s=localStorage.getItem("rp-theme");}catch(e){}' +
+              'var dark=s?s==="dark":!!(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);' +
+              'if(dark){document.documentElement.setAttribute("data-theme","dark");}' +
+              "}catch(e){}})();",
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>
