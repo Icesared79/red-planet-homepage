@@ -331,14 +331,20 @@ a:hover {
   padding-bottom: 2px;
 }
 
-.rph-pill-moss {
-  background: var(--rph-inverse);
-  color: var(--rph-on-inverse);
+/* The header CTA. The design system reserves red for one closing CTA per
+   page, so this is a second one by explicit instruction, not by the rule. */
+.rph-pill-cta {
+  background: var(--red-500);
+  color: var(--on-accent);
   padding: 9px 18px;
   border-radius: var(--pill);
+  transition: background 120ms cubic-bezier(.2, .7, .2, 1);
 }
 
-.rph-pill-moss:hover { color: var(--rph-on-inverse); }
+.rph-pill-cta:hover {
+  background: var(--accent-hover);
+  color: var(--on-accent);
+}
 
 .rph-cta {
   display: inline-block;
@@ -395,7 +401,7 @@ a:hover {
 
 .rph-nav a { color: var(--rph-body); }
 .rph-nav a:hover { color: var(--rph-red); }
-.rph-nav a.rph-pill-moss { color: var(--rph-on-inverse); }
+.rph-nav a.rph-pill-cta { color: var(--on-accent); }
 
 @media (max-width: 860px) {
   .rph-nav { gap: 14px 18px; font-size: 14px; }

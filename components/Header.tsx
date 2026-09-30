@@ -32,7 +32,7 @@ export function Header({ variant = "home" }: Props) {
           Documentation
         </a>
         <ThemeToggle />
-        <a href={to("#contact")} className="rph-pill-moss">
+        <a href={to("#contact")} className="rph-pill-cta">
           Get in touch
         </a>
       </nav>
