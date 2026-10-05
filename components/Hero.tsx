@@ -2,10 +2,23 @@ import { RecordsCard } from "@/components/RecordsCard";
 
 type Props = {
   total: number;
-  updatedIso: string | null;
+  stored: number;
+  allTime: number;
+  latestIngest: number | null;
+  dataAsOf: string | null;
+  relInitial: string;
+  history: { day: string; total: number }[];
 };
 
-export function Hero({ total, updatedIso }: Props) {
+export function Hero({
+  total,
+  stored,
+  allTime,
+  latestIngest,
+  dataAsOf,
+  relInitial,
+  history,
+}: Props) {
   return (
     <section id="top" className="rph-hero">
       <div className="rph-hero__copy">
@@ -19,7 +32,15 @@ export function Hero({ total, updatedIso }: Props) {
         </a>
       </div>
 
-      <RecordsCard total={total} updatedIso={updatedIso} />
+      <RecordsCard
+        total={total}
+        stored={stored}
+        allTime={allTime}
+        latestIngest={latestIngest}
+        dataAsOf={dataAsOf}
+        relInitial={relInitial}
+        history={history}
+      />
     </section>
   );
 }

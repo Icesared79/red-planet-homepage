@@ -8,29 +8,68 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { LegalFooter } from "@/components/LegalFooter";
 import { MissionControl } from "@/components/MissionControl";
 import { WhyDifferent } from "@/components/WhyDifferent";
-import { getAtlasLive } from "@/lib/atlas-live";
+import { formatRelative } from "@/lib/relative-format";
+import {
+  getRecordHistory,
+  getRecordStats,
+  RECORD_STATS_REVALIDATE,
+} from "@/lib/record-stats";
 
-/** The design's static fallback when the live figure is unavailable. */
-const FALLBACK_TOTAL = 502392645;
+/**
+ * NO STATIC FALLBACK, deliberately. The old page carried
+ * `FALLBACK_TOTAL = 502392645` and showed it whenever the live read failed,
+ * which means a public page could publish a number nobody had measured, with
+ * nothing on screen to say so.
+ *
+ * Instead the render THROWS when the figures are unavailable. Next then keeps
+ * serving the last successfully generated page -- real numbers, honestly
+ * stale, with the card's own "N ago" label growing to say exactly how stale --
+ * rather than replacing them with an invented pair. A build with no previous
+ * page to fall back on fails loudly, which is the correct signal.
+ */
 
-// The hero count and both "updated" timestamps read live Atlas data. Without a
-// route-level revalidate, Next statically generates this page once at build
-// time and never re-renders it, freezing whatever getAtlasLive() returned at
-// that build. Matches the 300s revalidate on app/api/atlas-live/route.ts.
-export const revalidate = 300;
+// Without a route-level revalidate Next statically generates this page once at
+// build time and never re-renders it, freezing whatever the first render read.
+// 300s matches lib/record-stats.ts, so the card picks up each nightly ingest
+// within five minutes of the counts being recomputed.
+export const revalidate = RECORD_STATS_REVALIDATE;
 
 export default async function HomePage() {
-  const live = await getAtlasLive().catch(() => null);
-  const total = live?.total_records ?? FALLBACK_TOTAL;
-  const updatedIso = live?.last_updated ?? null;
+  const [stats, history] = await Promise.all([
+    getRecordStats(),
+    getRecordHistory(),
+  ]);
+
+  if (!stats) {
+    throw new Error(
+      "atlas_public_record_stats unavailable - keeping the last good render " +
+        "rather than publishing placeholder record counts"
+    );
+  }
+
+  // Computed on the server from the real data timestamp so the first paint
+  // shows the true freshness instead of a hard-coded placeholder.
+  const relInitial = formatRelative(stats.dataAsOf);
+  const runRel = formatRelative(stats.latestIngestAt ?? stats.dataAsOf);
 
   return (
     <>
       <div className="rph-page">
         <Header />
         <main>
-          <Hero total={total} updatedIso={updatedIso} />
-          <MissionControl updatedIso={updatedIso} />
+          <Hero
+            total={stats.verifiedRecords}
+            stored={stats.storedRecords}
+            allTime={stats.totalRecords}
+            latestIngest={stats.latestIngest}
+            dataAsOf={stats.dataAsOf}
+            relInitial={relInitial}
+            history={history}
+          />
+          <MissionControl
+            updatedIso={stats.latestIngestAt ?? stats.dataAsOf}
+            relInitial={runRel}
+          />
           <WhyDifferent />
           <HowItWorks />
           <BuiltOnAtlas />

@@ -11,15 +11,17 @@ const FLAGGED = 99;
 
 type Props = {
   updatedIso: string | null;
+  /** Server-computed "N ago" label, so the first paint is the real value. */
+  relInitial?: string;
 };
 
-export function MissionControl({ updatedIso }: Props) {
+export function MissionControl({ updatedIso, relInitial }: Props) {
   const [done, setDone] = useState(0);
   const stripRef = useRef<HTMLDivElement | null>(null);
   // The run strip reads as last night's pipeline working through its steps, so
   // it is worth watching again: re-arm it each time the band comes into view.
   const inView = useInView(stripRef, { once: false });
-  const rel = useRelative(updatedIso);
+  const rel = useRelative(updatedIso, relInitial);
 
   useEffect(() => {
     if (!inView) return;
@@ -56,7 +58,9 @@ export function MissionControl({ updatedIso }: Props) {
 
       <div className="rph-runhead">
         <span className="rph-runhead__title">Last night</span>
-        <span className="rph-runhead__rel">Updated {rel}</span>
+        <span className="rph-runhead__rel" suppressHydrationWarning>
+          Updated {rel}
+        </span>
       </div>
 
       <div
