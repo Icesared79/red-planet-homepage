@@ -8,7 +8,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { LegalFooter } from "@/components/LegalFooter";
 import { MissionControl } from "@/components/MissionControl";
 import { WhyDifferent } from "@/components/WhyDifferent";
-import { formatRelative } from "@/lib/relative";
+import { formatRelative } from "@/lib/relative-format";
 import {
   getRecordHistory,
   getRecordStats,
