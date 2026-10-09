@@ -2,6 +2,7 @@ import {
   AtlasMark,
   RedPlanetMark,
   SignalMark,
+  SunScopeMark,
   TeleAcreMark,
 } from "@/components/Marks";
 
@@ -10,13 +11,13 @@ export function BuiltOnAtlas() {
     <section id="products" className="rph-band--plain">
       <div className="rph-kicker">&sect; 05 &mdash; Built on Atlas</div>
       <h2 className="rph-h2 rph-products__h2">
-        TeleAcre and Signal are two platforms built on Atlas.
+        TeleAcre, Signal and SunScope are platforms built on Atlas.
       </h2>
       <p className="rph-intro rph-products__intro">
         Atlas has built-in tools for building platforms on top of its records,
-        so a new platform can be built quickly. TeleAcre and Signal are two
-        examples, each presenting the part of the records one group of buyers
-        needs.
+        so a new platform can be built quickly. These three are examples, each
+        presenting the part of the records one group of buyers needs. Other
+        companies license the same records to run their own businesses.
       </p>
 
       <div className="rph-tier">
@@ -121,8 +122,57 @@ export function BuiltOnAtlas() {
             </div>
           </div>
           <div className="rph-platform__markets">
-            CT &middot; FL &middot; GA &middot; NC &middot; NYC
+            CT &middot; FL &middot; NC &middot; Upstate NY &middot; NYC
           </div>
+        </div>
+
+        <div className="rph-platform">
+          <h3 className="rph-platform__lockup">
+            <span aria-label="SunScope" style={{ gap: "8px", height: "38px" }}>
+              <SunScopeMark />
+              <span className="rph-wordmark-sunscope" aria-hidden="true">
+                <b>Sun</b>Scope
+              </span>
+            </span>
+          </h3>
+          <p className="rph-platform__body">
+            Roof and solar suitability on every residential parcel in a market,
+            scored from roof characteristics, solar potential, utility rates
+            and incentive eligibility. Sold to solar and roofing installers,
+            who work the scored list as a field-sales territory rather than
+            buying leads.
+          </p>
+          <div className="rph-platform__draws">
+            <div className="rph-platform__draws-label">Draws from Atlas</div>
+            <div className="rph-platform__draws-body">
+              Parcel, ownership and assessment records, joined to roof
+              geometry, solar exposure and the utility and incentive rules in
+              force for that address.
+            </div>
+          </div>
+          <div className="rph-platform__markets">CT</div>
+        </div>
+      </div>
+
+      <div className="rph-licensees">
+        <div className="rph-licensees__label">Licensed by other companies</div>
+        <div className="rph-licensee">
+          <span className="rph-licensee__name">LeanCRE</span>
+          <span className="rph-licensee__desc">
+            A separate company that sources and underwrites commercial real
+            estate loans for banks, private lenders and family offices. It
+            licenses Atlas for the record behind each property, its
+            surroundings and its owner, and for surveillance of collateral
+            through maturity.{" "}
+            <a
+              href="https://leancre.com"
+              className="rph-underline--sm"
+              target="_blank"
+              rel="noopener"
+            >
+              leancre.com &#8599;
+            </a>
+          </span>
         </div>
       </div>
     </section>

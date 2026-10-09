@@ -80,6 +80,45 @@ export function TeleAcreMark({ size = 38 }: { size?: number }) {
   );
 }
 
+/**
+ * SunScope's "Solar Arc", taken from the product's own icon
+ * (rpd/apps/sunscope/public/apple-icon.svg) so the homepage shows the mark
+ * the product actually ships rather than a new one. Source viewBox is 24x24.
+ */
+export function SunScopeMark({ size = 34 }: { size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      style={{ flex: "none" }}
+    >
+      <g fill="var(--rph-sunscope-mark)">
+        <path d="M5 17 A7 7 0 0 1 19 17 Z" />
+        <rect x="1.5" y="19" width="21" height="1.8" rx="0.9" />
+        <rect x="10.8" y="1" width="2.4" height="4" rx="0.7" />
+        <rect
+          x="2.6"
+          y="6.5"
+          width="2.4"
+          height="4"
+          rx="0.7"
+          transform="rotate(-45 3.8 8.5)"
+        />
+        <rect
+          x="19"
+          y="6.5"
+          width="2.4"
+          height="4"
+          rx="0.7"
+          transform="rotate(45 20.2 8.5)"
+        />
+      </g>
+    </svg>
+  );
+}
+
 export function SignalMark() {
   return (
     <svg

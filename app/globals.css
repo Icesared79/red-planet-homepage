@@ -26,6 +26,7 @@
   --font-mono: 'Fragment Mono', ui-monospace, Menlo, Consolas, monospace;
   --font-wordmark-teleacre: 'Familjen Grotesk', var(--font-sans);
   --font-wordmark-signal: 'Geist', var(--font-sans);
+  --font-wordmark-sunscope: 'Geist', var(--font-sans);
 
   /* --- Page geometry ------------------------------------------------------ */
   --page-max: 1560px;
@@ -101,6 +102,10 @@
   --rph-teleacre-ink: #16171A;
   --rph-signal-mark: #A83A30;
   --rph-signal-ink: #141414;
+  /* SunScope's amber, taken from the product's own --brand-accent so the
+     homepage and the app agree. */
+  --rph-sunscope-mark: #C8902B;
+  --rph-sunscope-ink: #141414;
 
   /* --- Type sizes used by the page ---------------------------------------- */
   --rph-h1: clamp(56px, 7.6vw, 128px);
@@ -177,6 +182,9 @@
   --rph-teleacre-ink: #F1F0EA;
   --rph-signal-ink: #F1F0EA;
   --rph-signal-mark: var(--red-400);
+  --rph-sunscope-ink: #F1F0EA;
+  /* The app lifts its amber on dark for contrast; same value here. */
+  --rph-sunscope-mark: #E5BC68;
 }
 
 /* ==========================================================================
@@ -831,11 +839,20 @@ a:hover {
 .rph-connector--32 { height: 32px; margin-top: 16px; }
 .rph-connector--24 { height: 24px; }
 
+/* The bracket's ends sit on the centres of the outer platform cards, so its
+   inset depends on how many columns the grid is showing: 25% for the
+   two-column layout, 16% once a third column fits (card centres land on 1/6
+   and 5/6, less the gaps). Below 560px there is one card per row and the
+   bracket is decorative. */
 .rph-bracket {
   margin: 0 25%;
   height: 24px;
   border: 1px solid var(--rph-connector);
   border-bottom: 0;
+}
+
+@media (min-width: 1300px) {
+  .rph-bracket { margin: 0 16%; }
 }
 
 .rph-atlas-card {
@@ -945,6 +962,23 @@ a:hover {
   color: var(--rph-signal-ink);
 }
 
+/* SunScope sets "Sun" in the brand amber and "Scope" in ink, the two-tone
+   device the product uses. Geist is already loaded by the design system, so
+   this adds no font request; the app's own display face is close in feel. */
+.rph-wordmark-sunscope {
+  font-family: var(--font-wordmark-sunscope);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -.025em;
+  color: var(--rph-sunscope-ink);
+}
+
+.rph-wordmark-sunscope b {
+  font-weight: inherit;
+  color: var(--rph-sunscope-mark);
+}
+
 .rph-platform__body {
   font-size: 16px;
   line-height: 1.6;
@@ -981,11 +1015,62 @@ a:hover {
   margin-top: auto;
 }
 
+/* --- Licensees ------------------------------------------------------------
+   Separate companies that license Atlas. Deliberately NOT a platform card:
+   no product card background, no mark, and a rule above it, so the eye reads
+   it as something adjacent to Red Planet's own platforms rather than one of
+   them. Red Planet never renders another company's logo or brand colour. */
+
+.rph-licensees {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rph-connector);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rph-licensees__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--rph-meta);
+}
+
+.rph-licensee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 18px;
+}
+
+.rph-licensee__name {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--rph-ink);
+}
+
+.rph-licensee__desc {
+  flex: 1 1 320px;
+  min-width: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--rph-body);
+}
+
+@media (max-width: 560px) {
+  .rph-licensee { gap: 6px; }
+  .rph-licensee__desc { flex-basis: 100%; }
+}
+
 @media (max-width: 560px) {
   .rph-platform { padding: 28px 24px 26px; }
   .rph-bracket { margin: 0 18%; }
   .rph-wordmark-teleacre,
-  .rph-wordmark-signal { font-size: 30px; }
+  .rph-wordmark-signal,
+  .rph-wordmark-sunscope { font-size: 30px; }
 }
 
 /* ==========================================================================
