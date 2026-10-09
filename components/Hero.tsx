@@ -1,21 +1,21 @@
 import { RecordsCard } from "@/components/RecordsCard";
 
 type Props = {
-  total: number;
-  stored: number;
-  allTime: number;
-  latestIngest: number | null;
-  dataAsOf: string | null;
+  recordsHeld: number;
+  live: number;
+  archived: number;
+  lastNightNew: number | null;
+  countTakenAt: string | null;
   relInitial: string;
   history: { day: string; total: number }[];
 };
 
 export function Hero({
-  total,
-  stored,
-  allTime,
-  latestIngest,
-  dataAsOf,
+  recordsHeld,
+  live,
+  archived,
+  lastNightNew,
+  countTakenAt,
   relInitial,
   history,
 }: Props) {
@@ -33,11 +33,11 @@ export function Hero({
       </div>
 
       <RecordsCard
-        total={total}
-        stored={stored}
-        allTime={allTime}
-        latestIngest={latestIngest}
-        dataAsOf={dataAsOf}
+        recordsHeld={recordsHeld}
+        live={live}
+        archived={archived}
+        lastNightNew={lastNightNew}
+        countTakenAt={countTakenAt}
         relInitial={relInitial}
         history={history}
       />

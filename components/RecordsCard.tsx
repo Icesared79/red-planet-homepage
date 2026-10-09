@@ -8,17 +8,6 @@ import { useRelative } from "@/lib/relative";
 const NF = new Intl.NumberFormat("en-US");
 
 /**
- * "540.7M" / "1.0B" -- the subline's existing shape ("+275.5M archived ·
- * 777.9M all-time"), now computed instead of typed in.
- */
-function compact(n: number): string {
-  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-  return NF.format(n);
-}
-
-/**
  * "Sep 6" from a "YYYY-MM-DD" day key. Built from the parts rather than
  * Date.parse so the label cannot slide a day in a west-of-UTC timezone.
  */
@@ -59,42 +48,44 @@ function chartGeometry(points: { total: number }[]) {
 }
 
 type Props = {
-  /** Verified records live -- the same figure Mission Control headlines. */
-  total: number;
-  /** Rows in verified cold storage. */
-  stored: number;
-  /** verified + stored. */
-  allTime: number;
-  /** Last night's measured ingest. */
-  latestIngest: number | null;
-  /** When the counts above were last recomputed. Drives the "N ago" label. */
-  dataAsOf: string | null;
+  /** Records Atlas holds, live and archived together -- the ledger figure
+   *  Mission Control headlines. */
+  recordsHeld: number;
+  /** The live half of that figure. */
+  live: number;
+  /** The archived half. live + archived === recordsHeld, exactly, because both
+   *  come from the same day's count as the headline. */
+  archived: number;
+  /** Last night's new records. */
+  lastNightNew: number | null;
+  /** When the count above was taken. Drives the "N ago" label. */
+  countTakenAt: string | null;
   /** Server-rendered "N ago" label, so the first paint is not a placeholder. */
   relInitial: string;
-  /** The 30 days ending today. */
+  /** Records held on each of the 30 days ending on the headline's day. */
   history: { day: string; total: number }[];
 };
 
 export function RecordsCard({
-  total,
-  stored,
-  allTime,
-  latestIngest,
-  dataAsOf,
+  recordsHeld,
+  live,
+  archived,
+  lastNightNew,
+  countTakenAt,
   relInitial,
   history,
 }: Props) {
-  const [shown, setShown] = useState(total);
+  const [shown, setShown] = useState(recordsHeld);
   const [drawn, setDrawn] = useState(false);
   const raf = useRef<number | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const inView = useInView(cardRef);
-  const rel = useRelative(dataAsOf, relInitial);
+  const rel = useRelative(countTakenAt, relInitial);
 
   const geo = useMemo(() => chartGeometry(history), [history]);
-  // The count-up covers last night's ingest, as it always has -- just the
-  // measured figure now instead of a constant.
-  const delta = latestIngest != null && latestIngest > 0 ? latestIngest : 0;
+  // The count-up covers last night's new records, as it always has -- just the
+  // ledger's measured figure now instead of a constant.
+  const delta = lastNightNew != null && lastNightNew > 0 ? lastNightNew : 0;
 
   useEffect(() => {
     if (!inView) return;
@@ -105,23 +96,23 @@ export function RecordsCard({
   useEffect(() => {
     if (!inView) return;
     if (prefersReducedMotion() || delta <= 0) {
-      setShown(total);
+      setShown(recordsHeld);
       return;
     }
-    const from = total - delta;
+    const from = recordsHeld - delta;
     const t0 = performance.now();
     const dur = 2600;
     const step = (now: number) => {
       const p = Math.min(1, (now - t0) / dur);
       const eased = 1 - Math.pow(1 - p, 3);
-      setShown(Math.round(from + (total - from) * eased));
+      setShown(Math.round(from + (recordsHeld - from) * eased));
       if (p < 1) raf.current = requestAnimationFrame(step);
     };
     raf.current = requestAnimationFrame(step);
     return () => {
       if (raf.current !== null) cancelAnimationFrame(raf.current);
     };
-  }, [total, delta, inView]);
+  }, [recordsHeld, delta, inView]);
 
   return (
     <div id="records" ref={cardRef} className="rph-records">
@@ -136,8 +127,10 @@ export function RecordsCard({
       </div>
 
       <div className="rph-records__count">{NF.format(shown)}</div>
+      {/* The two halves of the headline, in full rather than rounded, so the
+          line a reader adds up comes to the number above it exactly. */}
       <div className="rph-records__meta">
-        +{compact(stored)} archived &middot; {compact(allTime)} all-time
+        {NF.format(live)} live &middot; {NF.format(archived)} archived
       </div>
 
       <div className="rph-records__span">
@@ -147,7 +140,7 @@ export function RecordsCard({
         viewBox="0 0 1000 180"
         preserveAspectRatio="none"
         className="rph-chart"
-        aria-label="Verified records over the last 30 days"
+        aria-label="Records held over the last 30 days"
       >
         <line
           x1="0"
