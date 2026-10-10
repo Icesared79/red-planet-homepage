@@ -1,7 +1,3 @@
-"use client";
-
-import { useSharedTick } from "@/lib/tick";
-
 /** One parcel in Hartford, CT and the five filings the county site no longer shows. */
 const FILINGS: Array<[string, string]> = [
   ["May 2025", "Tax lien filed"],
@@ -11,10 +7,26 @@ const FILINGS: Array<[string, string]> = [
   ["Sep 2026", "Deed transfer to new owner"],
 ];
 
+/**
+ * RECORDS-6: all five filings are on screen from the first paint.
+ *
+ * This card used to reveal its rows on the shared 2.8s tick, one more each
+ * tick in a 7-tick cycle (1, 2, 3, 4, 5, 5, 5). The rows it had not reached
+ * were held in the layout at opacity 0, so for most of the cycle the card was
+ * a titled panel headed "One parcel, five county filings" showing one or two
+ * of them above a block of empty space -- and the card's own footer, "The
+ * county site now shows only the latest filing. Atlas still holds all five",
+ * described something the reader could not yet see.
+ *
+ * The resting state the cycle ended on is the honest one and is now the only
+ * one: five filings, the latest marked Showing on the county site, the four
+ * before it Removed, and every one of them Stored by Atlas. That is exactly
+ * what the component already rendered for a reader who prefers reduced
+ * motion, so nothing here is new -- it is the same frame, shown to everyone.
+ * With no tick left to read this is a server component again.
+ */
 export function WhyDifferent() {
-  const { tick, motion } = useSharedTick();
-  // A 7-tick cycle showing 1, 2, 3, 4, 5, 5, 5 rows.
-  const visible = motion ? Math.min((tick % 7) + 1, FILINGS.length) : FILINGS.length;
+  const last = FILINGS.length - 1;
 
   return (
     <section id="different" className="rph-band rph-band--sage">
@@ -54,18 +66,13 @@ export function WhyDifferent() {
           </div>
 
           {FILINGS.map(([date, text], i) => {
-            const shown = i < visible;
-            const current = i === visible - 1;
+            const current = i === last;
             return (
               <div
                 key={date}
                 className={`rph-parcel__row rph-parcel__row--body${
-                  i === FILINGS.length - 1 ? " rph-parcel__row--last" : ""
+                  current ? " rph-parcel__row--last" : ""
                 }`}
-                style={{
-                  opacity: shown ? 1 : 0,
-                  transform: shown ? "translateY(0)" : "translateY(6px)",
-                }}
               >
                 <span className="rph-parcel__date">{date}</span>
                 <span className="rph-parcel__text">{text}</span>
@@ -76,12 +83,7 @@ export function WhyDifferent() {
                 >
                   {current ? "Showing" : "Removed"}
                 </span>
-                <span
-                  className="rph-parcel__atlas"
-                  style={{ opacity: shown ? 1 : 0 }}
-                >
-                  Stored
-                </span>
+                <span className="rph-parcel__atlas">Stored</span>
               </div>
             );
           })}
