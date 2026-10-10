@@ -16,15 +16,13 @@ VALUES (
   'Full-time',
   '2026-10-10T00:00:00-04:00'::timestamptz,
   0,
-  $desc$I have spent the last 25 years around real estate and technology, and for most of it I purchased the same data everyone else did, from the same choice vendors, at the same inflated prices. This year I built something different.
+  $desc$A note from the founder
 
-It is called Atlas. It is a data engine that finds its own sources, checks every record against the original document, and improves every day. Atlas currently holds more than {records} million verified records from over {sources} unique sources. I built it in a few months with hundreds of AI agents and no outside engineering team. A few years ago that would have taken a large company millions of dollars and several years. You can read more about Atlas at docs.redplanetdata.com.
+I spent 25 years in real estate, and for most of that time I bought the same data everyone else did, from the same few vendors, at the same inflated prices. This year I built Atlas instead. It finds its own sources, checks every record against the original document, and gets better every day. It currently holds more than {records} million verified records from over {sources} unique sources, and I built it in a few months with hundreds of AI agents and no outside engineering team.
 
-I am posting this because I need a co-founder to help me grow and scale the business.
+The engine is built and products are running on it. What I need now is a co-founder to grow and scale the business.
 
-We already have several products currently operating, and can build new ones in a few days to a few weeks. We can work with a variety of industries. We simply build the product for them, wrapped around our data, and sell them a license to operate it. That could be a regional lender, an insurer, a developer or a brokerage. Until now only the largest institutions could afford to have a custom SaaS built around their operation. I think that is where the real value is, and AI makes it possible.
-
-Additionally, local government systems often overwrite their records as filings are settled, withdrawn or replaced. But Atlas keeps these versions, a record in history that is often lost by even the largest data companies.
+We can bring a new product to market in a few days to a few weeks. When a company tells us what it needs, we build it around our data and sell them a license to operate it. That could be a regional lender, an insurer, a developer or a brokerage. Until now only the largest institutions could afford something built around their own operation, and I think that is where the real value is.
 
 I will keep building Atlas and the products. Your job is to run the business side: sales, licensing, fundraising and hiring. Larger decisions would be a combined effort.
 
