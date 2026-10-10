@@ -1,5 +1,81 @@
 # red-planet-homepage — STATE
 
+## Current phase: RECORDS-6 — the homepage reads as one composition (2026-10-10)
+
+### Completed in this phase
+
+A layout pass over the whole page. No copy changed except the section 05
+heading, and the record card's data wiring (RECORDS-5, `f624de6e`) was not
+touched: `lib/records-ledger.ts`, `components/RecordsCard.tsx` and the figures
+they publish are exactly as RECORDS-5 left them. What changed is where things
+sit.
+
+| Area | Was | Is |
+|---|---|---|
+| 01 Hero | flex row, `align-items:center`, card capped at 460px against an 820px copy column | the same two-column auto-fit grid as 03 and 04, `align-items:stretch`; the card fills its half and both columns start and finish on the same lines |
+| 03 Why it's different | columns top-aligned, copy a third shorter than the card beside it; the filings card revealed one row per 2.8s tick | columns centred; all five filings on screen from the first paint |
+| 04 How it works | `justify-content:space-between` with both columns capped, leaving ~418x183px of bare band between them | two-column grid, columns adjacent |
+| 05 Built on Atlas | three platform cards and LeanCRE as a one-line strip | four equal-height cards, LeanCRE among them with its own lockup |
+| Page rhythm | section 05 and 06 padded ~8px deeper than every band above them; four different card paddings | `--card-pad`, `--head-gap` and `--col-gap`, used everywhere |
+
+**The empty dark box in section 04 was never a graphic.** `.rph-engine__head`
+was `display:flex` with `justify-content:space-between` and both children
+capped (`22ch` and `46ch`), so on a wide viewport a 513px heading and a 430px
+paragraph were pushed to opposite ends of a 1328px row. The void between them
+was bounded above by the band's top padding and below by the stages' red rule,
+which is what made bare band read as a graphic that had failed to load. A DOM
+scan of `#engine` found no empty element and no failed request. The design's
+own section (`design-system/red-planet/ui_kits/red-planet/Sections.jsx`,
+`HowItWorks`) is a two-column auto-fit grid — the `Col` primitive, the same one
+sections 01 and 03 use — in which the columns sit next to each other. The fix
+was to use it.
+
+### Decisions that affect later phases
+
+- **LeanCRE is a platform card now, and it carries LeanCRE's own logo.** The
+  `.rph-licensees` strip it replaced carried a standing rule in its comment:
+  "Red Planet never renders another company's logo or brand colour." The
+  operator asked for the card and for the real mark, so that rule no longer
+  holds for a licensee's own lockup. What it protected is carried instead by
+  `.rph-platform__licence`, a line on the card itself reading "Run by a
+  separate company that licenses Atlas. Not a Red Planet platform." Nothing
+  else on the page uses a LeanCRE colour, font or token.
+- **The lockup is LeanCRE's shipped file, not a recreation.**
+  `public/brand/leancre-horizontal-{light,dark}.svg` are byte-identical to
+  `C:\Users\Atlas\design\leancre\assets\logo\` and to
+  `rpd/apps/leancre/public/brand/`, which are themselves identical to each
+  other. They are rendered with `<img>` rather than inlined so they stay
+  provably the same artwork. The theme picks the variant; neither is
+  recoloured.
+- **`.rph-platforms` sets its column count explicitly.** `auto-fit` on a 380px
+  floor gives three columns at 1440 and would drop the fourth card onto a row
+  of its own. Four above 1200px, two between 680 and 1200, one below. Rows are
+  stretch, so a row's cards are equal height, and `.rph-platform__link` is
+  `margin-top:auto` so every card's last line sits on the same baseline.
+- **`.rph-bracket` is computed, not a percentage.** Its ends must land on the
+  centres of the outer cards, so it is `calc((100% - 72px) / 8)` at four
+  columns and `calc((100% - 24px) / 4)` at two, exact at every width. A fifth
+  card would need both of these changed again.
+- **Section 03 no longer uses the shared tick** and is a server component
+  again. `lib/tick.ts` is still used by section 04.
+- **Three tokens now own the page's spacing**: `--card-pad`, `--head-gap`,
+  `--col-gap`. A new card or section should use them rather than hand-set
+  numbers, which is how the rhythm drifted in the first place.
+
+### Known issues left open
+
+- At 1280 the four platform cards are 274px wide and the copy runs narrow
+  (Signal's markets line wraps to two). It holds together and keeps the
+  composition identical to 1440, but a fifth card would force the breakpoint
+  up or the copy down.
+- The section 05 intro still reads "These three are examples", which is still
+  true of Red Planet's own three platforms; the sentence after it is what
+  introduces a licensee. Left verbatim.
+
+### Immediate next step
+
+None pending.
+
 ## Current phase: COFOUNDER-2.2 — the job board at /jobs (2026-10-10)
 
 ### Completed in this phase

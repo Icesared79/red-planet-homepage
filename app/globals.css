@@ -35,6 +35,15 @@
   --band-gap: 12px;
   --band-pad-top: clamp(64px, 8vw, 104px);
   --band-pad-bottom: clamp(60px, 7.4vw, 96px);
+
+  /* RECORDS-6. One internal padding for every card on the page, one gap
+     between a section's head and the content under it, and one gutter between
+     two columns, so the rhythm is the same from the hero to the coverage
+     panel instead of each section carrying its own hand-set numbers. */
+  --card-pad: clamp(22px, 2.3vw, 32px);
+  --head-gap: clamp(44px, 5vw, 72px);
+  --col-gap: clamp(40px, 4.6vw, 64px);
+
   --card-radius: 20px;
   --card-radius-lg: 24px;
   --pill: 999px;
@@ -249,8 +258,12 @@ a:hover {
   background: var(--rph-band-sage);
 }
 
+/* RECORDS-6. On the bands' own padding scale. These were clamp(72,8.6vw,112)
+   and clamp(68,8vw,104), about 8px deeper top and bottom than every band
+   above them, which showed as a longer pause before section 05 than between
+   any other pair of sections. */
 .rph-band--plain {
-  padding: clamp(72px, 8.6vw, 112px) var(--page-gutter) clamp(68px, 8vw, 104px);
+  padding: var(--band-pad-top) var(--page-gutter) var(--band-pad-bottom);
 }
 
 /* ==========================================================================
@@ -427,28 +440,44 @@ a:hover {
    01 Hero
    ========================================================================== */
 
+/* RECORDS-6. The two halves of the hero are one composition. This was a flex
+   row that centred a 460px card against an 820px copy column, so the card
+   floated small and high in the corner with ~290px of empty page between the
+   headline and its left edge. It is now the same two-column auto-fit grid
+   sections 03 and 04 use: equal columns, and align-items:stretch so the card's
+   top edge starts on the kicker's line and its bottom finishes on the copy's. */
 .rph-hero {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 48px;
-  align-items: center;
-  padding: clamp(40px, 5vw, 64px) var(--page-gutter) clamp(56px, 6vw, 80px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: 48px var(--col-gap);
+  align-items: stretch;
+  padding: clamp(40px, 5vw, 64px) var(--page-gutter) var(--band-pad-bottom);
 }
 
+/* A column, so the link can be pushed to the foot of the row: the card is the
+   taller of the two, and anchoring the link to the bottom gives the hero one
+   bottom edge across both halves instead of leaving the copy hanging short. */
 .rph-hero__copy {
   min-width: 0;
-  flex: 1.4 1 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
+.rph-hero__copy > .rph-underline { margin-top: auto; }
 
 .rph-records {
   background: var(--rph-card-records);
   border-radius: var(--card-radius-lg);
-  padding: clamp(20px, 2vw, 28px);
-  flex: 1 1 300px;
-  max-width: 460px;
+  padding: var(--card-pad);
   box-sizing: border-box;
   min-width: 0;
   container-type: inline-size;
+  /* Fills its half of the hero grid rather than being capped at 460px, so the
+     column balances the headline beside it. The count is sized in cqw and the
+     chart is a viewBox, so both follow the card's width on their own. */
+  display: flex;
+  flex-direction: column;
 }
 
 .rph-records__head {
@@ -508,7 +537,12 @@ a:hover {
 .rph-chart {
   display: block;
   width: 100%;
-  height: 84px;
+  /* 84px is the design's height and stays the floor; the chart takes up any
+     extra height the hero grid hands the card, capped so a tall copy column
+     cannot stretch it out of proportion. */
+  flex: 1 1 auto;
+  min-height: 84px;
+  max-height: 148px;
 }
 
 .rph-chart__axis {
@@ -560,7 +594,7 @@ a:hover {
 
 .rph-mission__intro {
   max-width: 60ch;
-  margin-bottom: 64px;
+  margin-bottom: var(--head-gap);
 }
 
 .rph-runhead {
@@ -624,8 +658,11 @@ a:hover {
 .rph-split {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-  gap: 56px 80px;
-  align-items: start;
+  gap: 56px var(--col-gap);
+  /* RECORDS-6. Centred, not top-aligned: the copy column is a third shorter
+     than the filings card beside it, and starting both at the top left the
+     copy cramped under the band's top edge with the rest of its column empty. */
+  align-items: center;
 }
 
 .rph-split__h2 { max-width: 20ch; margin-bottom: 24px; }
@@ -634,7 +671,7 @@ a:hover {
 .rph-parcel {
   background: var(--rph-card-sage-inner);
   border-radius: var(--card-radius);
-  padding: 28px 32px 26px;
+  padding: var(--card-pad);
   min-width: 0;
 }
 
@@ -727,7 +764,6 @@ a:hover {
 }
 
 @media (max-width: 470px) {
-  .rph-parcel { padding: 22px 18px 20px; }
   .rph-parcel__row { grid-template-columns: 54px minmax(0, 1fr) 70px 48px; gap: 0 8px; }
   .rph-parcel__text { font-size: 13.5px; }
   .rph-parcel__date { font-size: 11px; }
@@ -739,17 +775,24 @@ a:hover {
    04 How it works
    ========================================================================== */
 
+/* RECORDS-6. This was display:flex with justify-content:space-between and both
+   columns capped (22ch and 46ch). On a wide viewport that pushed a 513px
+   heading and a 430px paragraph to opposite ends of a 1328px row and left a
+   bare 418x183px of band between them -- bounded above by the band's padding
+   and below by the stages' red rule, which read as a graphic that had failed
+   to load. No graphic was ever specified there: the design's own section is a
+   two-column auto-fit grid (design-system ui_kits Col), the same primitive
+   sections 01 and 03 use, in which the two columns sit next to each other. */
 .rph-engine__head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 32px 64px;
-  flex-wrap: wrap;
-  margin-bottom: 72px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: 32px var(--col-gap);
+  align-items: end;
+  margin-bottom: var(--head-gap);
 }
 
 .rph-engine__h2 { max-width: 22ch; }
-.rph-engine__aside { max-width: 46ch; }
+.rph-engine__aside { max-width: 46ch; justify-self: start; }
 
 .rph-engine__aside p {
   font-size: 16px;
@@ -799,7 +842,7 @@ a:hover {
 
 @media (max-width: 760px) {
   .rph-stages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 0; }
-  .rph-engine__head { margin-bottom: 48px; }
+  .rph-engine__head { margin-bottom: var(--head-gap); }
 }
 
 @media (max-width: 480px) {
@@ -811,8 +854,8 @@ a:hover {
    05 Built on Atlas
    ========================================================================== */
 
-.rph-products__h2 { max-width: 24ch; margin-bottom: 18px; }
-.rph-products__intro { max-width: 60ch; margin-bottom: 64px; }
+.rph-products__h2 { max-width: 34ch; margin-bottom: 18px; }
+.rph-products__intro { max-width: 60ch; margin-bottom: var(--head-gap); }
 
 .rph-tier {
   display: flex;
@@ -840,26 +883,27 @@ a:hover {
 .rph-connector--24 { height: 24px; }
 
 /* The bracket's ends sit on the centres of the outer platform cards, so its
-   inset depends on how many columns the grid is showing: 25% for the
-   two-column layout, 16% once a third column fits (card centres land on 1/6
-   and 5/6, less the gaps). Below 560px there is one card per row and the
-   bracket is decorative. */
+   inset follows the column count the grid is showing: 12.5% at four columns
+   (centres on 1/8 and 7/8) and 25% at two. Below 680px there is one card per
+   row and the bracket is decorative. RECORDS-6 moved the breakpoints onto the
+   same widths .rph-platforms switches at, so the ends cannot drift off the
+   outer cards the way they would have once a fourth card joined the row. */
 .rph-bracket {
-  margin: 0 25%;
+  margin: 0 calc((100% - 24px) / 4);
   height: 24px;
   border: 1px solid var(--rph-connector);
   border-bottom: 0;
 }
 
-@media (min-width: 1300px) {
-  .rph-bracket { margin: 0 16%; }
+@media (min-width: 1200px) {
+  .rph-bracket { margin: 0 calc((100% - 72px) / 8); }
 }
 
 .rph-atlas-card {
   background: var(--rph-band-moss);
   color: var(--rph-on-moss);
   border-radius: var(--card-radius);
-  padding: 24px 28px 26px;
+  padding: var(--card-pad);
   max-width: 820px;
   margin: 0 auto;
 }
@@ -915,16 +959,29 @@ a:hover {
   color: var(--rph-on-moss-body);
 }
 
+/* RECORDS-6. Four cards now, LeanCRE among them, so the column count is set
+   explicitly rather than left to auto-fit: auto-fit on a 380px floor gives
+   three columns at 1440 and would have dropped the fourth card onto a row of
+   its own. Four across above 1200px, two between 680 and 1200, one below.
+   Rows are stretch by default, so the cards in a row are equal height. */
 .rph-platforms {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
+}
+
+@media (min-width: 1200px) {
+  .rph-platforms { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .rph-platforms { grid-template-columns: minmax(0, 1fr); }
 }
 
 .rph-platform {
   background: var(--rph-card-platform);
   border-radius: var(--card-radius);
-  padding: 40px 40px 36px;
+  padding: var(--card-pad);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1006,7 +1063,34 @@ a:hover {
   color: var(--rph-ink);
 }
 
-.rph-platform__link { align-self: flex-start; white-space: nowrap; }
+/* Pinned to the foot of the card so that, with four equal-height cards in a
+   row, every link sits on the same line instead of following its own body. */
+.rph-platform__link { align-self: flex-start; white-space: nowrap; margin-top: auto; }
+
+/* LeanCRE is not one of Red Planet's platforms and the card says so in the
+   same place on every read: a rule, then the note, directly above the link. */
+.rph-platform__licence {
+  border-top: 1px solid var(--rph-rule-card);
+  padding-top: 14px;
+  margin-top: auto;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--rph-meta);
+}
+
+.rph-platform__licence + .rph-platform__link { margin-top: 0; }
+
+/* The licensee's own lockup, as shipped by LeanCRE: the light artwork on the
+   light theme, the dark-theme artwork under [data-theme="dark"]. Red Planet
+   renders no other company's colour anywhere else on the page. */
+/* 27px, not the 36px the other wordmarks are set at: this lockup is uppercase
+   and carries its mark inside the same artwork, so it reads a size larger than
+   it measures. */
+.rph-platform__logo { display: block; height: 27px; width: auto; }
+.rph-platform__logo--dark { display: none; }
+
+[data-theme="dark"] .rph-platform__logo--light { display: none; }
+[data-theme="dark"] .rph-platform__logo--dark { display: block; }
 
 .rph-platform__markets {
   font-family: var(--font-mono);
@@ -1015,69 +1099,34 @@ a:hover {
   margin-top: auto;
 }
 
-/* --- Licensees ------------------------------------------------------------
-   Separate companies that license Atlas. Deliberately NOT a platform card:
-   no product card background, no mark, and a rule above it, so the eye reads
-   it as something adjacent to Red Planet's own platforms rather than one of
-   them. Red Planet never renders another company's logo or brand colour. */
+/* RECORDS-6 removed the .rph-licensees strip. It carried the one licensee,
+   LeanCRE, as a single line of text under the platform cards, deliberately
+   not a card: no product card background, no mark, and the standing note that
+   Red Planet never renders another company's logo or brand colour. The
+   operator asked for LeanCRE to be a fourth card in the platforms' own
+   format, with its own logo, so that rule no longer holds for a licensee's
+   mark. What it protected is kept instead by .rph-platform__licence, the note
+   on the card itself saying LeanCRE is a separate company that licenses
+   Atlas. The page restates no other company's colour outside that lockup. */
 
-.rph-licensees {
-  margin-top: 40px;
-  padding-top: 28px;
-  border-top: 1px solid var(--rph-connector);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.rph-licensees__label {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--rph-meta);
-}
-
-.rph-licensee {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 18px;
-}
-
-.rph-licensee__name {
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -.01em;
-  color: var(--rph-ink);
-}
-
-.rph-licensee__desc {
-  flex: 1 1 320px;
-  min-width: 0;
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--rph-body);
-}
-
-@media (max-width: 560px) {
-  .rph-licensee { gap: 6px; }
-  .rph-licensee__desc { flex-basis: 100%; }
-}
-
-@media (max-width: 560px) {
-  .rph-platform { padding: 28px 24px 26px; }
+/* One card per row from here down, so the bracket no longer spans anything
+   and is purely decorative. 680px is where .rph-platforms drops to one column. */
+@media (max-width: 680px) {
   .rph-bracket { margin: 0 18%; }
+}
+
+@media (max-width: 560px) {
   .rph-wordmark-teleacre,
   .rph-wordmark-signal,
   .rph-wordmark-sunscope { font-size: 30px; }
+  .rph-platform__logo { height: 26px; }
 }
 
 /* ==========================================================================
    06 Coverage
    ========================================================================== */
 
-.rph-coverage { padding: 0 var(--page-gutter) clamp(72px, 8.6vw, 112px); }
+.rph-coverage { padding: 0 var(--page-gutter) var(--band-pad-bottom); }
 
 .rph-coverage__inner {
   background: var(--rph-band-paper2);
