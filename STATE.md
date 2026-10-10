@@ -1,5 +1,42 @@
 # red-planet-homepage — STATE
 
+## Current phase: COFOUNDER-2.3 — the cofounder-coo posting is a founder note (2026-10-10)
+
+### Completed in this phase
+
+The description of the `cofounder-coo` posting was replaced with the founder
+note Paul wrote: a shorter piece that opens with "A note from the founder",
+drops the paragraph about superseded filings and the docs.redplanetdata.com
+pointer, and keeps the three "You are probably a fit if" bullets and the
+equity paragraph as they were. Title, status, location, employment type,
+`posted_at`, `sort_order` and all five screening questions are untouched, and
+no page code changed.
+
+The change was applied in two places that must agree: the live
+`public.job_postings` row (one UPDATE, `updated_at` 2026-10-10 19:52:00Z) and
+`scripts/jobs_seed_cofounder_coo.sql`, which is the seed of record. Both now
+carry the same 1,897-character text — verified by `md5(description)` against
+the file, `f89be9fb4dd925d9f1af1da19c73df00`.
+
+### Decisions that affect later phases
+
+- **`{records}` keeps its unit word.** The text Paul supplied read "more than
+  {records} verified records". `lib/canonical-metrics.ts` floors the record
+  figure to whole **millions** (`recordsMillions`), so the posting has always
+  supplied the word "million" itself; rendering the token without it would have
+  published "more than 780 verified records". The sentence shipped as "more
+  than {records} million verified records from over {sources} unique sources",
+  which is how the previous description used the tokens.
+- **The description renderer has paragraphs and bullet lists, and nothing
+  else** (`renderDescription` in `lib/jobs.ts`). "A note from the founder" is
+  therefore a paragraph, not a heading. A posting that needs a real heading
+  needs a renderer change first.
+
+### Immediate next step
+
+None pending. The posting re-reads from the database every 300 seconds, so a
+further wording change is one UPDATE plus the same edit to the seed file.
+
 ## Current phase: RECORDS-6 — the homepage reads as one composition (2026-10-10)
 
 ### Completed in this phase
