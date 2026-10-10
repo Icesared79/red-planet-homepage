@@ -1743,3 +1743,182 @@ a:hover {
   animation-iteration-count: 1 !important;
   transition-duration: .001ms !important;
 }
+
+/* ==========================================================================
+   Jobs: the careers list at /jobs and one posting at /jobs/[slug].
+
+   Appended at the end of the file on purpose. Both pages sit inside .rph-doc,
+   the long-form document frame the privacy and terms pages use, so headings,
+   body copy, lists and link treatment are already the page design. What is
+   added here is only what a job board needs that a document does not: the
+   posting rows, the facts line, the closed notice and the application form.
+
+   Nothing above this block is touched, and no value below is new to the
+   system -- every colour, rule, radius and font is one of the --rph-* tokens
+   app/globals.css already defines over the design package.
+
+   PHONE FIRST. Most traffic arrives from a link inside a LinkedIn post, a
+   direct message or an email, which means a phone. The form inputs are set to
+   16px here rather than the 15px the contact modal uses, because iOS Safari
+   zooms the page on focus for anything smaller and the zoom does not come
+   back.
+   ========================================================================== */
+
+.rph-jobs__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rph-rule-row);
+}
+
+.rph-jobs__item {
+  margin: 0;
+  border-bottom: 1px solid var(--rph-rule-row);
+}
+
+.rph-doc a.rph-jobs__link {
+  display: block;
+  padding: 24px 0 26px;
+  border-bottom: 0;
+  color: var(--rph-ink);
+  transition: background 120ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.rph-doc a.rph-jobs__link:hover { background: var(--rph-card-quiet); }
+
+.rph-jobs__title {
+  display: block;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  margin-bottom: 9px;
+  text-wrap: balance;
+}
+
+.rph-jobs__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--rph-meta-2);
+  margin-bottom: 14px;
+}
+
+.rph-jobs__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--rph-red);
+}
+
+.rph-jobs__empty {
+  border-left: 3px solid var(--rph-rule-card);
+  padding: 4px 0 4px 18px;
+}
+
+.rph-jobs__empty p:last-child { margin-bottom: 0; }
+
+.rph-jobs__back {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin: 0 0 20px;
+}
+
+.rph-doc .rph-jobs__back a {
+  border-bottom: 0;
+  color: var(--rph-meta-2);
+}
+
+.rph-doc .rph-jobs__back a:hover { color: var(--rph-ink); }
+
+.rph-jobs__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--rph-meta-2);
+  margin: 0 0 8px;
+}
+
+.rph-jobs__facts span[aria-hidden="true"] { color: var(--rph-struck); }
+
+.rph-jobs__closed {
+  border-left: 3px solid var(--rph-red);
+  background: var(--rph-error-bg);
+  padding: 14px 16px 2px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 28px;
+}
+
+/* --- The application form ------------------------------------------------ */
+
+.rph-jobs__form {
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+.rph-jobs__form input,
+.rph-jobs__form textarea { font-size: 16px; }
+
+.rph-jobs__file {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--rph-body);
+  background: var(--rph-field);
+  border: 1px dashed var(--rph-rule-card);
+  border-radius: 10px;
+  padding: 13px 12px;
+  margin-bottom: 7px;
+}
+
+.rph-jobs__file::file-selector-button {
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--rph-ink);
+  background: var(--rph-card-quiet);
+  border: 1px solid var(--rph-rule-card);
+  border-radius: var(--pill);
+  padding: 7px 14px;
+  margin-right: 12px;
+}
+
+.rph-jobs__questions {
+  margin-top: 30px;
+  padding-top: 4px;
+}
+
+.rph-jobs__question { margin-top: 22px; }
+
+/* A screening question is a sentence, not a field label: it wraps, it keeps
+   sentence case and it reads at body size. */
+.rph-jobs__prompt {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--rph-body-strong);
+  margin-bottom: 11px;
+  max-width: 58ch;
+}
+
+.rph-jobs__number { max-width: 160px; }
+
+.rph-jobs__outcome {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--rph-body);
+  margin: 14px 0 0;
+  max-width: 54ch;
+}
+
+.rph-jobs__declined { padding-bottom: 10px; }
+
+@media (max-width: 520px) {
+  .rph-doc a.rph-jobs__link { padding: 20px 0 22px; }
+  .rph-jobs__questions { margin-top: 24px; }
+}

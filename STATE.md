@@ -1,5 +1,88 @@
 # red-planet-homepage — STATE
 
+## Current phase: COFOUNDER-2.2 — the job board at /jobs (2026-10-10)
+
+### Completed in this phase
+
+`redplanetdata.com/jobs` is the company's permanent careers page, and
+`/jobs/<slug>` is one posting with its application form. The first posting is
+`cofounder-coo`, Co-Founder & Chief Operating Officer.
+
+**Nothing about a posting lives in page code.** Two tables carry it:
+
+| Table | Holds |
+|---|---|
+| `public.job_postings` | slug, title, status (`open`/`closed`), location text, employment type, the description, and that posting's screening questions as `jsonb` |
+| `public.job_applications` | one row per saved application: name, email, LinkedIn URL, note, the answers as asked, and the resume's path in storage |
+
+**Adding a posting is one INSERT into `public.job_postings`** — see
+`scripts/jobs_seed_cofounder_coo.sql` for the shape. The pages re-read every 300
+seconds (`JOBS_REVALIDATE`), so a new row, or a status change to `closed`,
+appears without a deploy. `scripts/jobs_schema.sql` is the DDL as applied.
+
+Resumes go in the existing private `resumes` bucket (`public = false`, 10 MB
+ceiling, PDF/.doc/.docx only — storage enforces all three independently). No
+public URL for one is ever minted.
+
+### Decisions that affect later phases
+
+- **The record and source counts come from `lib/canonical-metrics.ts`, not from
+  the posting text.** A description stores `{records}` and `{sources}` and the
+  renderer substitutes them from `atlas_records_headline.records_held` and
+  `atlas_stats_cache['active_sources_total']` — the same two canonical objects
+  `redplanet-docs-site/scripts/build_atlas_snapshot.py` reads into its snapshot,
+  which is what `redplanet-docs-site/lib/metrics.ts` serves. So this site and
+  docs.redplanetdata.com cannot state different numbers. Both are floored, so a
+  posting understates and never overstates. **With no reading at all the posting
+  render throws**, and ISR goes on serving the last good render, for the same
+  reason `lib/records-ledger.ts` carries no constant fallback: no page here
+  publishes a figure nobody measured.
+- **The screening rule is defined once, in `lib/jobs-screening.ts`, and applied
+  twice.** The browser stops a disqualified applicant before anything is
+  uploaded or saved and shows `DECLINE_NOTE`; `app/api/jobs/apply/route.ts`
+  applies the same rule to the same answers and returns 422, because a
+  hand-rolled POST walks straight past a client check. A 422 saves no row and
+  deletes any resume already uploaded.
+- **The route handler re-reads the questions from the posting row**, not from
+  the payload, and matches answers onto them by key. An edited payload cannot
+  invent a question, drop a required one or soften which answer disqualifies.
+- **The resume never passes through the route handler.** A serverless request
+  body is capped well below 10 MB, so `app/api/jobs/resume-url/route.ts` mints a
+  one-time signed upload URL and the browser uploads straight to the bucket.
+  The apply route then proves the object exists by signing a 30-day read URL for
+  it, which is the link the notification email carries.
+- **Both emails send from `hello@redplanetdata.com`** through the site's
+  existing Resend setup (`redplanetdata.com` is a verified Resend domain). The
+  applicant gets a short confirmation; `hello@redplanetdata.com` gets every
+  answer, the LinkedIn URL, the resume attached when it is under 7 MB, and the
+  30-day signed link either way. Both sends are best-effort: the application is
+  saved first, so a mail failure never tells an applicant their application did
+  not land.
+- **Structured data is emitted only while a posting is open.** `JobPosting`
+  JSON-LD on an open posting (full-time, `TELECOMMUTE`, United States
+  applicants, the posting date, Red Planet Data as hiring organization, no
+  salary). Closing the posting in the database removes the JSON-LD and
+  `noindex`es the page, with no deploy.
+- **Jobs is in the legal footer, not the header nav** (`components/LegalFooter.tsx`).
+- **The jobs CSS is one appended block at the end of `app/globals.css`.** Both
+  pages reuse `.rph-doc` and the `.rph-form__*`/`.rph-field` system the contact
+  modal already defines, so no colour, radius or font is restated. The form
+  inputs are 16px rather than the modal's 15px: iOS Safari zooms on focus below
+  16px and does not zoom back, and this page is reached from a phone.
+
+### Known issues left open
+
+- **Spam protection is a honeypot, a fill-time floor and 3 submissions per email
+  address per posting.** There is no CAPTCHA, by doctrine, and no IP-based
+  limit.
+- A resume uploaded on a signed URL by someone who then abandons the form stays
+  in the bucket as an orphan. Nothing sweeps those yet.
+
+### Immediate next step
+
+None pending. Opening or closing a role is a database change.
+
+
 ## Current phase: RECORDS-5 — the record card reads the records ledger (2026-10-09)
 
 ### Completed in this phase

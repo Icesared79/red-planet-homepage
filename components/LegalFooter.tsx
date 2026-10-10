@@ -30,6 +30,10 @@ export function LegalFooter({ standalone = false }: Props) {
             </p>
           </div>
           <nav className="rph-legal__links" aria-label="Legal">
+            {/* Jobs lives here and not in the header nav: the careers page is
+                permanent but it is not what a visitor came for, and a link
+                inside a LinkedIn post reaches the posting directly anyway. */}
+            <a href="/jobs">Jobs</a>
             <a href="/privacy">Privacy Policy</a>
             <a href="/terms">Terms of Use</a>
             <a href="mailto:hello@redplanetdata.com">
