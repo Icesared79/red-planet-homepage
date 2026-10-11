@@ -43,6 +43,9 @@
   --card-pad: clamp(22px, 2.3vw, 32px);
   --head-gap: clamp(44px, 5vw, 72px);
   --col-gap: clamp(40px, 4.6vw, 64px);
+  /* One measure for a section head, so a heading and the intro under it
+     read as one block rather than two of different widths. */
+  --head-measure: 640px;
 
   --card-radius: 20px;
   --card-radius-lg: 24px;
@@ -515,7 +518,7 @@ a:hover {
 
 .rph-records__count {
   font-family: var(--font-mono);
-  font-size: 15.6cqw;
+  font-size: 14.6cqw;
   line-height: 1;
   letter-spacing: -.04em;
   font-variant-numeric: tabular-nums;
@@ -581,9 +584,8 @@ a:hover {
    ========================================================================== */
 
 .rph-mission__h2 {
-  width: 782px;
-  max-width: 100%;
-  margin-bottom: 18px;
+  max-width: var(--head-measure);
+  margin-bottom: 20px;
 }
 
 /* The design fixes this headline at 94px so the band below it does not shift.
@@ -593,7 +595,7 @@ a:hover {
 }
 
 .rph-mission__intro {
-  max-width: 60ch;
+  max-width: var(--head-measure);
   margin-bottom: var(--head-gap);
 }
 
@@ -665,7 +667,7 @@ a:hover {
   align-items: center;
 }
 
-.rph-split__h2 { max-width: 20ch; margin-bottom: 24px; }
+.rph-split__h2 { max-width: 20ch; margin-bottom: 20px; }
 .rph-split__body { max-width: 50ch; }
 
 .rph-parcel {
@@ -854,8 +856,17 @@ a:hover {
    05 Built on Atlas
    ========================================================================== */
 
-.rph-products__h2 { max-width: 34ch; margin-bottom: 18px; }
-.rph-products__intro { max-width: 60ch; margin-bottom: var(--head-gap); }
+/* Centred head, one 640px measure for heading and intro, 56px to the lockup. */
+.rph-products__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.rph-products__h2    { max-width: var(--head-measure); margin-bottom: 20px; }
+.rph-products__intro { max-width: var(--head-measure); }
 
 .rph-tier {
   display: flex;
@@ -959,11 +970,7 @@ a:hover {
   color: var(--rph-on-moss-body);
 }
 
-/* RECORDS-6. Four cards now, LeanCRE among them, so the column count is set
-   explicitly rather than left to auto-fit: auto-fit on a 380px floor gives
-   three columns at 1440 and would have dropped the fourth card onto a row of
-   its own. Four across above 1200px, two between 680 and 1200, one below.
-   Rows are stretch by default, so the cards in a row are equal height. */
+/* Four across above 1200px, two between 680 and 1200, one below. Unchanged. */
 .rph-platforms {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -981,19 +988,30 @@ a:hover {
 .rph-platform {
   background: var(--rph-card-platform);
   border-radius: var(--card-radius);
-  padding: var(--card-pad);
+  padding: 28px 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   min-width: 0;
+}
+
+/* Index left, market right. min-height keeps the lockups level across the row. */
+.rph-platform__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  min-height: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--rph-meta-2);
 }
 
 .rph-platform__lockup {
   margin: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  height: 38px;
 }
 
 .rph-platform__lockup > span {
@@ -1004,7 +1022,7 @@ a:hover {
 .rph-wordmark-teleacre {
   font-family: var(--font-wordmark-teleacre);
   font-weight: 700;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 1;
   letter-spacing: -.04em;
   color: var(--rph-teleacre-ink);
@@ -1013,19 +1031,16 @@ a:hover {
 .rph-wordmark-signal {
   font-family: var(--font-wordmark-signal);
   font-weight: 500;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 1;
   letter-spacing: -.025em;
   color: var(--rph-signal-ink);
 }
 
-/* SunScope sets "Sun" in the brand amber and "Scope" in ink, the two-tone
-   device the product uses. Geist is already loaded by the design system, so
-   this adds no font request; the app's own display face is close in feel. */
 .rph-wordmark-sunscope {
   font-family: var(--font-wordmark-sunscope);
   font-weight: 600;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 1;
   letter-spacing: -.025em;
   color: var(--rph-sunscope-ink);
@@ -1036,78 +1051,44 @@ a:hover {
   color: var(--rph-sunscope-mark);
 }
 
+.rph-platform__logo { display: block; height: 26px; width: auto; }
+.rph-platform__logo--dark { display: none; }
+[data-theme="dark"] .rph-platform__logo--light { display: none; }
+[data-theme="dark"] .rph-platform__logo--dark { display: block; }
+
 .rph-platform__body {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--rph-body);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--rph-ink);
   margin: 0;
-  max-width: 50ch;
   text-wrap: pretty;
 }
 
+/* The card's foot: an ink rule, a red mono label, one line of body. Pinned to
+   the bottom so every card in the row ends on the same element. */
 .rph-platform__draws {
-  border-top: 1px solid var(--rph-rule-card);
+  margin-top: auto;
+  border-top: 1px solid var(--rph-rule-ink);
   padding-top: 14px;
+  display: grid;
+  gap: 6px;
 }
 
 .rph-platform__draws-label {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--rph-meta-2);
-  margin-bottom: 6px;
+  color: var(--rph-red);
 }
 
 .rph-platform__draws-body {
   font-size: 14.5px;
   line-height: 1.5;
-  color: var(--rph-ink);
-}
-
-/* Pinned to the foot of the card so that, with four equal-height cards in a
-   row, every link sits on the same line instead of following its own body. */
-.rph-platform__link { align-self: flex-start; white-space: nowrap; margin-top: auto; }
-
-/* LeanCRE is not one of Red Planet's platforms and the card says so in the
-   same place on every read: a rule, then the note, directly above the link. */
-.rph-platform__licence {
-  border-top: 1px solid var(--rph-rule-card);
-  padding-top: 14px;
-  margin-top: auto;
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: var(--rph-meta);
-}
-
-.rph-platform__licence + .rph-platform__link { margin-top: 0; }
-
-/* The licensee's own lockup, as shipped by LeanCRE: the light artwork on the
-   light theme, the dark-theme artwork under [data-theme="dark"]. Red Planet
-   renders no other company's colour anywhere else on the page. */
-/* 27px, not the 36px the other wordmarks are set at: this lockup is uppercase
-   and carries its mark inside the same artwork, so it reads a size larger than
-   it measures. */
-.rph-platform__logo { display: block; height: 27px; width: auto; }
-.rph-platform__logo--dark { display: none; }
-
-[data-theme="dark"] .rph-platform__logo--light { display: none; }
-[data-theme="dark"] .rph-platform__logo--dark { display: block; }
-
-.rph-platform__markets {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
   color: var(--rph-body);
-  margin-top: auto;
+  text-wrap: pretty;
 }
 
-/* RECORDS-6 removed the .rph-licensees strip. It carried the one licensee,
-   LeanCRE, as a single line of text under the platform cards, deliberately
-   not a card: no product card background, no mark, and the standing note that
-   Red Planet never renders another company's logo or brand colour. The
-   operator asked for LeanCRE to be a fourth card in the platforms' own
-   format, with its own logo, so that rule no longer holds for a licensee's
-   mark. What it protected is kept instead by .rph-platform__licence, the note
-   on the card itself saying LeanCRE is a separate company that licenses
-   Atlas. The page restates no other company's colour outside that lockup. */
+/* Removed: .rph-platform__link, .rph-platform__licence (+ sibling rule),
+   .rph-platform__markets. Nothing references them after this change. */
 
 /* One card per row from here down, so the bracket no longer spans anything
    and is purely decorative. 680px is where .rph-platforms drops to one column. */
@@ -1126,19 +1107,20 @@ a:hover {
    06 Coverage
    ========================================================================== */
 
-.rph-coverage { padding: 0 var(--page-gutter) var(--band-pad-bottom); }
-
-.rph-coverage__inner {
+.rph-coverage {
   background: var(--rph-band-paper2);
   border-radius: var(--band-radius);
-  padding: clamp(40px, 5.5vw, 72px) clamp(24px, 4.3vw, 56px);
+  padding: var(--band-pad-top) var(--page-gutter) var(--band-pad-bottom);
+}
+
+.rph-coverage__inner {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-  gap: 56px 72px;
+  gap: 56px var(--col-gap);
   align-items: start;
 }
 
-.rph-coverage__h2 { max-width: 20ch; margin-bottom: 18px; }
+.rph-coverage__h2 { max-width: 20ch; margin-bottom: 20px; }
 .rph-coverage__intro { max-width: 48ch; margin-bottom: 32px; }
 
 .rph-tabs {
@@ -1274,6 +1256,7 @@ a:hover {
    paper either side of it on a wide screen. Its content stays in the same
    column as every section above, so nothing moves at or below 1560px. */
 .rph-contact {
+  margin-top: var(--band-gap);
   background: var(--rph-band-moss);
   color: var(--rph-on-moss);
   border-radius: var(--band-radius) var(--band-radius) 0 0;
