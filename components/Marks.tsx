@@ -1,16 +1,43 @@
+import { useId } from "react";
+
 /**
  * The page marks, inline so they need no network request and inherit the
- * design-system colour tokens. Geometry is taken from the redesign export
- * (design_handoff_red_planet_homepage) and matches public/brand/mark.svg.
+ * design-system colour tokens. The product marks come from the redesign
+ * export (design_handoff_red_planet_homepage); the Red Planet mark below is
+ * the 2026-10-12 logo and matches public/brand/mark.svg.
  */
 
+/**
+ * The Red Planet Data mark (LOGO-1, 2026-10-12): a disc, red above the
+ * horizon and banded below it. Geometry is rpd/packages/tokens/brand/
+ * red-planet-mark.svg, the canonical copy, on its 48-unit grid.
+ *
+ * Two colours, not one. The disc takes --rph-red (which already flips to the
+ * lighter red under [data-theme="dark"]); the bands take --rph-mark-band, ink
+ * on paper and paper on ink, so the dark theme gets the on-dark variant the
+ * brand folder ships as a file. A single-fill copy of this mark renders a
+ * plain disc with the bands invisible.
+ *
+ * Each id must be unique per instance — the header and the footer both mount
+ * one, and a duplicated clipPath id would make the second resolve to the
+ * first.
+ */
 export function RedPlanetMark({ size = 18 }: { size?: number }) {
+  const clip = useId();
   return (
-    <svg viewBox="0 0 240 240" width={size} height={size} aria-hidden="true">
-      <path
-        d="M120 0A120 120 0 1 1 35.147 35.147L120 120Z"
-        fill="var(--red-500)"
-      />
+    <svg viewBox="0 0 48 48" width={size} height={size} aria-hidden="true">
+      <defs>
+        <clipPath id={clip}>
+          <circle cx="24" cy="24" r="22" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clip})`}>
+        <rect x="0" y="0" width="48" height="23" fill="var(--rph-red)" />
+        <rect x="0" y="25" width="48" height="5" fill="var(--rph-mark-band)" />
+        <rect x="0" y="32" width="48" height="5" fill="var(--rph-mark-band)" />
+        <rect x="0" y="39" width="48" height="5" fill="var(--rph-mark-band)" />
+        <rect x="0" y="46" width="48" height="2" fill="var(--rph-mark-band)" />
+      </g>
     </svg>
   );
 }

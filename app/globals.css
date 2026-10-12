@@ -109,6 +109,10 @@
   --rph-red-on-sage: #B03226;
 
   /* --- Marks -------------------------------------------------------------- */
+  /* The Red Planet mark's bands (LOGO-1). The disc takes --rph-red; the bands
+     are ink on paper here and paper on ink in the dark theme, which is the
+     difference between the brand folder's mark and mark-on-dark files. */
+  --rph-mark-band: var(--ink-900);
   --rph-atlas-equator: #CFA85A;
   --rph-teleacre-accent: #C4F000;
   --rph-teleacre-ink: #16171A;
@@ -191,6 +195,7 @@
 
   /* Product wordmarks sit on dark cards now. The TeleAcre chartreuse and the
      Atlas equator gold are brand colours and do not change. */
+  --rph-mark-band: var(--paper-100);
   --rph-teleacre-ink: #F1F0EA;
   --rph-signal-ink: #F1F0EA;
   --rph-signal-mark: var(--red-400);
