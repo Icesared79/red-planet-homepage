@@ -12,11 +12,12 @@ import { useId } from "react";
  * horizon and banded below it. Geometry is rpd/packages/tokens/brand/
  * red-planet-mark.svg, the canonical copy, on its 48-unit grid.
  *
- * Two colours, not one. The disc takes --rph-red (which already flips to the
- * lighter red under [data-theme="dark"]); the bands take --rph-mark-band, ink
- * on paper and paper on ink, so the dark theme gets the on-dark variant the
- * brand folder ships as a file. A single-fill copy of this mark renders a
- * plain disc with the bands invisible.
+ * Two colours, not one, and both come from --rph-mark-disc / --rph-mark-band
+ * so the variant follows the SURFACE rather than the theme. The page ground
+ * sets them per theme; a dark band that stays dark in both themes (the legal
+ * footer) overrides them locally, which is what keeps the bands visible there.
+ * A single-fill copy of this mark renders a plain disc with the bands
+ * invisible -- and so does the right geometry with the wrong ground.
  *
  * Each id must be unique per instance — the header and the footer both mount
  * one, and a duplicated clipPath id would make the second resolve to the
@@ -32,7 +33,7 @@ export function RedPlanetMark({ size = 18 }: { size?: number }) {
         </clipPath>
       </defs>
       <g clipPath={`url(#${clip})`}>
-        <rect x="0" y="0" width="48" height="23" fill="var(--rph-red)" />
+        <rect x="0" y="0" width="48" height="23" fill="var(--rph-mark-disc)" />
         <rect x="0" y="25" width="48" height="5" fill="var(--rph-mark-band)" />
         <rect x="0" y="32" width="48" height="5" fill="var(--rph-mark-band)" />
         <rect x="0" y="39" width="48" height="5" fill="var(--rph-mark-band)" />

@@ -109,9 +109,14 @@
   --rph-red-on-sage: #B03226;
 
   /* --- Marks -------------------------------------------------------------- */
-  /* The Red Planet mark's bands (LOGO-1). The disc takes --rph-red; the bands
-     are ink on paper here and paper on ink in the dark theme, which is the
-     difference between the brand folder's mark and mark-on-dark files. */
+  /* The Red Planet mark's own pair (LOGO-1). The mark is two colours and the
+     bands are what carries it, so both follow the SURFACE the mark sits on,
+     not the theme -- the difference between the brand folder's mark and
+     mark-on-dark files. These are the values for the page ground; a dark band
+     that keeps its ground in both themes (.rph-legal) overrides them locally.
+     Kept separate from --rph-red so re-inking the mark on a dark band does not
+     re-ink everything else red on it. */
+  --rph-mark-disc: var(--red-500);
   --rph-mark-band: var(--ink-900);
   --rph-atlas-equator: #CFA85A;
   --rph-teleacre-accent: #C4F000;
@@ -195,6 +200,7 @@
 
   /* Product wordmarks sit on dark cards now. The TeleAcre chartreuse and the
      Atlas equator gold are brand colours and do not change. */
+  --rph-mark-disc: var(--red-400);
   --rph-mark-band: var(--paper-100);
   --rph-teleacre-ink: #F1F0EA;
   --rph-signal-ink: #F1F0EA;
@@ -1307,6 +1313,15 @@ a:hover {
   background: var(--rph-footer-bg);
   color: var(--rph-on-moss);
   border-top: 1px solid var(--rph-rule-moss);
+
+  /* The footer floor is forest-950 in BOTH themes, so the mark standing on it
+     is always the on-dark variant -- in the light theme the page-ground values
+     would put ink bands on near-ink and the mark would read as a plain red
+     disc (measured 1.02:1 against this ground before this rule). Scoped here
+     rather than in the component because it is the ground that decides, and
+     this is the rule that sets the ground. */
+  --rph-mark-disc: var(--red-400);
+  --rph-mark-band: var(--paper-100);
 }
 
 /* On a page that does not carry the § 07 band, the footer is the only closing
