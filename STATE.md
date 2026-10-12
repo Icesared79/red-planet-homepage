@@ -1,5 +1,43 @@
 # red-planet-homepage — STATE
 
+## Current phase: LOGO-1 — the new Red Planet Data logo (2026-10-12)
+
+### Completed in this phase
+
+The company mark changed from the notched disc to a banded disc — red above the
+horizon, bands below it. The "Red Planet." wordmark is unchanged. Live at
+redplanetdata.com on `94b5924` / `dpl_CDhRGiJZhEMHYuoed6LvNZ8CvSW8`, checked by
+fetching each file from the live domain and comparing sha256 against the
+canonical copy (all eight matched, and the served HTML carries the new inline
+mark with no occurrence of the old path).
+
+Replaced: `public/favicon.ico` (16/32/48), `favicon-16.png`, `favicon-32.png`,
+`apple-touch-icon.png`, `og-image.png`, the three `public/brand` SVGs, the
+design system's two raster assets, and the inline `RedPlanetMark` that
+`Header` and `LegalFooter` mount.
+
+### Decisions that affect later phases
+
+- **The canonical logo lives in `rpd/packages/tokens/brand/`**, with the rules
+  for picking a variant in its README. Everything in `public/` here is a
+  byte-identical copy of a file there, because Next can only serve from
+  `public/`. A future logo change edits the canonical folder and re-copies; the
+  check is sha256, not eyeballs.
+- **The mark is two colours now, which breaks any single-fill copy of it.**
+  `RedPlanetMark` takes `--rph-red` for the disc and a new `--rph-mark-band`
+  for the bands (ink-900 on paper, paper-100 on ink), so the dark theme renders
+  the real on-dark variant rather than an approximation. A `fill="currentColor"`
+  copy of this geometry draws a plain disc with the bands invisible.
+- **The lockup SVGs set their wordmark as live `<text>` in Geist 400.** Loaded
+  through `<img>` they cannot reach the page's webfont and fall back to
+  `system-ui`. Inline them, or use a PNG, wherever the wordmark must be exact.
+- **This repo has no web manifest.** Nothing was added; `icon-192`/`icon-512`
+  exist in the canonical folder if one is ever wanted.
+
+### Immediate next step
+
+None pending.
+
 ## Current phase: COFOUNDER-2.3 — the cofounder-coo posting is a founder note (2026-10-10)
 
 ### Completed in this phase
