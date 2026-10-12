@@ -1,5 +1,45 @@
 # red-planet-homepage — STATE
 
+## Current phase: LOGO-1.1 — the mark follows the surface, not the theme (2026-10-12)
+
+### Completed in this phase
+
+Paul saw the footer mark reading as a red smudge. `.rph-legal`'s floor is
+forest-950 in BOTH themes, but `--rph-mark-band` followed the theme, so in the
+light theme the mark stood on near-ink with ink bands: **1.02:1**, measured on
+the live page. The bands are the mark, so what was left was a plain red disc.
+
+The mark now has its own pair, `--rph-mark-disc` and `--rph-mark-band`, scoped
+to the surface. The page ground sets them per theme as before; `.rph-legal`
+overrides them to the on-dark values unconditionally, in the same rule that sets
+that ground. The footer measures **15.47:1** after the change.
+
+The favicon set and `og-image.png` came back from the brand folder with opaque
+grounds — tab icons on paper-100, the OG card on ink. A transparent favicon lost
+its bands on a browser's dark tab strip (1.06:1) and the transparent OG card
+lost them on any client that composites link previews onto white (1.12:1).
+
+Audited every mark on the live site in both themes by reading the computed fill
+and the painted ground — `/`, `/privacy`, and every page carrying the standalone
+footer. The footer was the only placement that failed; the header and the § 05
+tier line were already right.
+
+### Decisions that affect later phases
+
+- **Scope the mark's tokens to the SURFACE, never the theme.** This is the whole
+  lesson. A dark band inside a light page needs the on-dark values locally, and
+  the only reliable place to put that override is the rule that paints the
+  ground. Any new dark band carrying the mark needs the same two lines.
+- **`--rph-mark-disc` is deliberately separate from `--rph-red`**, so re-inking
+  the mark on a dark band does not re-ink everything else red on it.
+- **Rasters we hand to someone else get an opaque ground.** A favicon and an OG
+  card are read on a ground we do not choose, and this mark cannot survive that
+  transparent.
+
+### Immediate next step
+
+None pending.
+
 ## Current phase: LOGO-1 — the new Red Planet Data logo (2026-10-12)
 
 ### Completed in this phase
