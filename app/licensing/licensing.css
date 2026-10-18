@@ -234,3 +234,8 @@
     margin-bottom: 2px;
   }
 }
+
+/* COUNTY-7: the Signal screenshot under "What Signal is". */
+.rpl-shot { margin: 18px 0 14px; }
+.rpl-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--rph-rule-card); border-radius: 4px; }
+.rpl-shot figcaption { margin-top: 8px; font-size: 13px; line-height: 1.5; color: var(--rph-meta); }

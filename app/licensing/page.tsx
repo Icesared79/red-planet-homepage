@@ -7,6 +7,10 @@ import { LICENSING_REVALIDATE, LICENSING_STATES, loadLicensing, priceText, usd, 
 import "./licensing.css";
 
 // COUNTY-4.2 (2026-10-18): residential county licensing for Connecticut and Florida.
+// COUNTY-7 (2026-10-18): operator ruling -- the license is for Signal, Red Planet Data's application for residential
+// agents, with the firm's licensed counties loaded in it. The page now reads in that order: what Signal is and what
+// agents do in it, with one screenshot; then the license (the counties loaded into Signal, seats, individual
+// licenses, white label for larger brokerages); then the Connecticut and Florida prices and the two request forms.
 //
 // NOT LINKED FROM ANYWHERE on the site, and not indexed: it is reachable only by its address until the operator
 // links it. Every price, discount, seat term and terms text is read live from the County Catalog
@@ -16,7 +20,7 @@ export const revalidate = LICENSING_REVALIDATE;
 
 export const metadata: Metadata = {
   title: "Licensing | Red Planet Data",
-  description: "Residential county licenses for Connecticut and Florida, delivered through Signal.",
+  description: "Signal, Red Planet Data's application for residential agents, licensed with Connecticut and Florida counties loaded in it.",
   robots: { index: false, follow: false },
 };
 
@@ -29,6 +33,14 @@ const RECORD_TYPES: Array<[string, string]> = [
   ["Tax delinquency records", "property taxes unpaid past their due date"],
   ["Liens", "liens recorded against a property"],
   ["Code enforcement cases", "violations cited by the municipality"],
+];
+
+// The four things agents do in Signal: the same four the shared quote pages name (atlas-dash lib/share/signal-copy.ts).
+const SIGNAL_FEATURES = [
+  "A map and list of the properties with foreclosure, probate, divorce and tax filings in the territory, newest filing first, filtered by filing type and by town.",
+  "A property brief for each address: the filing and its court, an estimated value, recorded debt, the tax assessment, the last sale and ownership.",
+  "A contact lookup that returns the owner\u2019s phone, email and mailing address.",
+  "A saved list for the properties each agent is working, and a dashboard of the territory by filing type.",
 ];
 
 const levelText = (lo: number | null, hi: number | null) =>
@@ -94,32 +106,48 @@ export default async function LicensingPage() {
         <main className="rph-doc rpl" id="top">
           <div className="rpl__inner">
             <p className="rpl-eyebrow">Licensing</p>
-            <h1>Residential records, licensed by the county.</h1>
+            <h1>Signal licenses for Connecticut and Florida.</h1>
             <p className="rph-doc__lede">
-              Red Planet Data licenses the residential records it collects in Connecticut and Florida one county at a
-              time, for a year, delivered through Signal. A license is held by a firm, with seats for its people, or by
-              one named person.
+              Red Planet Data licenses Signal, its application for residential agents, for a year at a time. A license
+              loads the counties it covers in Connecticut and Florida into Signal, and is held by a firm, with seats for
+              its people, or by one named agent.
             </p>
 
             <nav className="rpl-toc" aria-label="On this page">
-              <a href="#county-license">What a county license is</a>
-              <a href="#in-signal">In Signal</a>
-              <a href="#firm">Firm licenses</a>
-              <a href="#individual">Individual licenses</a>
+              <a href="#signal">Signal</a>
+              <a href="#license">The license</a>
               <a href="#terms">Terms</a>
               <a href="#prices">Prices</a>
               <a href="#quote">Get a quote</a>
               <a href="#buy">Buy an individual license</a>
             </nav>
 
-            <section id="county-license" className="rpl-section">
-              <h2>What a county license is.</h2>
+            <section id="signal" className="rpl-section" data-licensing="signal">
+              <h2>What Signal is.</h2>
               <p>
-                A county license is the right to use one county&rsquo;s residential records, collected and kept current
-                by Red Planet Data, inside Signal for one year. In Connecticut a county is one of the state&rsquo;s nine
-                planning regions; in Florida it is one of its 67 counties.
+                Signal, at signal.redplanetdata.com, is Red Planet Data&rsquo;s application for residential agents. An
+                agent signs in and works the properties in the counties their license covers, with the records Red
+                Planet Data collects and keeps current attached to each property.
               </p>
-              <p>The record types a county license covers:</p>
+              <ul data-licensing="signal-features">
+                {SIGNAL_FEATURES.map((f) => <li key={f}>{f}</li>)}
+              </ul>
+              <figure className="rpl-shot" data-licensing="signal-shot">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/licensing/signal-map.png" alt="Signal map and list of properties with filings in the Capitol region of Connecticut" width={1440} height={900} loading="lazy" />
+                <figcaption>The map and list in Signal: properties with foreclosure, probate, divorce and tax filings in the territory, newest filing first. Names and addresses are blurred here.</figcaption>
+              </figure>
+              <p>Records are used inside Signal. Signal does not offer bulk downloads of lists or records.</p>
+            </section>
+
+            <section id="license" className="rpl-section" data-licensing="license">
+              <h2>The license.</h2>
+              <h3 className="rpl-h3">The counties loaded into Signal</h3>
+              <p>
+                A license loads one or more counties into Signal for one year. In Connecticut a county is one of the
+                state&rsquo;s nine planning regions; in Florida it is one of its 67 counties. Each county is priced on its
+                own, and these are the record types a county can carry:
+              </p>
               <dl className="rpl-types" data-licensing="record-types">
                 {RECORD_TYPES.map(([name, what]) => (
                   <div key={name} className="rpl-types__row">
@@ -134,32 +162,15 @@ export default async function LicensingPage() {
                 &ldquo;How this price was calculated.&rdquo; A county with more of them is at a higher level and a
                 higher price.
               </p>
-            </section>
 
-            <section id="in-signal" className="rpl-section">
-              <h2>What the records do inside Signal.</h2>
-              <p>
-                Signal, at signal.redplanetdata.com, is where a licensee works with the records of the counties they
-                license.
-              </p>
-              <ul>
-                <li>A map and a list of the residential properties in the licensed counties, with the records above attached to each property.</li>
-                <li>Filters by area and by record type, so a search returns the properties that carry the records being looked for.</li>
-                <li>A page for each property: its owner, its sales and the filings recorded against it.</li>
-                <li>Owner contact lookup from a property&rsquo;s page.</li>
-                <li>Saved searches, and a saved list of the properties being followed.</li>
-              </ul>
-              <p>Records are used inside Signal. Signal does not offer bulk downloads of lists or records.</p>
-            </section>
-
-            <section id="firm" className="rpl-section">
-              <h2>Firm licenses.</h2>
+              <h3 className="rpl-h3" id="firm">Seats</h3>
               {t ? (
                 <>
                   <p>
-                    A firm license is held by the firm and priced county by county. Each county license includes{" "}
-                    {t.seatsIncluded} seats, which is also the least a firm license carries. More seats come in blocks of{" "}
-                    {t.seatBlockSize}; each block adds {t.seatBlockPct}% of that county&rsquo;s annual license price.
+                    A firm license is held by the firm, and its seats are the people at the firm who use Signal. Each
+                    county license includes {t.seatsIncluded} seats, which is also the least a firm license carries. More
+                    seats come in blocks of {t.seatBlockSize}; each block adds {t.seatBlockPct}% of that county&rsquo;s
+                    annual license price.
                   </p>
                   {t.seatRule && <p data-licensing="seat-rule">{t.seatRule}</p>}
                   <p>
@@ -171,16 +182,14 @@ export default async function LicensingPage() {
               ) : (
                 <p>Firm license terms are available on request from hello@redplanetdata.com.</p>
               )}
-            </section>
 
-            <section id="individual" className="rpl-section">
-              <h2>Individual licenses.</h2>
+              <h3 className="rpl-h3" id="individual">Individual licenses</h3>
               {t ? (
                 <>
                   <p>
-                    An individual license is held by one named person, for their own use. It is priced county by county at{" "}
-                    {t.individualPct}% of the county&rsquo;s firm license price, and never less than {usd(t.individualFloor)} a
-                    year for a county. It carries no seats.
+                    An individual license is held by one named agent, for their own use in Signal. It is priced county by
+                    county at {t.individualPct}% of the county&rsquo;s firm license price, and never less than{" "}
+                    {usd(t.individualFloor)} a year for a county. It carries no seats.
                   </p>
                   <p>
                     The same discounts apply: {t.bundleDiscountPct}% off at {t.bundleMinCounties} or more counties, and{" "}
@@ -190,6 +199,24 @@ export default async function LicensingPage() {
               ) : (
                 <p>Individual license terms are available on request from hello@redplanetdata.com.</p>
               )}
+
+              <h3 className="rpl-h3" id="white-label">White label</h3>
+              <p data-licensing="white-label">
+                {t?.whiteLabelPrice != null && t?.whiteLabelMinSeats != null ? (
+                  <>
+                    For larger brokerages, a firm license of {t.whiteLabelMinSeats} or more seats can add white label, for{" "}
+                    {usd(t.whiteLabelPrice)} a year: Signal carries the firm&rsquo;s name, logo and color in place of
+                    Signal&rsquo;s, on its sign-in page, in the application and in the emails its people receive, at the
+                    firm&rsquo;s own address on redplanetdata.com.
+                  </>
+                ) : (
+                  <>
+                    For larger brokerages, a firm license can add white label: Signal carries the firm&rsquo;s name, logo
+                    and color in place of Signal&rsquo;s, at the firm&rsquo;s own address on redplanetdata.com. Terms are
+                    available on request from hello@redplanetdata.com.
+                  </>
+                )}
+              </p>
             </section>
 
             <section id="terms" className="rpl-section" data-licensing="terms">
