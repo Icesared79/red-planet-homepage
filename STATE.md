@@ -1,5 +1,14 @@
 # red-planet-homepage — STATE
 
+## Current phase: COUNTY-7 -- /licensing leads with Signal (2026-10-18)
+
+Session `cc-county7-20261018`. main `c781f7b`, deployed on push: `dpl_BJFvcipfWyn3PsGBbJLW8ygxj3kw`. Order now: what
+Signal is and what agents do in it, with one screenshot (`public/licensing/signal-map.png`, names blurred); the
+license (counties loaded into Signal, seats, individual licenses, white label for larger brokerages, its price and
+least seats read live from the pricing table in `lib/licensing.ts`); the standing terms; the Connecticut and Florida
+prices and the two forms as before. Still unlinked and `noindex`. A local `npm run build` has no database credentials
+here, so it renders the fallback text and fails on `/` (the records ledger); Vercel's production build is unaffected.
+
 ## Current phase: COUNTY-4.2 — /licensing, Connecticut and Florida residential (2026-10-18)
 
 ### Completed in this phase
