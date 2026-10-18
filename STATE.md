@@ -1,5 +1,38 @@
 # red-planet-homepage — STATE
 
+## Current phase: COUNTY-4.2 — /licensing, Connecticut and Florida residential (2026-10-18)
+
+### Completed in this phase
+
+`/licensing` (session `cc-county42-20261018`): what a county license is (the eight residential record types by
+name), what the records do inside Signal (only features Signal has; no bulk download), firm licenses (25 seats
+included and the minimum, blocks of 25 at 25% of the county's license, the seat rule), individual licenses (one
+named person, 20% of the firm price, $600 floor, no seats, same discounts), the standing terms for both, the
+Connecticut (9 planning regions) and Florida (67 counties) price lists with each county's firm and individual
+price, level and "How this price was calculated", and two actions: Get a quote and Buy an individual license.
+
+Every figure is read live from the County Catalog in `lib/licensing.ts` (service role; revalidate 300 s):
+`atlas_county_catalog_quote_individual` for the per-county firm and individual prices,
+`atlas_county_catalog_quote_residential` for the seat terms, discounts and seat rule, and the individual terms text
+from `atlas_county_catalog_pricing_terms`. `/api/licensing/price` prices a county selection live;
+`/api/licensing/request` stores each request in `contact_submissions` (source `Licensing: ...`) and emails
+hello@redplanetdata.com only, reply-to the person. Nothing is sent to the person.
+
+### Decisions that affect later phases
+
+- **The page is linked from nowhere and is `noindex`.** Linking it (header, footer, homepage) is the operator's
+  step; drop the `robots` block in `app/licensing/page.tsx` at the same time.
+- **Buying is a request, not a checkout.** COUNTY-2.1's accept-and-pay was not merged and no Stripe key exists
+  on this host when this was built; the form tells the person an invoice follows and access is turned on when
+  payment clears. When a checkout is connected, `components/licensing/IndividualBuy.tsx` is the one place to
+  change.
+- **Preview builds of this project fail on `/`** because the Preview-scoped `SUPABASE_SERVICE_ROLE_KEY` is
+  refused (HTTP 401) by Supabase; Production's key works. Pre-existing, not changed here.
+
+### Immediate next step
+
+None pending.
+
 ## Current phase: LOGO-1.1 — the mark follows the surface, not the theme (2026-10-12)
 
 ### Completed in this phase
