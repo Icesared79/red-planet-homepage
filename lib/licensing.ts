@@ -42,6 +42,9 @@ export type LicensingTerms = {
   individualPct: number;
   individualFloor: number;
   individualTerms: string | null;
+  /** COUNTY-7: white label's annual price and the least seats a firm license needs for it; null when not set. */
+  whiteLabelPrice: number | null;
+  whiteLabelMinSeats: number | null;
 };
 
 export type Licensing = { counties: CountyPrice[]; terms: LicensingTerms };
@@ -154,6 +157,12 @@ export async function loadLicensing(): Promise<Licensing | null> {
     const ind = await quoteIndividual(fips);
     const firm = await quoteFirm([fips[0]], 25);
     if (!ind || !firm) return null;
+    // COUNTY-7: the white-label line of the residential pricing table (atlas-dash pricing settings).
+    const { data: wl } = await sb
+      .from("atlas_county_catalog_pricing_inputs")
+      .select("input_key, value")
+      .in("input_key", ["res_white_label_price", "res_white_label_min_seats"]);
+    const wlv = new Map((wl ?? []).map((r: { input_key: string; value: number | string }) => [r.input_key, Number(r.value)]));
     const counties: CountyPrice[] = ind.lines
       .filter((l) => l.available && LICENSING_STATES[l.state])
       .map((l) => ({
@@ -182,6 +191,8 @@ export async function loadLicensing(): Promise<Licensing | null> {
         individualPct: Number(ind.individual_pct),
         individualFloor: Number(ind.individual_floor),
         individualTerms: ind.terms,
+        whiteLabelPrice: wlv.get("res_white_label_price") ?? null,
+        whiteLabelMinSeats: wlv.get("res_white_label_min_seats") ?? null,
       },
     };
   } catch (e) {
