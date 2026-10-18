@@ -1,0 +1,209 @@
+import "server-only";
+
+import { createClient } from "@supabase/supabase-js";
+
+// COUNTY-4.2 (2026-10-18). The read path behind /licensing: Connecticut and Florida residential county
+// licenses, priced LIVE from the County Catalog on every revalidation. No price, level, discount or term is
+// computed here -- the firm prices, the individual prices, the discount percentages, the seat terms and both
+// terms texts are the catalog's own (atlas_county_catalog_quote_residential / _quote_individual and
+// atlas_county_catalog_pricing_terms), read with the service role because none of those objects is open to
+// anon. This file selects what the page renders and nothing else.
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+/** Seconds between re-reads, so a price change in the catalog reaches the page without a deploy. */
+export const LICENSING_REVALIDATE = 300;
+
+/** The states this page licenses. */
+export const LICENSING_STATES: Record<string, string> = { CT: "Connecticut", FL: "Florida" };
+
+export type CountyPrice = {
+  fips: string;
+  state: string;
+  name: string;
+  levelLow: number | null;
+  levelHigh: number | null;
+  firmLow: number;
+  firmHigh: number;
+  individualLow: number;
+  individualHigh: number;
+  explanation: string | null;
+};
+
+export type LicensingTerms = {
+  seatsIncluded: number;
+  seatBlockSize: number;
+  seatBlockPct: number;
+  seatRule: string | null;
+  bundleMinCounties: number;
+  bundleDiscountPct: number;
+  stateDiscountPct: number;
+  individualPct: number;
+  individualFloor: number;
+  individualTerms: string | null;
+};
+
+export type Licensing = { counties: CountyPrice[]; terms: LicensingTerms };
+
+type QuoteLine = {
+  fips: string;
+  state: string;
+  name: string;
+  available: boolean;
+  level_low: number | null;
+  level_high: number | null;
+  firm_price_low: number | null;
+  firm_price_high: number | null;
+  price_low: number | null;
+  price_high: number | null;
+  explanation: string | null;
+};
+
+export type IndividualQuote = {
+  lines: QuoteLine[];
+  counties: number;
+  individual_pct: number;
+  individual_floor: number;
+  state_discount_pct: number;
+  state_discount_counties: number;
+  state_discount_low: number;
+  state_discount_high: number;
+  whole_states: string[];
+  bundle_discount_pct: number;
+  bundle_discount_counties: number;
+  bundle_discount_low: number;
+  bundle_discount_high: number;
+  total_low: number;
+  total_high: number;
+  terms: string | null;
+};
+
+export type FirmQuote = {
+  lines: Array<QuoteLine & { seat_low: number | null; seat_high: number | null }>;
+  counties: number;
+  seats: number;
+  seats_included: number;
+  seat_block_size: number;
+  seat_block_pct: number;
+  seat_blocks: number;
+  seat_rule: string | null;
+  state_discount_pct: number;
+  state_discount_low: number;
+  state_discount_high: number;
+  bundle_discount_pct: number;
+  bundle_min_counties: number;
+  bundle_discount_low: number;
+  bundle_discount_high: number;
+  total_low: number;
+  total_high: number;
+};
+
+function client() {
+  if (!SUPABASE_URL || !SERVICE_KEY) return null;
+  return createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
+}
+
+const num = (v: unknown) => (v === null || v === undefined || v === "" ? null : Number(v));
+
+/**
+ * The catalog's paragraph is written for the operator's screens. On a client page the company is Red Planet
+ * Data, the operator's word for the price list is said plainly, and no sentence calls the records public.
+ * The same substitutions the shared price-list page makes (atlas-dash lib/share/quote.ts clientText).
+ */
+export function clientText(s: string | null): string | null {
+  if (!s) return null;
+  return s
+    .replace(/\bAtlas\b/g, "Red Planet Data")
+    .replace(/ on the residential track/g, " for residential records")
+    .replace(/\bpublic(ly)? /gi, "");
+}
+
+/** Every Connecticut and Florida county with residential records, as the catalog lists them. */
+async function residentialFips(sb: NonNullable<ReturnType<typeof client>>): Promise<string[]> {
+  const { data: res, error } = await sb.from("atlas_county_catalog_residential").select("fips").eq("available", true);
+  if (error) throw new Error(`residential counties: ${error.message}`);
+  const all = (res ?? []).map((r: { fips: string }) => r.fips);
+  // CT county FIPS begin 09, FL 12. The quote returns each county's state too; this only narrows the call.
+  return all.filter((f) => f.startsWith("09") || f.startsWith("12"));
+}
+
+export async function quoteIndividual(fips: string[]): Promise<IndividualQuote | null> {
+  const sb = client();
+  if (!sb || !fips.length) return null;
+  const { data, error } = await sb.rpc("atlas_county_catalog_quote_individual", { p_fips: fips });
+  if (error) throw new Error(`individual quote: ${error.message}`);
+  return data as IndividualQuote;
+}
+
+export async function quoteFirm(fips: string[], seats: number): Promise<FirmQuote | null> {
+  const sb = client();
+  if (!sb || !fips.length) return null;
+  const { data, error } = await sb.rpc("atlas_county_catalog_quote_residential", { p_fips: fips, p_seats: seats });
+  if (error) throw new Error(`firm quote: ${error.message}`);
+  return data as FirmQuote;
+}
+
+/** The page's figures, or null when the catalog cannot be read (the page then says prices are on request). */
+export async function loadLicensing(): Promise<Licensing | null> {
+  const sb = client();
+  if (!sb) return null;
+  try {
+    const fips = await residentialFips(sb);
+    if (!fips.length) return null;
+    const ind = await quoteIndividual(fips);
+    const firm = await quoteFirm([fips[0]], 25);
+    if (!ind || !firm) return null;
+    const counties: CountyPrice[] = ind.lines
+      .filter((l) => l.available && LICENSING_STATES[l.state])
+      .map((l) => ({
+        fips: l.fips,
+        state: l.state,
+        name: l.name,
+        levelLow: num(l.level_low),
+        levelHigh: num(l.level_high),
+        firmLow: Number(l.firm_price_low),
+        firmHigh: Number(l.firm_price_high),
+        individualLow: Number(l.price_low),
+        individualHigh: Number(l.price_high),
+        explanation: clientText(l.explanation),
+      }))
+      .sort((a, b) => a.state.localeCompare(b.state) || a.name.localeCompare(b.name));
+    return {
+      counties,
+      terms: {
+        seatsIncluded: Number(firm.seats_included),
+        seatBlockSize: Number(firm.seat_block_size),
+        seatBlockPct: Number(firm.seat_block_pct),
+        seatRule: firm.seat_rule,
+        bundleMinCounties: Number(firm.bundle_min_counties),
+        bundleDiscountPct: Number(firm.bundle_discount_pct),
+        stateDiscountPct: Number(firm.state_discount_pct),
+        individualPct: Number(ind.individual_pct),
+        individualFloor: Number(ind.individual_floor),
+        individualTerms: ind.terms,
+      },
+    };
+  } catch (e) {
+    console.error("[licensing] catalog read failed:", e);
+    return null;
+  }
+}
+
+/** Keep only well-formed CT / FL county FIPS, de-duplicated. */
+export function cleanFips(v: unknown): string[] {
+  const list = Array.isArray(v) ? v : typeof v === "string" ? v.split(",") : [];
+  const out = new Set<string>();
+  for (const x of list) {
+    const f = String(x).trim();
+    if (/^(09|12)\d{3}$/.test(f)) out.add(f);
+  }
+  return [...out].slice(0, 100);
+}
+
+export const usd = (v: number) => `$${Math.round(v).toLocaleString("en-US")}`;
+export function priceText(lo: number | null, hi: number | null): string {
+  if (lo === null && hi === null) return "On request";
+  if (lo === null || hi === null || lo === hi) return usd((hi ?? lo)!);
+  return `${usd(lo)} to ${usd(hi)}`;
+}
