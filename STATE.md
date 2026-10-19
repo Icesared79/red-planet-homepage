@@ -1,6 +1,22 @@
 # red-planet-homepage — STATE
 
-## Current phase: COUNTY-7 -- /licensing leads with Signal (2026-10-18)
+## Current phase: COUNTY-8 -- /licensing in the shared license page's design (2026-10-19)
+
+Session `cc-county8-20261019`. main `08cfacc`, deployed on push: `dpl_97GVsGx8sVKWr9sAVas6hgLRq4Z4`. The page is drawn
+like atlas-dash's shared Signal license page (`/o/<token>`, LICENSE-3): light document on paper in either theme (the
+site's `rph-*` tokens the forms read are pinned to their light values inside `.lp`), the company's top bar instead of
+the site header and footer, dark summary card, numbered cards, sticky panel. Order: 01 What Signal is (the license
+page's screenshot, copied to `public/licensing/signal-screenshot.png`, and its three captions), 02 The license, 03/04
+Connecticut and Florida in the shared price list's compact table (county, residential parcels, 90-day foreclosure and
+probate filings, firm and individual price; as-of per state = earliest count shown), 05 Get a quote, 06 Request an
+individual license. The catalog's calculation text and the "Level N" chips are gone: they speak in levels and bands.
+No price, figure or term changed. Still unlinked and `noindex`.
+
+- Battery `scripts/verify_licensing.mjs [--base] [--out]` (playwright-core loaded from the atlas-dashboard checkout).
+  A local check works with `next dev` and `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` set in the process.
+- Florida's earliest filing count is as of July 23, 2026 (2026-10-19 read); Connecticut's October 17.
+
+## Earlier phase: COUNTY-7 -- /licensing leads with Signal (2026-10-18)
 
 Session `cc-county7-20261018`. main `c781f7b`, deployed on push: `dpl_BJFvcipfWyn3PsGBbJLW8ygxj3kw`. Order now: what
 Signal is and what agents do in it, with one screenshot (`public/licensing/signal-map.png`, names blurred); the
