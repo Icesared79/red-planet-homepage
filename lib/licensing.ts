@@ -22,6 +22,14 @@ export type CountyPrice = {
   fips: string;
   state: string;
   name: string;
+  /** COUNTY-8: the county's client name (a CT planning region's short name), as the shared price list shows it. */
+  shortName: string;
+  /** COUNTY-8: residential parcels, and foreclosure and probate filings of the last 90 days; null = not held. */
+  parcels: number | null;
+  foreclosure90: number | null;
+  probate90: number | null;
+  /** COUNTY-8: the earliest as-of date (yyyy-mm-dd) of this county's counts shown, null when none is held. */
+  countsAsOf: string | null;
   levelLow: number | null;
   levelHigh: number | null;
   firmLow: number;
@@ -48,6 +56,45 @@ export type LicensingTerms = {
 };
 
 export type Licensing = { counties: CountyPrice[]; terms: LicensingTerms };
+
+type CountyFacts = { shortName: Map<string, string>; parcels: Map<string, number>; counts: Map<string, number>; asOf: Map<string, string> };
+
+/** "October 17, 2026" from a yyyy-mm-dd date. */
+export const longDay = (iso: string) =>
+  new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+/**
+ * COUNTY-8: what the shared price list (atlas-dash /o/<token>) shows beside each county's prices, from the same
+ * tables: the client name (atlas_county_catalog_counties.client_short_name), residential parcels
+ * (atlas_county_catalog_residential) and the foreclosure and probate filings of the last 90 days
+ * (atlas_county_catalog_residential_activity, which atlas-dash rewrites when over six hours old). A read that fails
+ * leaves its column as dashes rather than failing the page.
+ */
+async function countyFacts(sb: NonNullable<ReturnType<typeof client>>, fips: string[]): Promise<CountyFacts> {
+  const out: CountyFacts = { shortName: new Map(), parcels: new Map(), counts: new Map(), asOf: new Map() };
+  const [names, res, act] = await Promise.all([
+    sb.from("atlas_county_catalog_counties").select("fips, client_short_name").in("fips", fips),
+    sb.from("atlas_county_catalog_residential").select("fips, residential_parcels").in("fips", fips),
+    sb.from("atlas_county_catalog_residential_activity").select("fips, record_type, n90, as_of").in("fips", fips).in("record_type", ["foreclosure", "probate"]),
+  ]);
+  if (names.error) console.error("[licensing] county names:", names.error.message);
+  if (res.error) console.error("[licensing] residential parcels:", res.error.message);
+  if (act.error) console.error("[licensing] filing counts:", act.error.message);
+  for (const r of (names.data ?? []) as Array<{ fips: string; client_short_name: string | null }>) {
+    if (r.client_short_name) out.shortName.set(r.fips, r.client_short_name);
+  }
+  for (const r of (res.data ?? []) as Array<{ fips: string; residential_parcels: number | string | null }>) {
+    if (r.residential_parcels !== null) out.parcels.set(r.fips, Number(r.residential_parcels));
+  }
+  for (const r of (act.data ?? []) as Array<{ fips: string; record_type: string; n90: number | null; as_of: string }>) {
+    if (r.n90 === null) continue;
+    out.counts.set(`${r.fips}:${r.record_type}`, Number(r.n90));
+    const d = String(r.as_of).slice(0, 10);
+    const have = out.asOf.get(r.fips);
+    if (!have || d < have) out.asOf.set(r.fips, d);
+  }
+  return out;
+}
 
 type QuoteLine = {
   fips: string;
@@ -163,12 +210,18 @@ export async function loadLicensing(): Promise<Licensing | null> {
       .select("input_key, value")
       .in("input_key", ["res_white_label_price", "res_white_label_min_seats"]);
     const wlv = new Map((wl ?? []).map((r: { input_key: string; value: number | string }) => [r.input_key, Number(r.value)]));
+    const facts = await countyFacts(sb, fips);
     const counties: CountyPrice[] = ind.lines
       .filter((l) => l.available && LICENSING_STATES[l.state])
       .map((l) => ({
         fips: l.fips,
         state: l.state,
         name: l.name,
+        shortName: facts.shortName.get(l.fips) ?? l.name.replace(/, [^,]+$/, ""),
+        parcels: facts.parcels.get(l.fips) ?? null,
+        foreclosure90: facts.counts.get(`${l.fips}:foreclosure`) ?? null,
+        probate90: facts.counts.get(`${l.fips}:probate`) ?? null,
+        countsAsOf: facts.asOf.get(l.fips) ?? null,
         levelLow: num(l.level_low),
         levelHigh: num(l.level_high),
         firmLow: Number(l.firm_price_low),
