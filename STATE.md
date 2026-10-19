@@ -1,6 +1,15 @@
 # red-planet-homepage — STATE
 
-## Current phase: COUNTY-8 -- /licensing in the shared license page's design (2026-10-19)
+## Current phase: VISUAL-1 -- unlisted /how-red-planet-works document (2026-10-19)
+
+Session `cc-visual1-20261019`. Paul's self-contained `how-red-planet-works.html` (styles, fonts and logos embedded)
+is committed byte-for-byte as `public/how-red-planet-works.html` and served at `/how-red-planet-works` by a rewrite
+in `next.config.mjs`, so Next serves the raw file with none of the site's layout, header or styles. Unlisted: no
+nav, footer or sitemap entry (the site has no sitemap), and the file's own `noindex, nofollow` meta stays. To add
+another standalone document the same way, drop it in `public/` and add one line to `rewrites()`. To change this
+one, replace the file with Paul's new export; do not edit its design or copy here.
+
+## Earlier phase: COUNTY-8 -- /licensing in the shared license page's design (2026-10-19)
 
 Session `cc-county8-20261019`. main `08cfacc`, deployed on push: `dpl_97GVsGx8sVKWr9sAVas6hgLRq4Z4`. The page is drawn
 like atlas-dash's shared Signal license page (`/o/<token>`, LICENSE-3): light document on paper in either theme (the
