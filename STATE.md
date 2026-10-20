@@ -1,6 +1,25 @@
 # red-planet-homepage — STATE
 
-## Current phase: COUNTY-10 -- /licensing taken down (2026-10-20)
+## Current phase: LAND-1 -- Atlas is the platform, four views, no product names (2026-10-20)
+
+Session `cc-land1-20261020`. Operator decision: Red Planet Data is the company, Atlas is the single platform customers
+sign in to, and the former products are four views on the county record (AtlasLand, AtlasCRE, AtlasProp, AtlasTrade).
+Record: Levelpie `atlas/docs/atlas-consolidation-2026-10.md`. SHIPPED on push: main `8d164e4`, `dpl_FzFk4X21VLUitwA3St7RabZ6uvFc`
+(rollback `dpl_5LnjGevzMs2nZGT4LzmhP4rnQ2mw`).
+
+- `components/BuiltOnAtlas.tsx`: the section is "Atlas"; the heading says a license is counties and seats with every
+  applying view included; four view cards, one plain sentence each, wordmarks set in the site's sans
+  (`.rph-wordmark-atlas-view` in `app/globals.css`); the custom-platform offer ("We build new platforms...") is gone.
+- `ContactDialog` topics and product list, `Header` nav ("Atlas"), `MissionControl`, terms, privacy and the legal footer
+  name Atlas and its views only. `Marks.tsx` keeps the old marks as unused exports (nothing deleted).
+- `public/how-red-planet-works.html` (Paul's VISUAL-1 export): copy only, by `scripts/_land1_how_it_works.py`: Atlas
+  is the platform, the four views replace the product tiles and marks, "Views Included" replaces "Platform Optional",
+  the custom platform and "custom package" lines are gone, pricing is by county and seats. Design untouched.
+- Verified live 2026-10-20 16:02 ET: `/` and `/how-red-planet-works` return 200 with zero occurrences of Signal,
+  SunScope, LeanCRE, TeleAcre, Brokeride, Rezoned, "custom" or "public", and the four view names present.
+- Not changed: `app/_careers/` (unrouted) and `lib/atlas-live.ts` (the word "signals" as a noun, not the product).
+
+## Earlier phase: COUNTY-10 -- /licensing taken down (2026-10-20)
 
 Session `cc-county10-20261020` (#H8ZN-4CPW). Operator ruling: Red Planet Data sells custom license agreements built with
 each customer, not a self-serve store for Florida and Connecticut. No price, pricing table, quote page or free-access
