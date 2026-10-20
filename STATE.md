@@ -1,6 +1,24 @@
 # red-planet-homepage — STATE
 
-## Current phase: COUNTY-9 -- /licensing rebuilt as a store (2026-10-20)
+## Current phase: COUNTY-9.1 -- figures from the pricing table, state-aware wording, Florida on request (2026-10-20)
+
+Session `cc-county91-20261020` (#K3VF-8DNQ). No price, calculation, seat rule or term changed.
+
+- Every figure on the page (cards and questions: seats included, seat-pack size and %, multi-county minimum and %,
+  whole-state %, white-label price and least people) is read straight from `atlas_county_catalog_pricing_inputs`
+  (track residential) by `pricingTable()` in `lib/licensing.ts`; the request route rounds people to the same table's
+  steps. (COUNTY-9's page already showed 40% for the whole-state discount; the 20% in its report was a typo there.)
+- The header, the Individual and Firm cards and question 1 name the filing types with a current count (14-day rule)
+  in the offered counties of the state viewed (`held`); before a state is chosen, the types held in every state.
+  The store now starts with no state chosen. Header, cards and questions are drawn by `Store.tsx`.
+- `OFFER_ONLY_WITH_CURRENT = { FL: "foreclosure" }`: a Florida county is offered only with a current foreclosure count;
+  the rest are drawn shaded on the map, found by search as "on request", and "Other Florida counties are available on
+  request." opens an on-request form (state, counties wanted as free text, license, people, contact). It posts
+  `kind: "on_request"` to `/api/licensing/request`, which emails hello@ only. Connecticut offers all nine.
+- Battery `scripts/verify_licensing.mjs` now reads the expected figures, filing types and Florida counties from the
+  tables; `--submit <email>` sends one on-request submission.
+
+## Earlier phase: COUNTY-9 -- /licensing rebuilt as a store (2026-10-20)
 
 Session `cc-county9-20261020` (#W7DP-3HKZ). Operator ruling: the page is a store, not a reference document. Both county
 tables and every per-county paragraph are gone. Order: (a) one-sentence header and the Signal screenshot; (b) three

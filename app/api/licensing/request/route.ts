@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { cleanFips, priceText, quoteFirm, quoteIndividual, usd, whiteLabel } from "@/lib/licensing";
+import { cleanFips, LICENSING_STATES, priceText, pricingTable, quoteFirm, quoteIndividual, usd } from "@/lib/licensing";
 
 // COUNTY-4.2: the request action on /licensing. COUNTY-9 (2026-10-20): one "Request this license" button under the
 // store's total, for either license:
@@ -10,6 +10,9 @@ import { cleanFips, priceText, quoteFirm, quoteIndividual, usd, whiteLabel } fro
 //   kind "firm"        a firm: name, firm, email, phone, counties, people (seats) and, for a firm of the white-label
 //                      minimum or more, whether it wants Signal under its own name and logo. ("quote", the kind
 //                      COUNTY-4.2's quote form sent, is read as "firm".)
+//   kind "on_request"  COUNTY-9.1: counties the store does not offer (Florida counties without current foreclosure
+//                      filings): the state, the counties wanted as the person wrote them, the license (individual or
+//                      firm, and people for a firm), name, firm, email, phone. Nothing is priced.
 //
 // No checkout is connected (COUNTY-2.1's accept-and-pay is atlas-dash's and has no Stripe keys), so this is a request:
 // the person is told an agreement and an invoice follow and access is turned on when payment clears.
@@ -40,6 +43,9 @@ type Body = {
   counties?: unknown;
   note?: string;
   website?: string; // honeypot
+  state?: string; // on_request
+  wanted?: string; // on_request: the counties wanted, as written
+  license?: string; // on_request: "individual" | "firm"
 };
 
 const esc = (v: string) =>
@@ -56,22 +62,33 @@ export async function POST(request: Request) {
   // A filled honeypot is a bot. Answer as if it worked and do nothing.
   if (clip(body.website, 200)) return NextResponse.json({ ok: true });
 
-  const kind = body.kind === "individual" ? "individual" : body.kind === "firm" || body.kind === "quote" ? "firm" : null;
+  const kind = body.kind === "individual" ? "individual" : body.kind === "firm" || body.kind === "quote" ? "firm" : body.kind === "on_request" ? "on_request" : null;
   const name = clip(body.name, 160);
   const email = clip(body.email, 200);
   const firm = clip(body.firm, 160);
   const phone = clip(body.phone, 40);
   const note = clip(body.note, 2000);
   const fips = cleanFips(body.counties);
+  const state = clip(body.state, 2).toUpperCase();
+  const wanted = clip(body.wanted, 1000);
+  const license = body.license === "individual" ? "individual" : "firm";
+  // COUNTY-9.1: people round to the pricing table's steps (seats included, then steps of the seat-pack size).
+  const table = await pricingTable();
+  const inc = table?.seatsIncluded ?? 1;
+  const step = table?.seatBlockSize ?? 1;
   const seatsIn = Number(body.seats);
-  const seats = Number.isFinite(seatsIn) && seatsIn > 0 ? Math.min(100000, Math.max(25, Math.ceil(seatsIn / 25) * 25)) : 25;
+  const seats = Number.isFinite(seatsIn) && seatsIn > inc ? Math.min(100000, inc + Math.ceil((seatsIn - inc) / step) * step) : inc;
 
   if (!kind) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   if (!name || !email) return NextResponse.json({ error: "Your name and email are required." }, { status: 400 });
   if (!EMAIL_RE.test(email)) return NextResponse.json({ error: "That email address does not look right." }, { status: 400 });
   if (!phone) return NextResponse.json({ error: "Add a phone number so we can reach you." }, { status: 400 });
-  if (kind === "firm" && !firm) return NextResponse.json({ error: "Name the firm the license is for." }, { status: 400 });
-  if (!fips.length) return NextResponse.json({ error: "Choose at least one county." }, { status: 400 });
+  const firmNeeded = kind === "firm" || (kind === "on_request" && license === "firm");
+  if (firmNeeded && !firm) return NextResponse.json({ error: "Name the firm the license is for." }, { status: 400 });
+  if (kind === "on_request") {
+    if (!LICENSING_STATES[state]) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    if (!wanted) return NextResponse.json({ error: "Tell us which counties you want." }, { status: 400 });
+  } else if (!fips.length) return NextResponse.json({ error: "Choose at least one county." }, { status: 400 });
   if (!SUPABASE_URL || !SERVICE_KEY) {
     console.error("[licensing request] Supabase env vars missing.");
     return NextResponse.json({ error: "This form is not available right now. Write to hello@redplanetdata.com." }, { status: 500 });
@@ -82,7 +99,10 @@ export async function POST(request: Request) {
   let totalLine = "";
   let brandingLine: string | null = null;
   try {
-    if (kind === "individual") {
+    if (kind === "on_request") {
+      countyLines = [`${LICENSING_STATES[state]} counties wanted: ${wanted}`];
+      totalLine = license === "firm" ? `Firm license for ${seats.toLocaleString("en-US")} people, priced on request` : "Individual license, one person, priced on request";
+    } else if (kind === "individual") {
       const q = await quoteIndividual(fips);
       const lines = (q?.lines ?? []).filter((l) => l.available && (l.state === "CT" || l.state === "FL"));
       countyLines = lines.map((l) => `${l.name}: ${priceText(Number(l.price_low), Number(l.price_high))} a year`);
@@ -100,11 +120,12 @@ export async function POST(request: Request) {
         let lo = Number(q.total_low);
         let hi = Number(q.total_high);
         if (body.branding === true) {
-          const wl = await whiteLabel();
-          if (wl.price !== null && (wl.minSeats === null || q.seats >= wl.minSeats)) {
-            brandingLine = `Signal under the firm's own name and logo: ${usd(wl.price)} a year`;
-            lo += wl.price;
-            hi += wl.price;
+          const wlPrice = table?.whiteLabelPrice ?? null;
+          const wlMin = table?.whiteLabelMinSeats ?? null;
+          if (wlPrice !== null && (wlMin === null || q.seats >= wlMin)) {
+            brandingLine = `Signal under the firm's own name and logo: ${usd(wlPrice)} a year`;
+            lo += wlPrice;
+            hi += wlPrice;
           }
         }
         totalLine = `Firm license for ${q.seats.toLocaleString("en-US")} people${brandingLine ? ", with the firm's branding" : ""}, total: ${priceText(lo, hi)} a year`;
@@ -115,9 +136,10 @@ export async function POST(request: Request) {
   }
   if (!countyLines.length) return NextResponse.json({ error: "None of those counties is licensed on this page." }, { status: 400 });
 
-  const source = kind === "firm" ? "Licensing: firm license" : "Licensing: individual license";
+  const source = kind === "on_request" ? `Licensing: ${LICENSING_STATES[state]} counties on request` : kind === "firm" ? "Licensing: firm license" : "Licensing: individual license";
+  const isFirm = kind === "firm" || (kind === "on_request" && license === "firm");
   const detail = [
-    kind === "firm" ? `People: ${seats}` : null,
+    isFirm ? `People: ${seats}` : null,
     `Phone: ${phone}`,
     "Counties:",
     ...countyLines,
@@ -129,7 +151,7 @@ export async function POST(request: Request) {
   const sb = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
   const { data: row, error: insertError } = await sb
     .from("contact_submissions")
-    .insert({ name, email, company: kind === "firm" ? firm : "(individual license)", building: detail, source })
+    .insert({ name, email, company: isFirm ? firm : "(individual license)", building: detail, source })
     .select("id, created_at")
     .single();
   if (insertError) {
@@ -142,21 +164,26 @@ export async function POST(request: Request) {
   } else {
     try {
       const resend = new Resend(RESEND_API_KEY);
-      const subject = kind === "firm" ? `License request: ${firm}` : `Individual license request: ${name}`;
+      const subject = kind === "on_request"
+        ? `${LICENSING_STATES[state]} counties on request: ${isFirm ? firm : name}`
+        : kind === "firm" ? `License request: ${firm}` : `Individual license request: ${name}`;
       const head: Array<[string, string]> = [
-        ["Request", kind === "firm" ? "Firm license (agreement and invoice to follow)" : "Individual license (agreement and invoice to follow)"],
-        ...(kind === "firm" ? ([["Firm", firm]] as Array<[string, string]>) : []),
+        ["Request", kind === "on_request"
+          ? `${LICENSING_STATES[state]} counties not offered on the page, ${isFirm ? "firm" : "individual"} license (price and agreement to follow)`
+          : kind === "firm" ? "Firm license (agreement and invoice to follow)" : "Individual license (agreement and invoice to follow)"],
+        ...(isFirm ? ([["Firm", firm]] as Array<[string, string]>) : []),
         ["Name", name],
         ["Email", email],
         ["Phone", phone],
-        ...(kind === "firm" ? ([["People", seats.toLocaleString("en-US")]] as Array<[string, string]>) : []),
+        ...(isFirm ? ([["People", seats.toLocaleString("en-US")]] as Array<[string, string]>) : []),
         ...(kind === "firm" ? ([["Branding", brandingLine ? "Yes" : "No"]] as Array<[string, string]>) : []),
       ];
       const lines = [...countyLines, ...(brandingLine ? [brandingLine] : [])];
+      const selHead = kind === "on_request" ? "The request:" : "The selection, priced by the catalog when the request was made:";
       const text = [
         ...head.map(([k, v]) => `${k}: ${v}`),
         "",
-        "The selection, priced by the catalog when the request was made:",
+        selHead,
         ...lines,
         totalLine,
         note ? `\nNote: ${note}` : "",
@@ -170,7 +197,7 @@ export async function POST(request: Request) {
           <table style="border-collapse:collapse;width:100%;font-size:14px;">
             ${head.map(([k, v]) => `<tr><td style="padding:6px 0;color:#56605A;width:120px;vertical-align:top;">${esc(k)}</td><td style="padding:6px 0;">${k === "Email" ? `<a href="mailto:${esc(v)}">${esc(v)}</a>` : esc(v)}</td></tr>`).join("")}
           </table>
-          <p style="font-size:13px;color:#56605A;margin:18px 0 6px;">The selection, priced by the catalog when the request was made:</p>
+          <p style="font-size:13px;color:#56605A;margin:18px 0 6px;">${esc(selHead)}</p>
           <ul style="font-size:14px;margin:0 0 8px;padding-left:18px;">${lines.map((l) => `<li style="margin:3px 0;">${esc(l)}</li>`).join("")}</ul>
           ${totalLine ? `<p style="font-size:14px;margin:8px 0;"><strong style="font-weight:500;">${esc(totalLine)}</strong></p>` : ""}
           ${note ? `<p style="font-size:14px;white-space:pre-wrap;margin:12px 0;">${esc(note)}</p>` : ""}
