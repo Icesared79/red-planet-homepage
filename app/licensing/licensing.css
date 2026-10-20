@@ -187,3 +187,12 @@
   .lp-search__results button { flex-direction: column; gap: 2px; }
   .lp-search__in { text-align: left; }
 }
+
+/* COUNTY-9.1: counties on request, and the on-request form */
+.lp-map__c.is-off { fill: var(--sage-100); stroke: var(--sage-400); cursor: default; }
+.lp-map__c.is-off:hover { fill: var(--sage-100); }
+.lp-other { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-700); }
+.lp-ask__head { margin: 0; font-size: 15px; font-weight: 500; }
+.lp-field textarea { padding: 10px 12px; border: 1px solid var(--lp-rule-strong); border-radius: var(--radius-sm); background: var(--paper-50); color: var(--ink-900); font-family: var(--font-sans); font-size: 15px; resize: vertical; }
+.lp-field textarea:focus { outline: 2px solid var(--ink-900); outline-offset: 2px; }
+.lp-textbtn { border: 0; background: transparent; padding: 0; font-size: inherit; color: var(--ink-900); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
