@@ -1,6 +1,32 @@
 # red-planet-homepage — STATE
 
-## Current phase: VISUAL-1 -- unlisted /how-red-planet-works document (2026-10-19)
+## Current phase: COUNTY-9 -- /licensing rebuilt as a store (2026-10-20)
+
+Session `cc-county9-20261020` (#W7DP-3HKZ). Operator ruling: the page is a store, not a reference document. Both county
+tables and every per-county paragraph are gone. Order: (a) one-sentence header and the Signal screenshot; (b) three
+pricing cards, Individual / Firm / Firm with your branding, each "from" the lowest county price read live (individual
+and firm low prices, white-label price and least people from the pricing table); (c) the picker in
+`components/licensing/Store.tsx`: Connecticut or Florida, counties by clicking the state map or by typing a town or
+county (a town finds its county), Individual or Firm with people in steps of 25, an optional branding line for firms at
+the white-label minimum, one line per county with its price and its current 90-day filing counts, discounts as their
+own lines and a live total priced by `/api/licensing/price` (`?seats=` prices a firm through
+`atlas_county_catalog_quote_residential`, the catalog quote tool's own function); (d) one "Request this license"
+button that collects name, firm, email and phone and emails hello@ (`/api/licensing/request`, kinds `individual` and
+`firm`); (e) six questions, closed. No price, calculation, seat rule or term changed. Still unlinked and `noindex`.
+
+- Maps and town search: `public/licensing/map.json`, built by `scripts/build_licensing_geo.mjs` from atlas-dash's
+  `public/geo/cb2023-500k.json`, the CT town-to-region crosswalk (`atlas_county_catalog_ct_crosswalk` rows as JSON)
+  and the 2023 Census Gazetteer places file for Florida (internal point in county). Rebuild only if the boundaries or
+  the crosswalk change.
+- Filing counts show only while their as-of date is within 14 days (`COUNT_FRESH_DAYS` in `lib/licensing.ts`); the
+  page also asks the catalog to rewrite counts over six hours old (waits at most 4 s). Same rule on atlas-dash's quote
+  page and price list.
+- Payment: COUNTY-2.1's checkout is not connected (no Stripe keys on atlas-dash), so the button reads "Request this
+  license". If one is connected, `Store.tsx` is the one place to switch it to "Continue to payment".
+- Battery: `scripts/verify_licensing.mjs [--base] [--out] [--submit <email>]`, with `NEXT_PUBLIC_SUPABASE_URL` and
+  `SUPABASE_SERVICE_ROLE_KEY` in the process env for the catalog comparison.
+
+## Earlier phase: VISUAL-1 -- unlisted /how-red-planet-works document (2026-10-19)
 
 Session `cc-visual1-20261019`. Paul's self-contained `how-red-planet-works.html` (styles, fonts and logos embedded)
 is committed byte-for-byte as `public/how-red-planet-works.html` and served at `/how-red-planet-works` by a rewrite

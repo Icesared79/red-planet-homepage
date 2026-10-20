@@ -28,7 +28,8 @@ export type CountyPrice = {
   parcels: number | null;
   foreclosure90: number | null;
   probate90: number | null;
-  /** COUNTY-8: the earliest as-of date (yyyy-mm-dd) of this county's counts shown, null when none is held. */
+  /** COUNTY-8: the earliest as-of date (yyyy-mm-dd) of this county's counts shown, null when none is held.
+   *  COUNTY-9: a count is held here only while its as-of date is within the last COUNT_FRESH_DAYS days. */
   countsAsOf: string | null;
   levelLow: number | null;
   levelHigh: number | null;
@@ -59,6 +60,9 @@ export type Licensing = { counties: CountyPrice[]; terms: LicensingTerms };
 
 type CountyFacts = { shortName: Map<string, string>; parcels: Map<string, number>; counts: Map<string, number>; asOf: Map<string, string> };
 
+/** COUNTY-9: a filing count is shown on a client page only while its as-of date is this many days old or less. */
+export const COUNT_FRESH_DAYS = 14;
+
 /** "October 17, 2026" from a yyyy-mm-dd date. */
 export const longDay = (iso: string) =>
   new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
@@ -69,13 +73,16 @@ export const longDay = (iso: string) =>
  * (atlas_county_catalog_residential) and the foreclosure and probate filings of the last 90 days
  * (atlas_county_catalog_residential_activity, which atlas-dash rewrites when over six hours old). A read that fails
  * leaves its column as dashes rather than failing the page.
+ * COUNTY-9: only counts whose as-of date is within the last COUNT_FRESH_DAYS days are read; an older count is not
+ * held here, so the page shows nothing for it.
  */
 async function countyFacts(sb: NonNullable<ReturnType<typeof client>>, fips: string[]): Promise<CountyFacts> {
   const out: CountyFacts = { shortName: new Map(), parcels: new Map(), counts: new Map(), asOf: new Map() };
   const [names, res, act] = await Promise.all([
     sb.from("atlas_county_catalog_counties").select("fips, client_short_name").in("fips", fips),
     sb.from("atlas_county_catalog_residential").select("fips, residential_parcels").in("fips", fips),
-    sb.from("atlas_county_catalog_residential_activity").select("fips, record_type, n90, as_of").in("fips", fips).in("record_type", ["foreclosure", "probate"]),
+    sb.from("atlas_county_catalog_residential_activity").select("fips, record_type, n90, as_of").in("fips", fips).in("record_type", ["foreclosure", "probate"])
+      .gte("as_of", new Date(Date.now() - COUNT_FRESH_DAYS * 86400000).toISOString().slice(0, 10)),
   ]);
   if (names.error) console.error("[licensing] county names:", names.error.message);
   if (res.error) console.error("[licensing] residential parcels:", res.error.message);
@@ -169,6 +176,18 @@ export function clientText(s: string | null): string | null {
     .replace(/\bpublic(ly)? /gi, "");
 }
 
+/**
+ * COUNTY-9: ask the catalog to rewrite the filing counts when they are over six hours old, as atlas-dash does after a
+ * quote page is viewed (atlas_county_catalog_residential_activity_refresh; a no-op when they are fresh). Waits at most
+ * four seconds so a slow rewrite never holds the page; the counts already stored are read either way.
+ */
+async function refreshActivity(sb: NonNullable<ReturnType<typeof client>>): Promise<void> {
+  const call = Promise.resolve(sb.rpc("atlas_county_catalog_residential_activity_refresh", { p_force: false }))
+    .then(({ error }) => { if (error) console.error("[licensing] count refresh:", error.message); })
+    .catch((e) => console.error("[licensing] count refresh:", e));
+  await Promise.race([call, new Promise((r) => setTimeout(r, 4000))]);
+}
+
 /** Every Connecticut and Florida county with residential records, as the catalog lists them. */
 async function residentialFips(sb: NonNullable<ReturnType<typeof client>>): Promise<string[]> {
   const { data: res, error } = await sb.from("atlas_county_catalog_residential").select("fips").eq("available", true);
@@ -194,6 +213,18 @@ export async function quoteFirm(fips: string[], seats: number): Promise<FirmQuot
   return data as FirmQuote;
 }
 
+/** COUNTY-7: the white-label line of the residential pricing table (atlas-dash pricing settings); nulls when not set. */
+export async function whiteLabel(): Promise<{ price: number | null; minSeats: number | null }> {
+  const sb = client();
+  if (!sb) return { price: null, minSeats: null };
+  const { data } = await sb
+    .from("atlas_county_catalog_pricing_inputs")
+    .select("input_key, value")
+    .in("input_key", ["res_white_label_price", "res_white_label_min_seats"]);
+  const v = new Map((data ?? []).map((r: { input_key: string; value: number | string }) => [r.input_key, Number(r.value)]));
+  return { price: v.get("res_white_label_price") ?? null, minSeats: v.get("res_white_label_min_seats") ?? null };
+}
+
 /** The page's figures, or null when the catalog cannot be read (the page then says prices are on request). */
 export async function loadLicensing(): Promise<Licensing | null> {
   const sb = client();
@@ -204,12 +235,8 @@ export async function loadLicensing(): Promise<Licensing | null> {
     const ind = await quoteIndividual(fips);
     const firm = await quoteFirm([fips[0]], 25);
     if (!ind || !firm) return null;
-    // COUNTY-7: the white-label line of the residential pricing table (atlas-dash pricing settings).
-    const { data: wl } = await sb
-      .from("atlas_county_catalog_pricing_inputs")
-      .select("input_key, value")
-      .in("input_key", ["res_white_label_price", "res_white_label_min_seats"]);
-    const wlv = new Map((wl ?? []).map((r: { input_key: string; value: number | string }) => [r.input_key, Number(r.value)]));
+    const wl = await whiteLabel();
+    await refreshActivity(sb);
     const facts = await countyFacts(sb, fips);
     const counties: CountyPrice[] = ind.lines
       .filter((l) => l.available && LICENSING_STATES[l.state])
@@ -244,8 +271,8 @@ export async function loadLicensing(): Promise<Licensing | null> {
         individualPct: Number(ind.individual_pct),
         individualFloor: Number(ind.individual_floor),
         individualTerms: ind.terms,
-        whiteLabelPrice: wlv.get("res_white_label_price") ?? null,
-        whiteLabelMinSeats: wlv.get("res_white_label_min_seats") ?? null,
+        whiteLabelPrice: wl.price,
+        whiteLabelMinSeats: wl.minSeats,
       },
     };
   } catch (e) {
