@@ -22,10 +22,10 @@ export function LegalFooter({ standalone = false }: Props) {
               Red Planet Data
             </span>
             <p className="rph-legal__notice">
-              Red Planet Data builds and operates Atlas and the platforms built
-              on it. Red Planet, Atlas, TeleAcre and Signal are trademarks of
-              Red Planet Data. Records and analysis presented on this site and
-              in its platforms are supplied for business information, and are
+              Red Planet Data builds and operates Atlas and its four views.
+              Red Planet, Atlas, AtlasLand, AtlasCRE, AtlasProp and AtlasTrade
+              are trademarks of Red Planet Data. Records and analysis presented
+              on this site and in Atlas are supplied for business information, and are
               not legal, financial, title or investment advice.
             </p>
           </div>

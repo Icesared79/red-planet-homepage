@@ -1,98 +1,45 @@
-import {
-  AtlasMark,
-  RedPlanetMark,
-  SignalMark,
-  SunScopeMark,
-  TeleAcreMark,
-} from "@/components/Marks";
+import { AtlasMark, RedPlanetMark } from "@/components/Marks";
 
-/* One shape for every platform card: index + market line, lockup, a
-   two-sentence body (what it is, who it is for), and a "From Atlas" foot
-   pinned to the bottom under an ink rule. No per-card footers, links or
-   coverage lines, so the four cards read as one row. */
-type Platform = {
+/* LAND-1 (2026-10-20): Atlas is the one platform customers sign in to, and the four views are the
+   ways into the county record. One shape for every view card: index + market line, the view's
+   wordmark, one plain sentence, and what it draws from Atlas. No per-card footers or links, so the
+   four cards read as one row. Red Planet Data is the author of every view. */
+type View = {
   index: string;
   market: string;
-  lockup: React.ReactNode;
+  name: string;
   body: string;
   fromAtlas: string;
 };
 
-const platforms: Platform[] = [
+const views: View[] = [
   {
     index: "01",
-    market: "Data center decisions",
-    lockup: (
-      <span aria-label="TeleAcre" style={{ gap: "6px" }}>
-        <TeleAcreMark size={36} />
-        <span className="rph-wordmark-teleacre" aria-hidden="true">
-          TeleAcre
-        </span>
-      </span>
-    ),
-    body:
-      "What county and city governments have decided about data centers, with the source document behind each decision. For insurers, lenders and investors.",
-    fromAtlas:
-      "Meetings, agendas and formal decisions of governing bodies, with each source document.",
+    market: "Land and local government",
+    name: "AtlasLand",
+    body: "What each county and city has decided about land and data centers, with the hearing calendar, the land being assembled and the document behind each decision.",
+    fromAtlas: "Meetings, agendas and formal decisions of governing bodies, recorded deeds, each with its source document.",
   },
   {
     index: "02",
-    market: "Residential distress",
-    lockup: (
-      <span aria-label="Signal" style={{ gap: "10px" }}>
-        <SignalMark />
-        <span className="rph-wordmark-signal" aria-hidden="true">
-          Signal
-        </span>
-      </span>
-    ),
-    body:
-      "Residential distress on parcels: foreclosures, tax delinquency, liens and code enforcement, dated to the filing. For brokerages, investors and agencies.",
-    fromAtlas:
-      "Court, tax, lien and code enforcement filings, each resolved to its parcel and owner.",
+    market: "Commercial property",
+    name: "AtlasCRE",
+    body: "Commercial parcels, their owners and sales, permits and site plans, and a pipeline for the deals a firm is working.",
+    fromAtlas: "Parcel, ownership, court, tax and lien records for commercial property and its surroundings.",
   },
   {
     index: "03",
-    market: "Roof and solar",
-    lockup: (
-      <span aria-label="SunScope" style={{ gap: "8px" }}>
-        <SunScopeMark size={32} />
-        <span className="rph-wordmark-sunscope" aria-hidden="true">
-          <b>Sun</b>Scope
-        </span>
-      </span>
-    ),
-    body:
-      "Roof and solar suitability for every residential parcel in a market, scored and ranked as a sales territory. For solar and roofing installers.",
-    fromAtlas:
-      "Parcel, ownership and assessment records, joined to roof geometry and utility rules.",
+    market: "Residential property",
+    name: "AtlasProp",
+    body: "Residential ownership changes, foreclosure filings, liens, probate and tax certificate sales, dated to the filing and resolved to the parcel.",
+    fromAtlas: "Court, tax, lien and code enforcement filings, each resolved to its parcel and owner.",
   },
   {
     index: "04",
-    market: "CRE lending",
-    lockup: (
-      <span>
-        <img
-          className="rph-platform__logo rph-platform__logo--light"
-          src="/brand/leancre-horizontal-light.svg"
-          alt="LeanCRE"
-          width={151}
-          height={24}
-        />
-        <img
-          className="rph-platform__logo rph-platform__logo--dark"
-          src="/brand/leancre-horizontal-dark.svg"
-          alt=""
-          aria-hidden="true"
-          width={151}
-          height={24}
-        />
-      </span>
-    ),
-    body:
-      "Commercial real estate loans sourced and underwritten on Atlas records for the collateral and its owner. For banks, private lenders and family offices.",
-    fromAtlas:
-      "Parcel, ownership, court, tax and lien records for the collateral and its surroundings.",
+    market: "Roof, solar and the trades",
+    name: "AtlasTrade",
+    body: "Roof and solar suitability for every residential parcel in a county, with solar, roofing, pool, pest and HVAC filters, ranked as a sales territory.",
+    fromAtlas: "Parcel, ownership and assessment records, joined to roof geometry and utility rules.",
   },
 ];
 
@@ -102,17 +49,16 @@ export function BuiltOnAtlas() {
       {/* The head is centred on the same axis as the lockup, Atlas card and
           bracket below it, so the section is one composition. */}
       <div className="rph-products__head">
-        <div className="rph-kicker">&sect; 05 &mdash; What we can build</div>
+        <div className="rph-kicker">&sect; 05 &mdash; Atlas</div>
         <h2 className="rph-h2 rph-products__h2">
-          We build new platforms on Atlas for the people who license it.
+          Atlas is the platform. A license is counties and seats, and every view that applies to those counties is included.
         </h2>
         <p className="rph-intro rph-products__intro">
-          A platform built around one company used to be something only a
-          large enterprise could afford. Atlas already has the records and the
-          tools to build on them, and we write new platforms with AI coding
-          agents on that foundation. So any licensee can have a platform shaped
-          to their business that grows with it. TeleAcre, Signal and SunScope
-          were built this way.
+          Customers sign in to Atlas and work the county record in four views.
+          A license names the counties and the seats, sold in blocks of ten, and
+          each view that applies to a licensed county comes with it at no extra
+          charge. Red Planet Data builds and runs Atlas and is the author of
+          everything its views present.
         </p>
       </div>
 
@@ -122,8 +68,8 @@ export function BuiltOnAtlas() {
           <span className="rph-brand__name">Red Planet</span>
         </span>
         <span className="rph-tier__desc">
-          The company. It builds and runs Atlas, is the author of everything its
-          platforms publish, and holds every customer account.
+          The company. It builds and runs Atlas, is the author of everything
+          Atlas presents, and holds every customer account.
         </span>
       </div>
       <div className="rph-connector rph-connector--32" />
@@ -137,7 +83,7 @@ export function BuiltOnAtlas() {
             </span>
           </span>
           <span className="rph-atlas-card__role">
-            Records and platform tools
+            The county record, in four views
           </span>
         </div>
         <div className="rph-atlas-card__cells">
@@ -149,9 +95,10 @@ export function BuiltOnAtlas() {
             </div>
           </div>
           <div className="rph-atlas-card__cell">
-            <div className="rph-atlas-card__cell-label">Platform tools</div>
+            <div className="rph-atlas-card__cell-label">License</div>
             <div className="rph-atlas-card__cell-body">
-              Built-in tools for building a platform on those records.
+              Counties plus seat blocks of ten, one annual price, with the
+              views that apply included.
             </div>
           </div>
         </div>
@@ -161,17 +108,19 @@ export function BuiltOnAtlas() {
       <div className="rph-bracket" />
 
       <div className="rph-platforms">
-        {platforms.map((p) => (
-          <div className="rph-platform" key={p.index}>
+        {views.map((v) => (
+          <div className="rph-platform" key={v.index}>
             <div className="rph-platform__meta">
-              <span>{p.index}</span>
-              <span>{p.market}</span>
+              <span>{v.index}</span>
+              <span>{v.market}</span>
             </div>
-            <h3 className="rph-platform__lockup">{p.lockup}</h3>
-            <p className="rph-platform__body">{p.body}</p>
+            <h3 className="rph-platform__lockup">
+              <span className="rph-wordmark-atlas-view">{v.name}</span>
+            </h3>
+            <p className="rph-platform__body">{v.body}</p>
             <div className="rph-platform__draws">
               <div className="rph-platform__draws-label">From Atlas</div>
-              <div className="rph-platform__draws-body">{p.fromAtlas}</div>
+              <div className="rph-platform__draws-body">{v.fromAtlas}</div>
             </div>
           </div>
         ))}

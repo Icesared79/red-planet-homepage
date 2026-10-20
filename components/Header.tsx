@@ -22,7 +22,7 @@ export function Header({ variant = "home" }: Props) {
       <nav className="rph-nav">
         <a href={to("#atlas")}>Atlas</a>
         <a href={to("#engine")}>How it works</a>
-        <a href={to("#products")}>Platforms</a>
+        <a href={to("#products")}>Atlas</a>
         <a href={to("#coverage")}>Coverage</a>
         <a
           href="https://docs.redplanetdata.com"

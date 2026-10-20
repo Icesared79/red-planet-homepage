@@ -32,7 +32,7 @@ export default function TermsPage() {
 
             <h2>Access to the platforms</h2>
             <p>
-              Access to Atlas, TeleAcre or Signal is granted under a separate
+              Access to Atlas and its views is granted under a separate
               written agreement. Where these terms and that agreement differ,
               that agreement governs the access it grants.
             </p>
@@ -62,8 +62,9 @@ export default function TermsPage() {
             <p>
               The site, its text, design, code and arrangement are owned by Red
               Planet Data or its licensors and are protected by copyright and
-              other laws. Red Planet, Red Planet Data, Atlas, TeleAcre and
-              Signal are our trademarks. Nothing here grants you a licence to
+              other laws. Red Planet, Red Planet Data, Atlas, AtlasLand,
+              AtlasCRE, AtlasProp and AtlasTrade are our trademarks. Nothing
+              here grants you a licence to
               use them.
             </p>
 

@@ -14,12 +14,12 @@ type Status = "idle" | "sending" | "done";
 
 const TOPICS = [
   { key: "data", label: "Data access", sub: "I want to query Atlas" },
-  { key: "product", label: "A product", sub: "TeleAcre or Signal" },
+  { key: "product", label: "Atlas", sub: "A license to counties and seats" },
   { key: "partnership", label: "Partnership", sub: "Working together" },
   { key: "other", label: "Something else", sub: "Anything not listed" },
 ];
 
-const PRODUCTS = ["TeleAcre", "Signal", "Not sure yet"];
+const PRODUCTS = ["AtlasLand", "AtlasCRE", "AtlasProp", "AtlasTrade", "Not sure yet"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

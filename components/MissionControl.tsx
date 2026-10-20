@@ -53,7 +53,7 @@ export function MissionControl({ updatedIso, relInitial }: Props) {
         We watch everything Atlas collects, from one place.
       </h2>
       <p className="rph-intro rph-intro--moss rph-mission__intro">
-        It also lets us build any number of products on top.
+        It is also what every Atlas view is drawn from.
       </p>
 
       <div className="rph-runhead">
