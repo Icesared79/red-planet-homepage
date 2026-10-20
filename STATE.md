@@ -1,6 +1,21 @@
 # red-planet-homepage — STATE
 
-## Current phase: COUNTY-9.1 -- figures from the pricing table, state-aware wording, Florida on request (2026-10-20)
+## Current phase: COUNTY-10 -- /licensing taken down (2026-10-20)
+
+Session `cc-county10-20261020` (#H8ZN-4CPW). Operator ruling: Red Planet Data sells custom license agreements built with
+each customer, not a self-serve store for Florida and Connecticut. No price, pricing table, quote page or free-access
+setting changed; those live in Atlas and atlas-dash, not here.
+
+- Removed: `app/licensing/` (page + css), `components/licensing/Store.tsx`, `lib/licensing.ts`, both request-handling
+  routes `app/api/licensing/price` and `app/api/licensing/request` (nothing else called either), `public/licensing/`
+  (map.json, signal-map.png, signal-screenshot.png), `scripts/build_licensing_geo.mjs`, `scripts/verify_licensing.mjs`.
+- `next.config.mjs` redirects `/licensing` and `/licensing/:path*` permanently (308) to `/`. The site has no sitemap or
+  robots file, and nothing else on the site linked to the page.
+- The homepage no longer refreshes `atlas_county_catalog_residential_activity` on views (that came from
+  `lib/licensing.ts`); atlas-dash views still do.
+- The phases below describe the removed page and are kept as history.
+
+## Earlier phase: COUNTY-9.1 -- figures from the pricing table, state-aware wording, Florida on request (2026-10-20)
 
 Session `cc-county91-20261020` (#K3VF-8DNQ). No price, calculation, seat rule or term changed.
 
@@ -78,7 +93,7 @@ least seats read live from the pricing table in `lib/licensing.ts`); the standin
 prices and the two forms as before. Still unlinked and `noindex`. A local `npm run build` has no database credentials
 here, so it renders the fallback text and fails on `/` (the records ledger); Vercel's production build is unaffected.
 
-## Current phase: COUNTY-4.2 — /licensing, Connecticut and Florida residential (2026-10-18)
+## Earlier phase: COUNTY-4.2 — /licensing, Connecticut and Florida residential (2026-10-18)
 
 ### Completed in this phase
 
