@@ -1977,3 +1977,13 @@ a:hover {
   .rph-doc a.rph-jobs__link { padding: 20px 0 22px; }
   .rph-jobs__questions { margin-top: 24px; }
 }
+
+/* LAND-1 (2026-10-20): the four Atlas views, set in the site's sans at the design system's wordmark weight. */
+.rph-wordmark-atlas-view {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--rph-ink);
+}

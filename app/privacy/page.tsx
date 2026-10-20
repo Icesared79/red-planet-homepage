@@ -37,10 +37,10 @@ export default function PrivacyPage() {
 
             <h2>What this policy covers</h2>
             <p>
-              It covers this website only. Access to Atlas, TeleAcre or Signal
-              is governed by the written agreement under which that access is
-              granted, and the handling of records inside those platforms is
-              addressed there rather than here.
+              It covers this website only. Access to Atlas and its views is
+              governed by the written agreement under which that access is
+              granted, and the handling of records inside Atlas is addressed
+              there rather than here.
             </p>
 
             <h2>What we collect</h2>
