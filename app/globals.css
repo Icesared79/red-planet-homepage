@@ -63,7 +63,7 @@
   --rph-band-paper2: var(--paper-200);
   --rph-card-platform: var(--paper-200);
   --rph-card-records: #E6E7DF;
-  --rph-card-sage-inner: #EEF1EA;
+  --rph-card-sage-inner: #EEF1F4;
   --rph-card-quiet: #F6F6F1;
   --rph-dialog: var(--paper-100);
   --rph-field: var(--bg-raised);
@@ -83,27 +83,27 @@
   --rph-chart-line: var(--forest-800);
 
   /* --- Ink ramp on paper -------------------------------------------------- */
-  --rph-body: #414842;
-  --rph-body-strong: #37403A;
-  --rph-meta: #56605A;
-  --rph-meta-2: #667067;
-  --rph-struck: #7E8A80;
+  --rph-body: #3B3F46;
+  --rph-body-strong: #31373E;
+  --rph-meta: #515962;
+  --rph-meta-2: #5F676D;
+  --rph-struck: #79848A;
 
   /* --- Type and rules on the moss bands ----------------------------------- */
-  --rph-on-moss: #E8ECE5;
-  --rph-on-moss-muted: #AEB8B0;
-  --rph-on-moss-label: #9BA79E;
-  --rph-on-moss-body: #C4CCC5;
-  --rph-rule-moss: #34413A;
-  --rph-rule-moss-2: #3D4C43;
+  --rph-on-moss: #E8EEED;
+  --rph-on-moss-muted: #B1B9BF;
+  --rph-on-moss-label: #9CA4AE;
+  --rph-on-moss-body: #C7CDD4;
+  --rph-rule-moss: #2B2F35;
+  --rph-rule-moss-2: #343A3E;
 
   /* --- Hairlines ---------------------------------------------------------- */
-  --rph-rule-chart: #BCC7BA;
+  --rph-rule-chart: #ADBBCA;
   --rph-rule-card: #D2D4CB;
   --rph-rule-step: #DFE0D8;
   --rph-rule-tab: #C5C8BE;
-  --rph-rule-row: #D2D8CF;
-  --rph-connector: #A9B5AC;
+  --rph-rule-row: #D0D6E0;
+  --rph-connector: #8EA1C0;
 
   /* --- Red for the ground it sits on -------------------------------------- */
   --rph-red-on-sage: #B03226;
@@ -155,8 +155,8 @@
   color-scheme: dark;
 
   --rph-page: var(--forest-950);
-  --rph-ink: #F1F0EA;
-  --rph-rule-ink: rgba(241, 240, 234, .38);
+  --rph-ink: #F1F2F2;
+  --rph-rule-ink: rgba(241, 242, 242, .38);
 
   --rph-band-moss: var(--forest-800);
   --rph-band-sage: var(--forest-900);
@@ -168,7 +168,7 @@
   --rph-dialog: var(--forest-900);
   --rph-field: var(--forest-950);
 
-  --rph-inverse: #F1F0EA;
+  --rph-inverse: #F1F2F2;
   --rph-on-inverse: var(--ink-900);
 
   /* forest-950 is the bottom of the ramp, so on dark the footer lands on the
@@ -180,32 +180,32 @@
   --rph-red-on-sage: var(--red-400);
   --rph-positive: var(--green-300);
   --rph-error-bg: rgba(227, 106, 85, .14);
-  --rph-focus: #F1F0EA;
-  --rph-chart-line: #F1F0EA;
+  --rph-focus: #F1F2F2;
+  --rph-chart-line: #F1F2F2;
 
   /* Ink ramp on a dark ground */
-  --rph-body: #C2C9C1;
-  --rph-body-strong: #C2C9C1;
-  --rph-meta: #98A399;
-  --rph-meta-2: #98A399;
-  --rph-struck: #6F7B72;
+  --rph-body: #C5CAD0;
+  --rph-body-strong: #C5CAD0;
+  --rph-meta: #99A0A9;
+  --rph-meta-2: #99A0A9;
+  --rph-struck: #6C727B;
 
   /* Hairlines */
-  --rph-rule-chart: rgba(241, 240, 234, .18);
-  --rph-rule-card: rgba(241, 240, 234, .14);
-  --rph-rule-step: rgba(241, 240, 234, .10);
-  --rph-rule-tab: rgba(241, 240, 234, .22);
-  --rph-rule-row: rgba(241, 240, 234, .12);
-  --rph-connector: rgba(241, 240, 234, .22);
+  --rph-rule-chart: rgba(241, 242, 242, .18);
+  --rph-rule-card: rgba(241, 242, 242, .14);
+  --rph-rule-step: rgba(241, 242, 242, .10);
+  --rph-rule-tab: rgba(241, 242, 242, .22);
+  --rph-rule-row: rgba(241, 242, 242, .12);
+  --rph-connector: rgba(241, 242, 242, .22);
 
   /* Product wordmarks sit on dark cards now. The TeleAcre chartreuse and the
      Atlas equator gold are brand colours and do not change. */
   --rph-mark-disc: var(--red-400);
   --rph-mark-band: var(--paper-100);
-  --rph-teleacre-ink: #F1F0EA;
-  --rph-signal-ink: #F1F0EA;
+  --rph-teleacre-ink: #F1F2F2;
+  --rph-signal-ink: #F1F2F2;
   --rph-signal-mark: var(--red-400);
-  --rph-sunscope-ink: #F1F0EA;
+  --rph-sunscope-ink: #F1F2F2;
   /* The app lifts its amber on dark for contrast; same value here. */
   --rph-sunscope-mark: #E5BC68;
 }
@@ -1528,7 +1528,7 @@ a:hover {
 .rph-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(20, 26, 22, .55);
+  background: rgba(17, 19, 24, .55);
   display: flex;
   align-items: center;
   justify-content: center;
