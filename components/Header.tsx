@@ -31,6 +31,8 @@ export function Header({ variant = "home" }: Props) {
         >
           Documentation
         </a>
+        {/* LAND-1.2: the Atlas sign-in, at the shell's Vercel address until a redplanetdata.com record exists for it. */}
+        <a href="https://atlas-umber-pi.vercel.app/login">Sign in</a>
         <ThemeToggle />
         <a href={to("#contact")} className="rph-pill-cta">
           Get in touch
