@@ -15,6 +15,7 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: "/how-red-planet-works", destination: "/how-red-planet-works.html" },
+      { source: "/how-atlasland-works", destination: "/how-atlasland-works.html" },
     ];
   },
   // COUNTY-10 (2026-10-20): /licensing is gone. Licenses are custom agreements built with each customer, not a
