@@ -1,5 +1,32 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5.2 -- /how-atlasland-works rebuilt from the Wilson County snapshot (2026-10-22)
+
+Session `cc-land52-20261022`. Ships on push like everything here.
+
+- `public/how-atlasland-works.html` now shows the county record instead of describing it. Eight sections: Today and
+  with AtlasLand (two columns, type only); The county, mapped (two inline SVGs of the 35 bodies by jurisdiction, one
+  wide and one tall, typed by shape, pending bodies outlined with "requested" / "not located"); One project, followed
+  (the Tax Map 68 residential project: a staggered horizontal timeline above 1100px, a vertical one below, deciding
+  votes in the blueprint highlight); The first screen (last 30 / next 30 days as two compact Atlas panels, twelve rows
+  each with the total stated); Deal monitoring (the marked parcel group and the past year's items near it); Coverage,
+  stated (the statement's opening paragraph, a compact table of the 31 captured bodies with earliest record, meetings
+  and median posting lag, the four not captured with their reason); Intake; Terms. Header, closing row and noindex kept.
+- Every figure comes from `public/data/wilson-county-tn-<as_of>.json`, written by Levelpie
+  `atlas/ops/_land52_wilson_snapshot.py` (read-only against Atlas). `scripts/_land52_how_atlasland_works.py` builds the
+  page from the newest snapshot and from the Red Planet design package in Git (`C:/rpd/packages/red-planet-design`: Plat
+  tokens, embedded self-hosted fonts, components); it is no longer derived from the sibling page's head. To refresh:
+  run the Atlas script with `--out-dir public/data`, then this one.
+- Word rules in the builder: the applicant is never exported, so the developer cannot appear; the page never carries
+  the word "public" (the builder asserts it): an item whose line carries it is left out of the twelve shown, Lebanon's
+  "Public Infrastructure Committee" is shown as "Infrastructure Committee", and the coverage paragraph's one use is
+  rendered as "the meeting record".
+- Compact density sets every `.rp-table td` to `nowrap`; the page overrides it for its own tables, or the panels
+  overflow. At 390px the page lays out at exactly 390px with no sideways scroll (checked with Playwright).
+- The case record was being extended by LAND-4.1 (Lebanon City Council extraction) while the snapshot was taken, so
+  the timeline runs 2021-06-22 to 2025-02-04 (25 verified events across 10 case rows); the LAND-4 document's last
+  date, 2024-11-18, predates the council readings that session added.
+
 ## Current phase: LAND-5.1 -- AtlasLand reference copy, § 02 restored, CLI deploy check (2026-10-22)
 
 Session `cc-land51-20261022`.
