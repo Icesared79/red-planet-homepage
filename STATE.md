@@ -1,5 +1,23 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5.1 -- AtlasLand reference copy, § 02 restored, CLI deploy check (2026-10-22)
+
+Session `cc-land51-20261022`.
+
+- `/how-atlasland-works`: the operator's shorter reference copy (787 words -> 409 visible words, no block over two
+  sentences), same layout. Section titles are now The problem, What a license includes, Intake, Example, What
+  AtlasLand does not do, Terms; § 02 and § 06 have no lead line; § 06 has five terms. Built by the same
+  `scripts/_land5_how_atlasland_works.py`, which now only rewrites the sibling's AtlasLand line if the old text is
+  still there, so it can be re-run safely.
+- `/how-red-planet-works`: § 02 "Who Licenses It" is back (`scripts/_land51_restore_who_licenses.py`, structure from
+  `a2a5753`): residential column (AtlasProp, AtlasTrade) and commercial column (AtlasCRE, AtlasLand), each under
+  "Atlas views", then the closing bar. The § 01 Views box names the four views in small type; the stray fragment is
+  gone, and the page's tags balance again (LAND-1 had left one extra `</div>`). Sections run § 01 to § 05.
+- Deploy check: `scripts/verify_deploy.mjs` verifies a push deploy with the Vercel CLI only (`vercel api` for the
+  deployment by commit, `vercel inspect` for the alias table, then live 200s). The stored REST token is rejected, so
+  nothing here uses it. Pass page names without a leading slash (`--paths how-atlasland-works`); Git Bash rewrites `/x`.
+- The LAND-5 "known issue" below is resolved by this phase.
+
 ## Current phase: LAND-5 -- /how-atlasland-works (2026-10-22)
 
 Session `cc-land5-20261022`. Ships on push like everything here.
