@@ -1,5 +1,21 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5 -- /how-atlasland-works (2026-10-22)
+
+Session `cc-land5-20261022`. Ships on push like everything here.
+
+- `public/how-atlasland-works.html`, served at `/how-atlasland-works` by a rewrite in `next.config.mjs`. Unlisted and
+  `noindex, nofollow`, like its sibling. Built by `scripts/_land5_how_atlasland_works.py` from the sibling's own head
+  (self-hosted fonts, tokens, Plat palette, `om-*` components), so a design change to the sibling is re-run through
+  the script to carry over. Six sections (§ 01 to § 06), the operator's copy verbatim; the only page-only CSS is
+  `.om-terms--3`.
+- `/how-red-planet-works`: the AtlasLand tile reads "AtlasLand covers land and jurisdiction records for any land use:
+  decisions, hearings, land assemblies and meeting records", and the word AtlasLand links to the new page.
+- Known issue, NOT fixed here: LAND-1's copy script (`317ea46`) deleted the sibling's § 02 "Who Licenses It" header
+  and its residential column, so the live sibling runs § 01, § 03, § 04, § 05 and its "Views" box shows a stray small
+  "AtlasProp" plus the AtlasProp and AtlasTrade lines that belonged to the residential column. `a2a5753` has the
+  last whole version.
+
 ## Current phase: LAND-1 -- Atlas is the platform, four views, no product names (2026-10-20)
 
 Session `cc-land1-20261020`. Operator decision: Red Planet Data is the company, Atlas is the single platform customers
