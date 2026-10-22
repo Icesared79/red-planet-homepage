@@ -1,5 +1,21 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5.2.1 -- proper names on /how-atlasland-works (2026-10-22)
+
+Session `cc-land521-20261022`. Operator ruling: the no-"public" rule is about Red Planet Data's own copy about its data
+sources; it never applies to the proper name of a board, a document or a statute.
+
+- `scripts/_land52_how_atlasland_works.py`: `PROPER_NAMES` (Public Infrastructure Committee, Tennessee Public Chapter
+  <n>) are exempt from the word check, and the check also exempts the coverage statement, which is now quoted in its own
+  wording ("Atlas holds the public meeting record of 31 of the 35 ..."). Lebanon's committee is shown as "Public
+  Infrastructure Committee" on both county maps and in the coverage table.
+- The three snapshot items citing Tennessee Public Chapter 1044 (Lebanon Planning Commission 2026-09-22, Lebanon City
+  Council 2026-10-06 and 2026-10-20) are candidates again, but none is among the twelve shown: City Council already
+  has its three newest 2026-10-20 items and the Planning Commission item is older than the twelfth row. The first
+  screen is therefore unchanged; nothing else on the page changed (same 2026-10-22 snapshot).
+- Known, not touched: at 1280px the timeline section is 6px wider than the viewport (a label and one card), as it was
+  before this change.
+
 ## Current phase: LAND-5.2 -- /how-atlasland-works rebuilt from the Wilson County snapshot (2026-10-22)
 
 Session `cc-land52-20261022`. Ships on push like everything here.

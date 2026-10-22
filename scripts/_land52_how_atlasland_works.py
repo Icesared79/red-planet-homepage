@@ -9,8 +9,11 @@ under each, the Intake steps and the Terms. The head is built from the Red Plane
 file served raw from public/ like its sibling. The header, the closing row and the noindex meta are kept.
 
 Word rules applied here: the developer behind the project is never named (the snapshot carries no applicant); the
-word "public" never appears on the page: an item whose description carries it is left out of the twelve shown (the
-total still counts it) and the coverage statement's one use of it is rendered as "the meeting record".
+word "public" never appears in the page's own copy: an item whose description carries it is left out of the twelve
+shown (the total still counts it). LAND-5.2.1 (operator ruling 2026-10-22): the rule is about Red Planet Data's own
+copy, never the proper name of a board, a document or a statute, so PROPER_NAMES are exempt (Lebanon's Public
+Infrastructure Committee is shown under its real name, items citing Tennessee Public Chapter 1044 are candidates), and
+the coverage statement is quoted in its own wording.
 """
 from __future__ import annotations
 
@@ -48,8 +51,14 @@ def d_short(iso: str) -> str:
     return f"{dt.strftime('%b')} {dt.day}"
 
 
-def no_public(text: str) -> bool:
-    return "public" not in text.lower()
+# Proper names that happen to contain the word; the check never counts them.
+PROPER_NAMES = re.compile(r"\bPublic Infrastructure Committee\b|\bTennessee Public Chapter \d+\b")
+
+
+def no_public(text: str, quoted: tuple = ()) -> bool:
+    for q in quoted:
+        text = text.replace(q, "")
+    return "public" not in PROPER_NAMES.sub("", text).lower()
 
 
 def short_body(name: str, jurisdiction: str) -> str:
@@ -298,8 +307,6 @@ def short_name(b: dict) -> str:
         if s.startswith(prefix):
             s = s[len(prefix):]
     s = s.replace(" (County Meetings category: GIS Committee)", " (GIS)")
-    # The page never carries the word "public"; this committee's registered name starts with it, so it is shown without it.
-    s = s.replace("Public Infrastructure Committee", "Infrastructure Committee")
     s = re.sub(r"^Wilson County Joint Economic and Community Development Board$", "Joint Economic Development Board", s)
     s = re.sub(r"^Water & Wastewater Authority of Wilson County Board of Commissioners$", "Water and Wastewater Authority", s)
     s = re.sub(r"^Lebanon Special School District Board of Education$", "Special School District Board", s)
@@ -506,8 +513,7 @@ def lag_cell(v, before: bool) -> str:
 
 def s06_coverage(snap: dict) -> str:
     cov = snap["coverage"]
-    opening = cov["opening_paragraph"].replace("the public meeting record", "the meeting record")
-    assert no_public(opening), "the coverage paragraph still carries the word"
+    opening = cov["opening_paragraph"]  # quoted in its own wording (LAND-5.2.1)
     rows = []
     for g, bodies in group_rows(snap):
         for b in bodies:
@@ -591,7 +597,7 @@ def build(snapshot_path: Path) -> dict:
 </html>
 """
     page = head + body
-    assert no_public(re.sub(r'url\("data:[^"]+"\)', "", page)), "the page carries the word"
+    assert no_public(re.sub(r'url\("data:[^"]+"\)', "", page), (esc(snap["coverage"]["opening_paragraph"]),)), "the page carries the word"
     TARGET.write_text(page, encoding="utf-8", newline="\n")
     return {"bytes": len(page.encode("utf-8")), "sections": page.count('<section class="rp-section"'), "timeline": snap["case"]["timeline"],
             "recent_rows": rows_l, "upcoming_rows": rows_r, "snapshot": snapshot_path.name, "as_of": snap["as_of"]}
