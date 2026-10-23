@@ -29,6 +29,8 @@ import type { ReactNode } from 'react'
 import type { CountyReport } from '@/components/county-report/report-types'
 import { ReportCharts, ReportComparisonView, ReportMapView } from '@/components/county-report/report-view'
 import { ScoreBlock, type CatalogLicense, type CatalogScore, fmtInt } from '@/components/county-report/score-block'
+// LAND-6 (2026-10-23): the strip under the header is shared with the company page and the other three view pages.
+import { TabStrip, TABS_CSS } from './_land6_shared'
 
 const REPO = process.cwd()
 if (!existsSync(path.join(REPO, 'package.json')) || !existsSync(path.join(REPO, 'public'))) throw new Error('run from the red-planet-homepage root')
@@ -696,7 +698,7 @@ function Head({ title, description, mark, css }: { title: string; description: s
       <link rel="icon" href={mark} />
       <style dangerouslySetInnerHTML={{ __html: [fontFace('Geist', 400, 'geist-latin-400-normal.woff2'), fontFace('Geist', 500, 'geist-latin-500-normal.woff2'), fontFace('Fragment Mono', 400, 'fragment-mono-latin-400-normal.woff2')].join('\n') }} />
       <style dangerouslySetInnerHTML={{ __html: css }} />
-      <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: TABS_CSS + PAGE_CSS }} />
     </head>
   )
 }
@@ -724,6 +726,7 @@ function MainPage({ snap, mark, css, points, feed }: { snap: Snapshot; mark: str
       <body>
         <div className="rp-root om" data-product="red-planet" style={ROOT_STYLE}>
           <Header mark={mark} title="How AtlasLand Works" right={<p className="rp-label" style={{ margin: 0, flex: '0 1 auto', minWidth: 0 }}>{MONTH[Number(asOf.slice(5, 7)) - 1]} {asOf.slice(0, 4)} · as of {asOf}</p>} />
+          <TabStrip current="/how-atlasland-works" />
           <TheCounty snap={snap} />
           <WhatIsMoving snap={snap} />
           <OneProject snap={snap} points={points} />

@@ -771,6 +771,18 @@ a { color: inherit; }
   text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 2px var(--bg); }
 .cr-key__mark { fill: var(--highlight-bg); stroke: var(--highlight-stroke); stroke-width: 2; }
 </style><style>
+.om-tabs { padding: 0 var(--page-gutter); }
+.om-tabs__inner { max-width: var(--page-max); margin: 0 auto; }
+.om-tabs .rp-tabs { gap: clamp(18px, 2.6vw, 34px); }
+.om-tabs .rp-tab { text-decoration: none; height: 44px; font-size: 15px; }
+.om-tabs .rp-tab[aria-current="page"] { color: var(--fg-1); border-bottom-color: var(--fg-1); }
+.om-tabs .rp-tab .om-tabs__co { display: none; }
+@media (max-width: 560px) {
+  .om-tabs .rp-tab { font-size: 14px; height: 40px; }
+  .om-tabs .rp-tab .om-tabs__long { display: none; }
+  .om-tabs .rp-tab .om-tabs__co { display: inline; }
+}
+
 body { margin: 0; background: var(--paper-100); }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

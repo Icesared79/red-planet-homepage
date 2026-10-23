@@ -1,5 +1,51 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-6 -- one set of explanation pages: the company page in front, the four views as tabs (2026-10-23)
+
+Session `cc-land6-20261023`. Ships on push like everything here.
+
+- Five pages, one strip. `scripts/_land6_shared.tsx` holds what they share: the head (fonts embedded, the design package in
+  Git, the county-report sheet), the header, `TabStrip` (the system's underline Tabs as links: How Red Planet Works,
+  AtlasLand, AtlasCRE, AtlasProp, AtlasTrade; the current page carries `aria-current="page"` and the selected style is
+  repeated for that attribute, since the component keys it on `aria-selected`; the company tab reads "Red Planet" under
+  560 px), the section frame, the closing row and the word check. The AtlasLand builder imports the strip and its CSS;
+  nothing else on that page changed. All five are `noindex, nofollow`; the existing addresses are unchanged, and
+  `/how-atlascre-works`, `/how-atlasprop-works`, `/how-atlastrade-works` are new rewrites in `next.config.mjs`.
+- `/how-red-planet-works` rebuilt by `scripts/_land6_site_pages.tsx` (run `npx tsx --tsconfig scripts/tsconfig.land53.json
+  scripts/_land6_site_pages.tsx`), replacing the VISUAL-1 export: § 01 What Red Planet Data is (two sentences and a hero
+  diagram in SVG, county records into Atlas, four views out, AtlasLand and AtlasCRE first; a wide drawing above 700 px and
+  a tall one below; the Atlas node is the page's one carbon surface); § 02 Every county, looked at (the County Catalog's
+  national map, every county as a path under CountyMap's own Albers USA projection, shaded in the catalog's five quintile
+  classes of overall score, state lines over it; one-line caption with the count; key of the five class ranges); § 03 What
+  a license includes (the county record, every view that applies at no extra charge, seats in blocks of 10 or one seat);
+  § 04 Intake (the AtlasLand page's five steps, then price, sign and go live with the first 30 days included in full;
+  blueline); § 05 Terms (ownership, term, seats, coverage: "almost any county, online in days to weeks", every county priced
+  the same way). Gone: Florida and Connecticut as deepest, the Data Framework and Platform Framework boxes, the
+  residential-first ordering, the "Who licenses it" section.
+- The three view pages, same builder, three sections each: § 01 what the view is for (what it reads, who uses it); § 02 one
+  county as Atlas holds it, with one figure from `components/county-report/` beside the figures; § 03 license and terms
+  (blueline), linking to the company page's § 03 and § 05. AtlasCRE: Broward County, FL, the catalog's region map, 36,774
+  commercial properties and 14,229 owner entities, and the 90-day counts (sales 326, loans 288, liens 155, court filings 38,
+  22 owners active on more than one property, Jul 26 to Oct 23, 2026). AtlasProp: Broward, the residential charts
+  (households, income, home sales, foreclosure filings a month), 2,238 foreclosure filings and 14,550 liens in the twelve
+  months to Oct 23, 2026, 677,989 residential parcels. AtlasTrade: the Capitol Region (greater Hartford), CT, the housing-layer
+  region map, 318,671 homes scored across 38 towns, 226,303 single-family, 66,852 roofs past 25 years, 16,530 in the
+  20-to-25-year window, 31,023 new owners. Why those: Broward is the one Florida scope whose commercial sales, loans, liens and
+  court filings are all current, and holds the most residential filings; the Capitol Region holds the most SunScope map
+  points of the nine Connecticut regions. No customer is named.
+- Data: four dated files under `public/data/`, written by `scripts/_land6_snapshot.py` (run with the atlas venv python;
+  `--atlas-dash` names the atlas-dash checkout, whose `scripts/_land6_site_export.ts` (national, residential) and
+  `scripts/_land53_county_report_export.ts` (commercial) it runs; the SunScope and commercial-property counts go through
+  atlas `lib/workshop_db.connect_for`, production under the 60-second statement timeout on 2026-10-23, and each file records
+  the banner). `national-map-2026-10-23.json` (3,222 counties profiled and scored, scores computed 2026-10-13),
+  `broward-county-fl-commercial-`, `broward-county-fl-residential-`, `capitol-region-ct-trade-2026-10-23.json`.
+- Checked with Playwright (chromium 1223) at 390 / 768 / 1280 / 1440 on all five pages: `scrollWidth` == viewport, five tabs,
+  one `aria-current`, its underline ink and the others' transparent; the national map draws 3,144 paths; h1 Geist, labels
+  Fragment Mono. The strip scrolls inside its own container at 390 (the design's tabs do). The word "public" is asserted
+  absent on every page at build time, proper names exempt.
+- Improvised, outside the package: the fifth map shade mixes `--ink-900` into `--green-700` where atlas-dash mixes a
+  `--forest-900` the package does not define; the diagram's arrowhead marker.
+
 ## Current phase: LAND-5.3 / 5.3.1 -- /how-atlasland-works as a county story in the County Catalog's components (2026-10-23)
 
 Session `cc-land53-20261023`. Ships on push like everything here.
