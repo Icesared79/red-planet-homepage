@@ -1,5 +1,39 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5.3 / 5.3.1 -- /how-atlasland-works as a county story in the County Catalog's components (2026-10-23)
+
+Session `cc-land53-20261023`. Ships on push like everything here.
+
+- The page is nine sections now, built as one static file by `scripts/_land53_how_atlasland_works.tsx` (run with
+  `npx tsx --tsconfig scripts/tsconfig.land53.json scripts/_land53_how_atlasland_works.tsx`; tsx is a devDependency) from
+  the newest `public/data/wilson-county-tn-<as_of>.json` and the design package in Git. It renders React with
+  react-dom/server, so the County Catalog's components are shared code: `components/county-report/` holds
+  `report-view.tsx` (charts, region map, neighbor comparison), `report-types.ts`, `report.css` and `score-block.tsx`,
+  ported from atlas-dash `lib/county-catalog/` (d320772) and the county page's score metrics; its README lists the three
+  deliberate differences (no CSS import, map marks, no "public-use"). `scripts/_land52_how_atlasland_works.py` is gone.
+- Sections: § 01 The county (the catalog's region map as the hero with the Tax Map 68 parcels marked in the highlight,
+  score 63 / rank 16 of 3,222 / band Mid and the five group scores beside it, the analysis's setting paragraph under it);
+  § 02 What is moving (the catalog's four charts, the first two sentences of the analysis's moving paragraph, the
+  nine-row neighbor comparison); § 03 One project, followed (eight decisive events chosen by rule in `decisiveEvents`
+  from the 25 in the snapshot: first planning recommendation, council first reading, council approval, plan amendment,
+  the two plats, the SP amendment, latest reading; a horizontal row above 1000 px, a list below); § 04 The first screen
+  (one compact Atlas panel on the carbon surface: ten lines from the last 30 and next 30 days, newest first, at most
+  three per body, with the totals line); § 05 Watching a parcel; § 06 Who decides (counts by jurisdiction and type, the
+  four not-captured bodies, a link to the coverage route); § 07 Today and with AtlasLand (shorter); § 08 How the record
+  is built (LAND-5.3.1: seven lines, verbatim); § 09 Intake and terms (blueline surface, closing row).
+- `/how-atlasland-works/coverage` (rewrite to `public/how-atlasland-works/coverage.html`, same builder): the stored
+  coverage statement's opening paragraph, the 31 captured bodies with earliest record, meetings and posting lag, and
+  the four not captured.
+- Data: the snapshot's new `catalog` part (Levelpie `atlas/ops/_land52_wilson_snapshot.py` running atlas-dash
+  `scripts/_land53_county_report_export.ts`, which is the catalog's own `lib/county-catalog/report.ts` under tsx). The
+  2026-10-23 snapshot was regenerated with it. An analysis paragraph longer than two sentences is cut to its first two.
+- Rules the build asserts: no "public" outside PROPER_NAMES (the ported CSS classes `is-public` and
+  `cr-key__airport-public` were renamed for it), six to eight timeline points, no table over ten rows. Checked with
+  Playwright at 390 / 768 / 1280 / 1440: no horizontal overflow; at 390 the score metrics stack in one column (two
+  columns could not hold "16 of 3,222") and the comparison table scrolls inside its own container.
+- The catalog's chart pick for Wilson is population growth, net domestic migration, net migration per 100,000 and net
+  income moving in (what its analysis cites); income, jobs and permits appear in the neighbor table instead.
+
 ## Current phase: LAND-5.2.2 -- coverage wording at the source, no horizontal overflow (2026-10-23)
 
 Session `cc-land522-20261023`.
