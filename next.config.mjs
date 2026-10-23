@@ -16,6 +16,8 @@ const nextConfig = {
     return [
       { source: "/how-red-planet-works", destination: "/how-red-planet-works.html" },
       { source: "/how-atlasland-works", destination: "/how-atlasland-works.html" },
+      // LAND-5.3 (2026-10-23): the full coverage statement on its own route, built by the same script.
+      { source: "/how-atlasland-works/coverage", destination: "/how-atlasland-works/coverage.html" },
     ];
   },
   // COUNTY-10 (2026-10-20): /licensing is gone. Licenses are custom agreements built with each customer, not a

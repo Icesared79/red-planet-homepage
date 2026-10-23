@@ -1,0 +1,133 @@
+/* Ported from atlas-dash lib/county-catalog/report.css (atlas-dashboard d320772, 2026-10-18) for the Red Planet website
+   (LAND-5.3, 2026-10-23); the marks block at the end is the one addition. Keep in step with the original.
+
+   CRE-17 (2026-10-16): the visual county report's sections (report-view.tsx), shared by the client offer page and the
+   operator county page. Tokens only; the sizes follow whichever density the page sets. No red: nothing on these
+   sections is a flagged datum. */
+
+.cr-note { margin: 0; font: 400 var(--fs-micro)/1.5 var(--font-mono); color: var(--fg-3); }
+.cr-muted { color: var(--fg-3); }
+
+/* ── charts ── */
+.cr-charts-wrap { display: flex; flex-direction: column; gap: 12px; }
+.cr-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; }
+.cr-chart { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; padding-top: 12px; border-top: 1px solid var(--rule); }
+.cr-chart__head { display: flex; flex-direction: column; gap: 2px; }
+.cr-chart__title { font: 400 var(--fs-body)/1.3 var(--font-sans); color: var(--fg-1); }
+.cr-chart__unit { font: 400 var(--fs-micro)/1.4 var(--font-mono); color: var(--fg-3); }
+.cr-chart__body { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; height: 96px; }
+.cr-chart__plot { width: 100%; height: 100%; overflow: visible; display: block; }
+.cr-chart__county { fill: none; stroke: var(--chart-line); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.cr-chart__us { fill: none; stroke: var(--fg-3); stroke-width: 1.5; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+.cr-chart__county.is-gap { stroke-width: 1.5; stroke-dasharray: 1 5; }
+.cr-chart__us.is-gap { stroke-dasharray: 1 5; }
+.cr-chart__zero { stroke: var(--rule-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cr-chart__ends { position: relative; width: 17ch; min-width: 0; }
+.cr-chart__end { position: absolute; left: 0; transform: translateY(-50%); white-space: nowrap;
+  font: 400 var(--fs-micro)/1.2 var(--font-mono); font-variant-numeric: tabular-nums; }
+.cr-chart__end.is-county { color: var(--fg-1); }
+.cr-chart__end.is-us { color: var(--fg-3); }
+.cr-chart__years { display: flex; justify-content: space-between; gap: 12px; margin-right: calc(17ch + 10px);
+  font: 400 var(--fs-micro)/1 var(--font-mono); color: var(--fg-3); }
+
+/* ── map ── */
+.cr-map { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.cr-map__frame { position: relative; width: 100%; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius-md); background: var(--bg-sunken); }
+[data-density="compact"] .cr-map__frame { border-radius: var(--radius-sm); }
+.cr-map__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cr-map__sea { fill: var(--bg-sunken); }
+.cr-map__county { stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.cr-map__county.is-context { fill: var(--bg-sunken); stroke: var(--rule); stroke-width: 0.75; }
+.cr-map__county.is-neighbor { fill: var(--bg-raised); stroke: var(--rule-strong); stroke-width: 1; }
+.cr-map__county.is-county { fill: var(--bg); stroke: none; }
+.cr-map__outline { fill: none; stroke: var(--rule-ink); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.cr-map__lines path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.cr-map__lines .is-low { stroke: var(--fg-4); stroke-width: 0.9; }
+.cr-map__lines .is-high { stroke: var(--fg-2); stroke-width: 2; }
+.cr-map__subs circle { fill: var(--bg-raised); stroke: var(--fg-1); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cr-map__subs .is-low { stroke: var(--fg-3); }
+/* CRE-17.1: interstates as a cased road (ink casing, page-colored core) and rail as track with ties --
+   shapes that read apart from the plain transmission strokes in the same ink scale. */
+.cr-map__interstates path, .cr-map__rail path { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.cr-map__interstates .is-casing { stroke: var(--fg-1); stroke-width: 4.2; stroke-linecap: round; }
+.cr-map__interstates .is-core { stroke: var(--bg-raised); stroke-width: 1.8; stroke-linecap: round; }
+.cr-map__rail .is-track { stroke: var(--fg-2); stroke-width: 1.1; stroke-linecap: round; }
+.cr-map__rail .is-ties { stroke: var(--fg-2); stroke-width: 4.5; stroke-dasharray: 1 5; stroke-linecap: butt; }
+.cr-map__airports .is-cert { fill: var(--fg-1); }
+.cr-map__airports .is-open { fill: var(--bg-raised); stroke: var(--fg-1); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.cr-map__label { position: absolute; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap; text-align: center;
+  font: 400 var(--fs-micro)/1.1 var(--font-mono); color: var(--fg-2);
+  text-shadow: 0 0 3px var(--bg-raised), 0 0 3px var(--bg-raised), 0 0 2px var(--bg-raised); }
+.cr-map__label.is-county { font: 500 var(--fs-small)/1.1 var(--font-sans); color: var(--fg-1);
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 2px var(--bg); }
+.cr-map__airport { position: absolute; transform: translateY(-50%); pointer-events: none;
+  font: 400 var(--fs-micro)/1 var(--font-mono); color: var(--fg-1);
+  text-shadow: 0 0 3px var(--bg-raised), 0 0 2px var(--bg-raised); }
+.cr-map__caption { display: flex; flex-direction: column; gap: 12px; }
+.cr-map__key { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px;
+  font: 400 var(--fs-micro)/1.4 var(--font-mono); color: var(--fg-2); }
+.cr-map__key li { display: inline-flex; align-items: center; gap: 6px; }
+.cr-key__county { fill: var(--bg); stroke: var(--rule-ink); stroke-width: 2; }
+.cr-key__high { stroke: var(--fg-2); stroke-width: 2; }
+.cr-key__low { stroke: var(--fg-4); stroke-width: 1; }
+.cr-key__sub { fill: var(--bg-raised); stroke: var(--fg-1); stroke-width: 1; }
+.cr-key__airport { fill: var(--fg-1); }
+.cr-key__airport-open { fill: var(--bg-raised); stroke: var(--fg-1); stroke-width: 1.2; }
+.cr-key__road-casing { stroke: var(--fg-1); stroke-width: 4.2; }
+.cr-key__road-core { stroke: var(--bg-raised); stroke-width: 1.8; }
+.cr-key__rail-track { stroke: var(--fg-2); stroke-width: 1.1; }
+.cr-key__rail-ties { stroke: var(--fg-2); stroke-width: 4.5; stroke-dasharray: 1 5; }
+
+/* ── figures lists (map facts, what we found) ── */
+.cr-facts { margin: 0; display: flex; flex-direction: column; }
+.cr-facts__row { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.cr-facts__row:last-child { border-bottom: 0; }
+.cr-facts dt { font: 400 var(--fs-small)/1.4 var(--font-sans); color: var(--fg-1); }
+.cr-facts dd { margin: 0; font: 400 var(--fs-small)/1.4 var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--fg-1); }
+.cr-facts dd a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── comparison ── */
+.cr-compare { display: flex; flex-direction: column; gap: 10px; }
+.cr-compare__caption { margin: 0; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+.cr-compare__scroll { overflow-x: auto; max-width: 100%; }
+.cr-compare__table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.cr-compare__table th, .cr-compare__table td { padding: 8px 10px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: bottom; }
+.cr-compare__table th:first-child { padding-left: 0; }
+.cr-compare__table td:last-child, .cr-compare__table th:last-child { padding-right: 0; }
+.cr-compare__table thead th { font: 400 var(--fs-micro)/1.3 var(--font-mono); color: var(--fg-2); border-bottom-color: var(--rule-strong); }
+.cr-compare__years { display: block; color: var(--fg-3); }
+.cr-compare__table tbody th { font: 400 var(--fs-small)/1.3 var(--font-sans); color: var(--fg-1); min-width: 9em; }
+.cr-compare__table td { font: 400 var(--fs-small)/1.3 var(--font-mono); color: var(--fg-1); white-space: nowrap; }
+.cr-compare__table .is-num { text-align: right; }
+.cr-compare__table tr.is-county th, .cr-compare__table tr.is-county td { background: var(--bg-selected); }
+.cr-compare__table tr.is-area th, .cr-compare__table tr.is-area td { border-top: 1px solid var(--rule-strong); }
+
+/* ── what we found ── */
+.cr-found { display: flex; flex-direction: column; gap: 8px; }
+.cr-found__window { margin: 0; font: 400 var(--fs-micro)/1.5 var(--font-mono); color: var(--fg-3); }
+
+@media (max-width: 560px) {
+  .cr-charts { grid-template-columns: minmax(0, 1fr); }
+  .cr-map__label { font-size: 10px; }
+  .cr-map__label.is-county { font-size: var(--fs-micro); }
+  .cr-facts__row { grid-template-columns: minmax(0, 1fr) auto; }
+  [data-cr="map-facts"] .cr-facts__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  [data-cr="map-facts"] dd { text-align: left; }
+}
+
+@media print {
+  .cr-charts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; }
+  .cr-chart, .cr-map, .cr-compare__table tr, .cr-facts__row { break-inside: avoid; }
+  .cr-compare__table thead { display: table-header-group; }
+  .cr-chart__body { height: 72px; }
+  .cr-compare__scroll { overflow: visible; }
+  .cr-compare__table th, .cr-compare__table td { padding: 4px 6px; }
+}
+
+/* ── marks (LAND-5.3, website): a parcel group placed on the region map, in the highlight ── */
+.cr-map__marks circle { fill: var(--highlight-bg); stroke: var(--highlight-stroke); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.cr-map__marks circle.is-core { fill: var(--highlight-stroke); stroke: none; }
+.cr-map__mark-label { position: absolute; transform: translate(0, -50%); pointer-events: none; white-space: nowrap;
+  font: 500 var(--fs-micro)/1.1 var(--font-sans); color: var(--highlight);
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 2px var(--bg); }
+.cr-key__mark { fill: var(--highlight-bg); stroke: var(--highlight-stroke); stroke-width: 2; }
