@@ -1,5 +1,20 @@
 # red-planet-homepage — STATE
 
+## Current phase: LAND-5.2.2 -- coverage wording at the source, no horizontal overflow (2026-10-23)
+
+Session `cc-land522-20261023`.
+
+- Atlas's coverage generator (`ops/_land3_coverage_statement.py`) now writes "Atlas holds the meeting record of ..."
+  and asserts the word "public" is absent from its own wording (body names exempt). The Wilson statement was
+  regenerated, the snapshot re-taken as `public/data/wilson-county-tn-2026-10-23.json`, and the page rebuilt from it.
+  The builder no longer exempts the coverage statement from its word check; `PROPER_NAMES` stay exempt.
+- Timeline (§ 03): cards 168 px wide on a track inset 16 px at each end; the vertical list now takes over at 1240 px
+  and below (was 1100). Measured on the old page: the end cards ran past the viewport at every width from 1101 to
+  1366 px, and same-lane cards overlapped below about 1240 px. Known, not touched: the May 23, 2023 card is six lines
+  tall and touches the two cards under it by about 3 px, as it did before.
+- County map (§ 02): a pending tag that does not fit beside its name goes on a line under it.
+- Overflow check: `scrollWidth` == viewport at 390, 768, 1280 and 1440 with `isMobile: false`.
+
 ## Current phase: LAND-5.2.1 -- proper names on /how-atlasland-works (2026-10-22)
 
 Session `cc-land521-20261022`. Operator ruling: the no-"public" rule is about Red Planet Data's own copy about its data

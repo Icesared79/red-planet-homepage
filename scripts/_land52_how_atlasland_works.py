@@ -12,8 +12,8 @@ Word rules applied here: the developer behind the project is never named (the sn
 word "public" never appears in the page's own copy: an item whose description carries it is left out of the twelve
 shown (the total still counts it). LAND-5.2.1 (operator ruling 2026-10-22): the rule is about Red Planet Data's own
 copy, never the proper name of a board, a document or a statute, so PROPER_NAMES are exempt (Lebanon's Public
-Infrastructure Committee is shown under its real name, items citing Tennessee Public Chapter 1044 are candidates), and
-the coverage statement is quoted in its own wording.
+Infrastructure Committee is shown under its real name, items citing Tennessee Public Chapter 1044 are candidates).
+LAND-5.2.2 (2026-10-23): the coverage statement is no longer exempt; Atlas's generator now keeps the word out of it.
 """
 from __future__ import annotations
 
@@ -138,7 +138,9 @@ html { scroll-behavior: smooth; }
 .om-tl__pt.is-vote { background: var(--fg-1); border-color: var(--fg-1); }
 .om-tl__pt.is-deciding { width: 15px; height: 15px; margin: -8px 0 0 -8px; background: var(--highlight-stroke); border-color: var(--highlight-stroke); box-shadow: 0 0 0 5px var(--highlight-bg); }
 .om-tl__lead { position: absolute; width: 0; border-left: 1px solid var(--rule-strong); }
-.om-tl__card { position: absolute; width: 176px; margin-left: -88px; padding: 8px 10px; box-sizing: border-box; background: var(--bg-raised); border-radius: var(--radius-sm); font: 400 12px/1.35 var(--font-sans); color: var(--fg-1); }
+/* LAND-5.2.2: 168 px cards on an inset track. At 176 px the end cards hung 1-16 px past the viewport from 1101 to
+   1366 px wide, and below 1240 px the same-lane cards overlapped; the vertical list takes over there. */
+.om-tl__card { position: absolute; width: 168px; padding: 8px 10px; box-sizing: border-box; background: var(--bg-raised); border-radius: var(--radius-sm); font: 400 12px/1.35 var(--font-sans); color: var(--fg-1); }
 .om-tl__card.is-deciding { background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--highlight-stroke); }
 .om-tl__card .rp-label { font-size: 11px; display: block; }
 .om-tl__card .tl-body { color: var(--fg-2); display: block; }
@@ -201,7 +203,7 @@ html { scroll-behavior: smooth; }
 .om-close { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--rule-ink); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
 .om-row { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .om-tl { display: none; }
   .om-tl-v { display: block; }
 }
@@ -329,6 +331,19 @@ def group_rows(snap: dict):
     return [(g, groups[g]) for g in order]
 
 
+def body_tag(b: dict) -> str:
+    return "" if b["captured"] else ("not located" if b["capture_status"] == "not_located" else "requested")
+
+
+def tag_beside(name: str, tag: str, w: float) -> bool:
+    """True when the tag fits on the name's line inside the column (LAND-5.2.2: a long name pushed it past the column)."""
+    return 22 + len(name) * 5.9 + 10 + len(tag) * 6.1 <= w
+
+
+def rows_h(bodies: list, w: float, row_h: int) -> float:
+    return sum(row_h + (12 if body_tag(b) and not tag_beside(short_name(b), body_tag(b), w) else 0) for b in bodies)
+
+
 def diagram(snap: dict, wide: bool) -> str:
     rows = group_rows(snap)
     row_h, head_h, pad = 24, 44, 8
@@ -336,7 +351,7 @@ def diagram(snap: dict, wide: bool) -> str:
         cols = len(rows)
         col_w = 232
         width = cols * col_w
-        height = head_h + max(len(b) for _, b in rows) * row_h + pad
+        height = head_h + max(rows_h(b, col_w - 16, row_h) for _, b in rows) + pad
         out = [f'<svg class="om-diagram om-diagram-wide" viewBox="0 0 {width} {height}" role="img" aria-label="The bodies of Wilson County grouped by jurisdiction">']
         for i, (g, bodies) in enumerate(rows):
             x0 = i * col_w + 4
@@ -344,12 +359,12 @@ def diagram(snap: dict, wide: bool) -> str:
         out.append("</svg>")
         return "\n".join(out)
     width = 360
-    height = sum(head_h + len(b) * row_h + 14 for _, b in rows)
-    out = [f'<svg class="om-diagram om-diagram-tall" viewBox="0 0 {width} {height}" role="img" aria-label="The bodies of Wilson County grouped by jurisdiction">']
+    height = sum(head_h + rows_h(b, width - 8, row_h) + 14 for _, b in rows)
+    out = [f'<svg class="om-diagram om-diagram-tall" viewBox="0 0 {width} {height:g}" role="img" aria-label="The bodies of Wilson County grouped by jurisdiction">']
     y = 0
     for g, bodies in rows:
         out.append(group_svg(g, bodies, 4, y, width - 8, row_h, head_h))
-        y += head_h + len(bodies) * row_h + 14
+        y += head_h + rows_h(bodies, width - 8, row_h) + 14
     out.append("</svg>")
     return "\n".join(out)
 
@@ -359,16 +374,21 @@ def group_svg(g: str, bodies: list, x0: float, y0: float, w: float, row_h: int, 
     out = [f'<text class="dg-head" x="{x0}" y="{y0 + 16}">{esc(g)}</text>',
            f'<text class="dg-count" x="{x0}" y="{y0 + 31}">{cap} of {len(bodies)} captured</text>',
            f'<line class="dg-rule" x1="{x0}" y1="{y0 + 37}" x2="{x0 + w}" y2="{y0 + 37}" />']
-    for k, b in enumerate(bodies):
-        cy = y0 + head_h + k * row_h + row_h / 2 - 2
+    y = y0 + head_h
+    for b in bodies:
+        cy = y + row_h / 2 - 2
         pending = not b["captured"]
         out.append(shape_svg(SHAPES[b["body_type"]], x0 + 8, cy, pending))
         name = short_name(b)
-        tag = "" if not pending else ("not located" if b["capture_status"] == "not_located" else "requested")
+        tag = body_tag(b)
         cls = "dg-name is-pending" if pending else "dg-name"
         out.append(f'<text class="{cls}" x="{x0 + 22}" y="{cy + 4:.1f}">{esc(name)}</text>')
-        if tag:
+        y += row_h
+        if tag and tag_beside(name, tag, w):
             out.append(f'<text class="dg-tag" x="{x0 + 22 + len(name) * 5.9 + 10:.1f}" y="{cy + 4:.1f}">{tag}</text>')
+        elif tag:
+            out.append(f'<text class="dg-tag" x="{x0 + 22}" y="{cy + 17:.1f}">{tag}</text>')
+            y += 12
     return "\n".join(out)
 
 
@@ -402,21 +422,24 @@ def s03_project(snap: dict) -> str:
     ev = c["timeline"]
     N = len(ev)
     lanes = [0, 100, 250, 350]           # card tops: two above the line (232), two below
+    inset = 16                            # px held off each end of the track, so the end cards stay inside the viewport
     cards, pts = [], []
     for i, e in enumerate(ev):
-        x = (i + 0.5) / N * 100
+        f = (i + 0.5) / N                 # point at inset + f * (100% - 2 * inset)
+        x = f"calc({f * 100:.3f}% + {inset * (1 - 2 * f):.3f}px)"
+        card_x = f"calc({f * 100:.3f}% + {inset * (1 - 2 * f) - 84:.3f}px)"
         dt, body, act, req = tl_card_parts(e)
         deciding = e["deciding"]
         cls_pt = "om-tl__pt" + (" is-deciding" if deciding else (" is-vote" if e["vote"] else ""))
-        pts.append(f'<span class="{cls_pt}" style="left: {x:.3f}%"></span>')
+        pts.append(f'<span class="{cls_pt}" style="left: {x}"></span>')
         top = lanes[i % 4]
         card_h = 84
         if i % 4 < 2:
             lead_top, lead_h = top + card_h, 232 - (top + card_h)
         else:
             lead_top, lead_h = 232, top - 232
-        cards.append(f'<span class="om-tl__lead" style="left: {x:.3f}%; top: {lead_top}px; height: {lead_h}px"></span>')
-        cards.append(f'<div class="om-tl__card{" is-deciding" if deciding else ""}" style="left: {x:.3f}%; top: {top}px">'
+        cards.append(f'<span class="om-tl__lead" style="left: {x}; top: {lead_top}px; height: {lead_h}px"></span>')
+        cards.append(f'<div class="om-tl__card{" is-deciding" if deciding else ""}" style="left: {card_x}; top: {top}px">'
                      f'<span class="rp-label">{esc(dt)}</span><span class="tl-body">{esc(body)}</span><span class="tl-act">{esc(act)}</span><span class="tl-req">{esc(req)}</span></div>')
     wide = f'<div class="om-tl" aria-hidden="true"><div class="om-tl__line"></div>{"".join(cards)}{"".join(pts)}</div>'
     rows = []
@@ -513,7 +536,7 @@ def lag_cell(v, before: bool) -> str:
 
 def s06_coverage(snap: dict) -> str:
     cov = snap["coverage"]
-    opening = cov["opening_paragraph"]  # quoted in its own wording (LAND-5.2.1)
+    opening = cov["opening_paragraph"]  # the generator keeps the word out at the source (LAND-5.2.2); no exemption here
     rows = []
     for g, bodies in group_rows(snap):
         for b in bodies:
@@ -597,7 +620,7 @@ def build(snapshot_path: Path) -> dict:
 </html>
 """
     page = head + body
-    assert no_public(re.sub(r'url\("data:[^"]+"\)', "", page), (esc(snap["coverage"]["opening_paragraph"]),)), "the page carries the word"
+    assert no_public(re.sub(r'url\("data:[^"]+"\)', "", page)), "the page carries the word"
     TARGET.write_text(page, encoding="utf-8", newline="\n")
     return {"bytes": len(page.encode("utf-8")), "sections": page.count('<section class="rp-section"'), "timeline": snap["case"]["timeline"],
             "recent_rows": rows_l, "upcoming_rows": rows_r, "snapshot": snapshot_path.name, "as_of": snap["as_of"]}
