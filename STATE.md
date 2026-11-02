@@ -1,5 +1,9 @@
 # red-planet-homepage — STATE
 
+## DEVSITE-1 (2026-11-02, session `cc-devsite1`)
+
+The "Get in touch" form's notification (`app/api/contact/route.ts`) now goes to hello@redplanetdata.com as well as Paul's personal Gmail. One message with both addresses on it. Nothing else on the site changed. The disabled `app/_careers` page still links to api.redplanetdata.com, which now redirects home.
+
 ## Current phase: LAND-6 -- one set of explanation pages: the company page in front, the four views as tabs (2026-10-23)
 
 Session `cc-land6-20261023`. Ships on push like everything here.

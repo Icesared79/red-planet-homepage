@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const NOTIFY_TO = "paul.dicesare@gmail.com";
+const NOTIFY_TO = ["paul.dicesare@gmail.com", "hello@redplanetdata.com"];
 const NOTIFY_FROM = "Red Planet <notifications@redplanetdata.com>";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
