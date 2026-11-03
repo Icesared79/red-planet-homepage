@@ -30,7 +30,8 @@ import { getPublicRecords, RECORDS_REVALIDATE } from "@/lib/records-ledger";
 // build time and never re-renders it, freezing whatever the first render read.
 // 300s matches lib/records-ledger.ts, so the card picks up each nightly close
 // within five minutes of the count being taken.
-export const revalidate = RECORDS_REVALIDATE;
+// A literal because Next 15 reads this export statically; keep it equal to RECORDS_REVALIDATE.
+export const revalidate = 300;
 
 export default async function HomePage() {
   const records = await getPublicRecords();

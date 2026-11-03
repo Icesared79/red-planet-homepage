@@ -13,14 +13,16 @@ import {
   type Posting,
 } from "@/lib/jobs";
 
-export const revalidate = JOBS_REVALIDATE;
+// A literal because Next 15 reads this export statically; keep it equal to JOBS_REVALIDATE.
+export const revalidate = 300;
 
 const SITE = "https://redplanetdata.com";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const posting = await getPosting(params.slug);
+  const { slug } = await params;
+  const posting = await getPosting(slug);
   if (!posting) return { title: "Jobs | Red Planet Data" };
   const title = `${posting.title} | Red Planet Data`;
   const description = `${posting.title} at Red Planet Data. ${posting.employmentType}, ${posting.locationText}.`;
@@ -116,7 +118,8 @@ function Runs({ runs }: { runs: { text: string; href?: string }[] }) {
 }
 
 export default async function PostingPage({ params }: Props) {
-  const posting = await getPosting(params.slug);
+  const { slug } = await params;
+  const posting = await getPosting(slug);
   if (!posting) notFound();
 
   const { blocks } = await renderDescription(posting.description);

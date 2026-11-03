@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getPublicRecords, RECORDS_REVALIDATE } from "@/lib/records-ledger";
 
 export const runtime = "nodejs";
-export const revalidate = RECORDS_REVALIDATE;
+// A literal because Next 15 reads this export statically; keep it equal to RECORDS_REVALIDATE.
+export const revalidate = 300;
 
 // The public read-only endpoint behind the homepage record card. It returns
 // ONLY the figures that card shows, from the Atlas records ledger that Mission

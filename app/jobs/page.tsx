@@ -7,7 +7,8 @@ import { getOpenPostings, JOBS_REVALIDATE } from "@/lib/jobs";
 // The permanent careers page. Postings are rows in public.job_postings, read at
 // request time and re-read every JOBS_REVALIDATE seconds, so opening or closing
 // a role is a database change and never a deploy.
-export const revalidate = JOBS_REVALIDATE;
+// A literal because Next 15 reads this export statically; keep it equal to JOBS_REVALIDATE.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Jobs | Red Planet Data",

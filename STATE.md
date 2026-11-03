@@ -1,5 +1,13 @@
 # red-planet-homepage — STATE
 
+## VULN-2.1 (2026-11-02, session `cc-vuln21-20261102`)
+
+Next.js 15.5.28 and React 19, up from Next 14, which has no patched release. Overrides for postcss, nanoid 3, source-map-js, browserslist, uuid and ws. Scan: 0 critical, 0 high, 2 moderate (postcss-selector-parser, under tailwind 3).
+
+Changes Next 15 needed: `revalidate` exports are literals now (`300`, kept equal to `RECORDS_REVALIDATE` and `JOBS_REVALIDATE`, because Next 15 reads the export statically), `params` is a promise on `/jobs/[slug]`, and `app/not-found.tsx` re-exports Next's own 404 page with its own title, because Next 15 lets the layout's title win on that page.
+
+Compared with the live site before merging, every page at 1440 and 390 wide: the same text, links and images, and no pixel differences.
+
 ## DEVSITE-1 (2026-11-02, session `cc-devsite1`)
 
 The "Get in touch" form's notification (`app/api/contact/route.ts`) now goes to hello@redplanetdata.com as well as Paul's personal Gmail. One message with both addresses on it. Nothing else on the site changed. The disabled `app/_careers` page still links to api.redplanetdata.com, which now redirects home.
